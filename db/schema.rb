@@ -10,13 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_11_020545) do
+ActiveRecord::Schema.define(version: 2020_05_11_143512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "bio_grants", force: :cascade do |t|
+    t.integer "grant_id"
+    t.integer "bio_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "bios", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "organization_id"
     t.string "first_name"
     t.string "last_name"
     t.text "text"
@@ -25,7 +32,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_020545) do
   end
 
   create_table "boilerplates", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "organization_id"
     t.integer "category_id"
     t.string "title"
     t.text "text"
@@ -35,20 +42,35 @@ ActiveRecord::Schema.define(version: 2020_05_11_020545) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "organization_id"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "funding_orgs", force: :cascade do |t|
+    t.string "website"
+    t.string "name"
+    t.integer "organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "grants", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "organization_id"
     t.string "title"
     t.integer "funding_org_id"
     t.string "rfp_url"
     t.datetime "deadline"
     t.boolean "submitted"
     t.boolean "successful"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "organization_users", force: :cascade do |t|
+    t.integer "organization_id"
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
