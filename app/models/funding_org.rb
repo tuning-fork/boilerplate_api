@@ -1,0 +1,2 @@
+class FundingOrg < ApplicationRecord
+end

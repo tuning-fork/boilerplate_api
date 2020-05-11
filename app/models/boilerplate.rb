@@ -1,0 +1,2 @@
+class Boilerplate < ApplicationRecord
+end
