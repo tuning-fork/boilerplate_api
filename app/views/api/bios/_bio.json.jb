@@ -1,0 +1,9 @@
+{
+  id: bio.id,
+  organization_id: bio.organization_id,
+  first_name: bio.first_name,
+  last_name: bio.last_name,
+  text: bio.text,
+  created_at: bio.created_at,
+  updated_at: bio.updated_at
+}

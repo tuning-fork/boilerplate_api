@@ -1,0 +1,3 @@
+@sections.map do |section|
+  render partial: "section.json.jb", locals: {section: section}
+end

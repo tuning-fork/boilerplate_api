@@ -1,0 +1,3 @@
+@reports.map do |report|
+  render partial: "report.json.jb", locals: {report: report}
+end

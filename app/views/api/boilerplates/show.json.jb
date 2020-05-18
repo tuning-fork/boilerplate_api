@@ -1,0 +1,1 @@
+render partial: "boilerplate.json.jb", locals: {boilerplate: @boilerplate}

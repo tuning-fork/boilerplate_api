@@ -1,5 +1,7 @@
 class Api::BoilerplatesController < ApplicationController
 
+  # before_action :authenticate_user
+
   def index
     @boilerplates = Boilerplate.all
 

@@ -1,0 +1,10 @@
+{
+  id: section.id,
+  grant_id: section.grant_id,
+  title: section.title,
+  text: section.text,
+  sort_order: section.sort_order,
+  boilerplate_id: section.boilerplate_id,
+  created_at: section.created_at,
+  updated_at: section.updated_at
+}

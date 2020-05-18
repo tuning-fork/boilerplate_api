@@ -1,0 +1,3 @@
+@boilerplates.map do |boilerplate|
+  render partial: "boilerplate.json.jb", locals: {boilerplate: boilerplate}
+end

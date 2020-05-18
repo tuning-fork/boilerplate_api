@@ -1,0 +1,3 @@
+@grants.map do |grant|
+  render partial: "grant.json.jb", locals: {grant: grant}
+end

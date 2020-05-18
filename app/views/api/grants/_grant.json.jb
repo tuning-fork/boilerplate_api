@@ -1,0 +1,12 @@
+{
+  id: grant.id,
+  organization_id: grant.organization_id,
+  title: grant.title,
+  funding_org_id: grant.funding_org_id,
+  rfp_url: grant.rfp_url,
+  deadline: grant.deadline,
+  submitted: grant.submitted,
+  successful: grant.successful,
+  created_at: grant.created_at,
+  updated_at: grant.updated_at
+}

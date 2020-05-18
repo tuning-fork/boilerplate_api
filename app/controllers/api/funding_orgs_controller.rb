@@ -1,7 +1,9 @@
 class Api::FundingOrgsController < ApplicationController
 
+  # before_action :authenticate_user
+
   def index
-    @funding_orgs = Funding_org.all
+    @funding_orgs = FundingOrg.all
 
     @funding_orgs = @funding_orgs.order(id: :asc)
     
@@ -10,7 +12,7 @@ class Api::FundingOrgsController < ApplicationController
   end 
 
   def create
-    @funding_org = Funding_org.new(
+    @funding_org = FundingOrg.new(
                         website: params[:website],
                         name: params[:name],
                         organization_id: params[:organization_id]
@@ -24,12 +26,12 @@ class Api::FundingOrgsController < ApplicationController
   end
 
   def show
-    @funding_org = Funding_org.find(params[:id])
+    @funding_org = FundingOrg.find(params[:id])
     render 'show.json.jb'
   end
 
   def update
-    @funding_org = Funding_org.find(params[:id])
+    @funding_org = FundingOrg.find(params[:id])
 
     @funding_org.website = params[:website] || @funding_org.website
     @funding_org.name = params[:name] || @funding_org.name
@@ -40,7 +42,7 @@ class Api::FundingOrgsController < ApplicationController
   end
 
   def destroy
-    funding_org = Funding_org.find(params[:id])
+    funding_org = FundingOrg.find(params[:id])
     funding_org.destroy
     render json: {message: "Funding_org successfully destroyed."}
   end
