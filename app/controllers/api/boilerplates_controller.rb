@@ -6,28 +6,28 @@ class Api::BoilerplatesController < ApplicationController
     @boilerplates = Boilerplate.all
 
     @boilerplates = @boilerplates.order(id: :asc)
-    
-    render 'index.json.jb'
-  end 
+
+    render "index.json.jb"
+  end
 
   def create
     @boilerplate = Boilerplate.new(
-                         organization_id: params[:organization_id],
-                         category_id: params[:category_id],
-                         title: params[:title],
-                         text: params[:text],
-                         wordcount: params[:wordcount]
-                        )
+      organization_id: params[:organization_id],
+      category_id: params[:category_id],
+      title: params[:title],
+      text: params[:text],
+      wordcount: params[:wordcount],
+    )
     if @boilerplate.save
       render "show.json.jb"
     else
-      render json: {errors: @boilerplate.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @boilerplate.errors.messages }, status: :unprocessable_entity
     end
   end
 
   def show
     @boilerplate = Boilerplate.find(params[:id])
-    render 'show.json.jb'
+    render "show.json.jb"
   end
 
   def update
@@ -39,14 +39,16 @@ class Api::BoilerplatesController < ApplicationController
     @boilerplate.text = params[:text] || @boilerplate.text
     @boilerplate.wordcount = params[:wordcount] || @boilerplate.wordcount
 
-    @boilerplate.save
-    render 'show.json.jb'
+    if @boilerplate.save
+      render "show.json.jb"
+    else
+      render json: { errors: @boilerplate.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
     boilerplate = Boilerplate.find(params[:id])
     boilerplate.destroy
-    render json: {message: "Boilerplate successfully destroyed"}
+    render json: { message: "Boilerplate successfully destroyed" }
   end
-  
 end

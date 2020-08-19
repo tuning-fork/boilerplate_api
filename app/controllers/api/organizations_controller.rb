@@ -6,25 +6,24 @@ class Api::OrganizationsController < ApplicationController
     @organizations = Organization.all
 
     @organizations = @organizations.order(id: :asc)
-    
-    render 'index.json.jb'
-    
+
+    render "index.json.jb"
   end
 
   def create
     @organization = Organization.new(
-                        name: params[:name]
-                      )
+      name: params[:name],
+    )
     if @organization.save
       render "show.json.jb"
     else
-      render json: {errors: @organization.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @organization.errors.messages }, status: :unprocessable_entity
     end
   end
 
   def show
     @organization = Organization.find(params[:id])
-    render 'show.json.jb'
+    render "show.json.jb"
   end
 
   def update
@@ -32,13 +31,16 @@ class Api::OrganizationsController < ApplicationController
 
     @organization.name = params[:name] || @organization.name
 
-    @organization.save
-    render 'show.json.jb'
+    if @organization.save
+      render "show.json.jb"
+    else
+      render json: { errors: @organization.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
     organization = Organization.find(params[:id])
     organization.destroy
-    render json: {message: "Organization successfully destroyed."}
+    render json: { message: "Organization successfully destroyed." }
   end
 end

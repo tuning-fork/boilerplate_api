@@ -6,28 +6,28 @@ class Api::SectionsController < ApplicationController
     @sections = Section.all
 
     @sections = @sections.order(id: :asc)
-    
-    render 'index.json.jb'
-  end 
+
+    render "index.json.jb"
+  end
 
   def create
     @section = Section.new(
-                        grant_id: params[:grant_id],
-                        title: params[:title],
-                        text: params[:text],
-                        sort_order: params[:sort_order],
-                        boilerplate_id: params[:boilerplate_id]
-                      )
+      grant_id: params[:grant_id],
+      title: params[:title],
+      text: params[:text],
+      sort_order: params[:sort_order],
+      boilerplate_id: params[:boilerplate_id],
+    )
     if @section.save
       render "show.json.jb"
     else
-      render json: {errors: @section.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @section.errors.messages }, status: :unprocessable_entity
     end
   end
 
   def show
     @section = Section.find(params[:id])
-    render 'show.json.jb'
+    render "show.json.jb"
   end
 
   def update
@@ -39,14 +39,16 @@ class Api::SectionsController < ApplicationController
     @section.sort_order = params[:sort_order] || @section.sort_order
     @section.boilerplate_id = params[:boilerplate_id] || @section.boilerplate_id
 
-    @section.save
-    render 'show.json.jb'
+    if @section.save
+      render "show.json.jb"
+    else
+      render json: { errors: @section.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
     section = Section.find(params[:id])
     section.destroy
-    render json: {message: "Section successfully destroyed"}
+    render json: { message: "Section successfully destroyed" }
   end
-
 end

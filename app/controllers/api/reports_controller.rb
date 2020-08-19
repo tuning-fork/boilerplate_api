@@ -2,47 +2,52 @@ class Api::ReportsController < ApplicationController
 
   # before_action :authenticate_user
 
-   def index
+  def index
     @reports = Report.all
 
     @reports = @reports.order(id: :asc)
-    
-    render 'index.json.jb'
-    
-  end 
+
+    render "index.json.jb"
+  end
 
   def create
     @report = Report.new(
-                        grant_id: params[:grant_id],
-                        title: params[:title],
-                        deadline: params[:deadline],
-                        submitted: params[:submitted]
+      grant_id: params[:grant_id],
+      title: params[:title],
+      deadline: params[:deadline],
+      submitted: params[:submitted],
 
-                      )
+    )
     if @report.save
       render "show.json.jb"
     else
-      render json: {errors: @report.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @report.errors.messages }, status: :unprocessable_entity
     end
   end
 
   def show
     @report = Report.find(params[:id])
-    render 'show.json.jb'
+    render "show.json.jb"
   end
 
   def update
     @report = Report.find(params[:id])
 
-    @report.name = params[:name] || @report.name
+    @report.grant_id = params[:name] || @report.grant_id
+    @report.title = params[:title] || @report.title
+    @report.deadline = params[:deadline] || @report.deadline
+    @report.submitted = params[:submitted] || @report.submitted
 
-    @report.save
-    render 'show.json.jb'
+    if @report.save
+      render "show.json.jb"
+    else
+      render json: { errors: @report.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    report = ReportsController.find(params[:id])
+    report = Report.find(params[:id])
     report.destroy
-    render json: {message: "Report successfully destroyed."}
+    render json: { message: "Report successfully destroyed." }
   end
 end
