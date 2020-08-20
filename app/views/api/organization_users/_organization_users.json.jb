@@ -1,0 +1,5 @@
+{
+  id: organization_user.id,
+  organization_id: organization_user.organization_id,
+  user_id: organization_user.user_id,
+}
