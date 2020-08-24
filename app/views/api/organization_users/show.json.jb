@@ -1,0 +1,1 @@
+render partial: "organization_users.json.jb", locals: { organization_user: @organization_user }

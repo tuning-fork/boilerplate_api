@@ -57,5 +57,11 @@ Rails.application.routes.draw do
     get "/users/:id" => "users#show"
     patch "/users/:id" => "users#update"
     delete "/users/:id" => "users#destroy"
+
+    post "/bio_grants" => "bio_grants#create"
+    get "/bio_grants/:id" => "bio_grants#show"
+
+    post "/organization_users" => "organization_users#create"
+    get "/organization_users/:id" => "organization_users#show"
   end
 end
