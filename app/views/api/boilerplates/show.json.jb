@@ -1,1 +1,15 @@
-render partial: "boilerplate.json.jb", locals: {boilerplate: @boilerplate}
+boilerplate_hash = render partial: "boilerplate.json.jb", locals: {boilerplate: @boilerplate}
+
+boilerplate_hash[:organization] = {
+  id: @boilerplate.organization.id,
+  name: @boilerplate.organization.name
+}
+
+boilerplate_hash[:category] = {
+  id: @boilerplate.category.id,
+  name: @boilerplate.category.name
+}
+
+boilerplate_hash[:wordcount] = @boilerplate.count_words(@boilerplate.text)
+
+boilerplate_hash

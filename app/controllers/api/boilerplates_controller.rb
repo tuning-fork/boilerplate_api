@@ -21,7 +21,7 @@ class Api::BoilerplatesController < ApplicationController
     if @boilerplate.save
       render "show.json.jb"
     else
-      render json: {errors: @boilerplate.errors.messages}, status: :unprocessable_entity
+      render json: {errors: @boilerplate.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

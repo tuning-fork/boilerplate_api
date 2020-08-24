@@ -5,5 +5,5 @@
   deadline: report.deadline,
   submitted: report.submitted,
   created_at: report.created_at,
-  updated_at: report.updated_at
+  updated_at: report.updated_at,
 }

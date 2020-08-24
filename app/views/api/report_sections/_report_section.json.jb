@@ -1,0 +1,9 @@
+{
+  id: report_section.id,
+  grant_id: report_section.report_id,
+  title: report_section.title,
+  deadline: report_section.text,
+  submitted: report_section.sort_order,
+  created_at: report_section.created_at,
+  updated_at: report_section.updated_at
+}

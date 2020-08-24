@@ -1,1 +1,10 @@
-render partial: "bio.json.jb", locals: {bio: @bio}
+bio_hash = render partial: "bio.json.jb", locals: {bio: @bio}
+
+bio_hash[:organization] = {
+  id: @bio.organization.id,
+  name: @bio.organization.name
+}
+
+bio_hash[:wordcount] = @bio.count_words(@bio.text)
+
+bio_hash

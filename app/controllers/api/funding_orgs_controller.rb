@@ -44,6 +44,6 @@ class Api::FundingOrgsController < ApplicationController
   def destroy
     funding_org = FundingOrg.find(params[:id])
     funding_org.destroy
-    render json: {message: "Funding_org successfully destroyed."}
+    render json: {message: "Funding Org successfully destroyed."}
   end
 end

@@ -28,6 +28,7 @@ class Api::ReportsController < ApplicationController
 
   def show
     @report = Report.find(params[:id])
+    # render json: @report, include: [:report_sections, :grant]
     render 'show.json.jb'
   end
 
