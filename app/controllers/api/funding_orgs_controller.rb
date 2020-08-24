@@ -6,28 +6,27 @@ class Api::FundingOrgsController < ApplicationController
     @funding_orgs = FundingOrg.all
 
     @funding_orgs = @funding_orgs.order(id: :asc)
-    
-    render 'index.json.jb'
-    
-  end 
+
+    render "index.json.jb"
+  end
 
   def create
     @funding_org = FundingOrg.new(
-                        website: params[:website],
-                        name: params[:name],
-                        organization_id: params[:organization_id]
+      website: params[:website],
+      name: params[:name],
+      organization_id: params[:organization_id],
 
-                      )
+    )
     if @funding_org.save
       render "show.json.jb"
     else
-      render json: {errors: @funding_org.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @funding_org.errors.messages }, status: :unprocessable_entity
     end
   end
 
   def show
     @funding_org = FundingOrg.find(params[:id])
-    render 'show.json.jb'
+    render "show.json.jb"
   end
 
   def update
@@ -37,8 +36,11 @@ class Api::FundingOrgsController < ApplicationController
     @funding_org.name = params[:name] || @funding_org.name
     @funding_org.organization_id = params[:organization_id] || @funding_org.organization_id
 
-    @funding_org.save
-    render 'show.json.jb'
+    if @funding_org.save
+      render "show.json.jb"
+    else
+      render json: { errors: @funding_org.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy

@@ -1,0 +1,6 @@
+{
+  id: bio_grant.id,
+  grant_id: bio_grant.grant_id,
+  bio_id: bio_grant.bio_id,
+
+}

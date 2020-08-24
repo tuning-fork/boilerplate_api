@@ -6,25 +6,24 @@ class Api::GrantsController < ApplicationController
     @grants = Grant.all
 
     @grants = @grants.order(id: :asc)
-    
-    render 'index.json.jb'
-    
-  end 
+
+    render "index.json.jb"
+  end
 
   def create
     @grant = Grant.new(
-                        organization_id: params[:organization_id],
-                        title: params[:title],
-                        funding_org_id: params[:funding_org_id],
-                        rfp_url: params[:rfp_url],
-                        deadline: params[:deadline],
-                        submitted: params[:submitted],
-                        successful: params[:successful]
-                      )
+      organization_id: params[:organization_id],
+      title: params[:title],
+      funding_org_id: params[:funding_org_id],
+      rfp_url: params[:rfp_url],
+      deadline: params[:deadline],
+      submitted: params[:submitted],
+      successful: params[:successful],
+    )
     if @grant.save
       render "show.json.jb"
     else
-      render json: {errors: @grant.errors.messages}, status: :unprocessable_entity
+      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +33,7 @@ class Api::GrantsController < ApplicationController
     # render 'show.json.jb'
     #this is the format for adding in report sections once I get them built out:
     # render json: @grant, include: [:sections, :reports{include: :report_sections}]
-
+    render "show.json.jb"
   end
 
   def update
@@ -48,13 +47,16 @@ class Api::GrantsController < ApplicationController
     @grant.submitted = params[:submitted] || @grant.submitted
     @grant.successful = params[:successful] || @grant.successful
 
-    @grant.save
-    render 'show.json.jb'
+    if @grant.save
+      render "show.json.jb"
+    else
+      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
     grant = Grant.find(params[:id])
     grant.destroy
-    render json: {message: "Grant successfully destroyed"}
+    render json: { message: "Grant successfully destroyed" }
   end
 end
