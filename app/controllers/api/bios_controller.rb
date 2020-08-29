@@ -15,6 +15,7 @@ class Api::BiosController < ApplicationController
       organization_id: params[:organization_id],
       first_name: params[:first_name],
       last_name: params[:last_name],
+      title: params[:title],
       text: params[:text],
     )
     if @bio.save
@@ -35,6 +36,7 @@ class Api::BiosController < ApplicationController
     @bio.organization_id = params[:organization_id] || @bio.organization_id
     @bio.first_name = params[:first_name] || @bio.first_name
     @bio.last_name = params[:last_name] || @bio.last_name
+    @bio.title = params[:title] || @bio.title
     @bio.text = params[:text] || @bio.text
 
     if @bio.save

@@ -19,6 +19,7 @@ class Api::GrantsController < ApplicationController
       deadline: params[:deadline],
       submitted: params[:submitted],
       successful: params[:successful],
+      purpose: params[:purpose],
     )
     if @grant.save
       render "show.json.jb"
@@ -29,10 +30,10 @@ class Api::GrantsController < ApplicationController
 
   def show
     @grant = Grant.find(params[:id])
-    render json: @grant, include: [:sections, :reports]
-    # render 'show.json.jb'
-    #this is the format for adding in report sections once I get them built out:
-    # render json: @grant, include: [:sections, :reports{include: :report_sections}]
+    # render json: @grant, include: [:sections, :reports]
+    # # render 'show.json.jb'
+    # #this is the format for adding in report sections once I get them built out:
+    # # render json: @grant, include: [:sections, :reports{include: :report_sections}]
     render "show.json.jb"
   end
 
@@ -46,6 +47,7 @@ class Api::GrantsController < ApplicationController
     @grant.deadline = params[:deadline] || @grant.deadline
     @grant.submitted = params[:submitted] || @grant.submitted
     @grant.successful = params[:successful] || @grant.successful
+    @grant.purpose = params[:purpose] || @grant.purpose
 
     if @grant.save
       render "show.json.jb"

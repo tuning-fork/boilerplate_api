@@ -3,10 +3,13 @@
   organization_id: grant.organization_id,
   title: grant.title,
   funding_org_id: grant.funding_org_id,
+  funding_org_url: grant.funding_org.website,
+  funding_org_name: grant.funding_org.name,
   rfp_url: grant.rfp_url,
   deadline: grant.deadline,
   submitted: grant.submitted,
   successful: grant.successful,
   created_at: grant.created_at,
-  updated_at: grant.updated_at
+  updated_at: grant.updated_at,
+  purpose: grant.purpose
 }
