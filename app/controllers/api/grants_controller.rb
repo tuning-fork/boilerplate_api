@@ -19,6 +19,7 @@ class Api::GrantsController < ApplicationController
       deadline: params[:deadline],
       submitted: params[:submitted],
       successful: params[:successful],
+      purpose: params[:purpose],
     )
     if @grant.save
       render "show.json.jb"
@@ -46,6 +47,7 @@ class Api::GrantsController < ApplicationController
     @grant.deadline = params[:deadline] || @grant.deadline
     @grant.submitted = params[:submitted] || @grant.submitted
     @grant.successful = params[:successful] || @grant.successful
+    @grant.purpose = params[:purpose] || @grant.purpose
 
     if @grant.save
       render "show.json.jb"
