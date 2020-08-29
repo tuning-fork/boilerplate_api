@@ -29,10 +29,10 @@ class Api::GrantsController < ApplicationController
 
   def show
     @grant = Grant.find(params[:id])
-    render json: @grant, include: [:sections, :reports]
-    # render 'show.json.jb'
-    #this is the format for adding in report sections once I get them built out:
-    # render json: @grant, include: [:sections, :reports{include: :report_sections}]
+    # render json: @grant, include: [:sections, :reports]
+    # # render 'show.json.jb'
+    # #this is the format for adding in report sections once I get them built out:
+    # # render json: @grant, include: [:sections, :reports{include: :report_sections}]
     render "show.json.jb"
   end
 
