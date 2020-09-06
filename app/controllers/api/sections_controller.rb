@@ -16,7 +16,6 @@ class Api::SectionsController < ApplicationController
       title: params[:title],
       text: params[:text],
       sort_order: params[:sort_order],
-      boilerplate_id: params[:boilerplate_id],
     )
     if @section.save
       render "show.json.jb"
@@ -37,7 +36,6 @@ class Api::SectionsController < ApplicationController
     @section.title = params[:title] || @section.title
     @section.text = params[:text] || @section.text
     @section.sort_order = params[:sort_order] || @section.sort_order
-    @section.boilerplate_id = params[:boilerplate_id] || @section.boilerplate_id
 
     if @section.save
       render "show.json.jb"
