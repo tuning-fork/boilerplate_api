@@ -6,7 +6,7 @@ grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 
 grant_hash[:sections] = @grant.sections.map do |section|
   {
-    section_id: section.id,
+    id: section.id,
     title: section.title,
     text: section.text,
     sort_order: section.sort_order,
