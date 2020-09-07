@@ -36,7 +36,7 @@ class Api::SectionsController < ApplicationController
     @section.title = params[:title] || @section.title
     @section.text = params[:text] || @section.text
     @section.sort_order = params[:sort_order] || @section.sort_order
-    
+
     if @section.save
       render "show.json.jb"
     else

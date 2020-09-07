@@ -1,8 +1,8 @@
-grant_hash = render partial: "grant.json.jb", locals: {grant: @grant}
+grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 
-grant_hash[:section] = @grant.sections.map do |section|
-  json = render partial: "/api/sections/section.json.jb", locals: {section: section}
-end
+# grant_hash[:section] = @grant.sections.map do |section|
+#   json = render partial: "/api/sections/section.json.jb", locals: { section: section }
+# end
 
 grant_hash[:sections] = @grant.sections.map do |section|
   { id: section.id,
@@ -15,8 +15,8 @@ grant_hash
 
 # grant_hash[:funding_org] = @grant.funding_orgs.map do |funding_org|
 #   json = render partial: "/api/funding_orgs/funding_org.json.jb", locals: {funding_org: funding_org}
-# end 
+# end
 
 # grant_hash[:funding_orgs] = @grant.funding_orgs.map do |funding_org|
 #     {name: funding_org.name}
-# end 
+# end
