@@ -5,8 +5,10 @@ grant_hash[:section] = @grant.sections.map do |section|
 end
 
 grant_hash[:sections] = @grant.sections.map do |section|
-  {title: section.title,
-    text: section.text}
+  { id: section.id,
+    title: section.title,
+    text: section.text,
+    sort_order: section.sort_order}
 end  
 
 grant_hash
