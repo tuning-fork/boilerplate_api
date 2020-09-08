@@ -47,12 +47,12 @@ Report.create(grant_id: 1, title: "Test Report 4", deadline: "0000-00-00", submi
 Report.create(grant_id: 1, title: "Test Report 5", deadline: "0000-00-00", submitted: true)
 Report.create(grant_id: 1, title: "Test Report 6", deadline: "0000-00-00", submitted: true)
 
-Section.create(grant_id: 1, title: "Test Section 1", text: "Test Section 1", sort_order: 1, boilerplate_id: 1)
-Section.create(grant_id: 1, title: "Test Section 2", text: "Test Section 2", sort_order: 1, boilerplate_id: 1)
-Section.create(grant_id: 1, title: "Test Section 3", text: "Test Section 3", sort_order: 1, boilerplate_id: 1)
-Section.create(grant_id: 1, title: "Test Section 4", text: "Test Section 4", sort_order: 1, boilerplate_id: 1)
-Section.create(grant_id: 1, title: "Test Section 5", text: "Test Section 5", sort_order: 1, boilerplate_id: 1)
-Section.create(grant_id: 1, title: "Test Section 6", text: "Test Section 6", sort_order: 1, boilerplate_id: 1)
+Section.create(grant_id: 1, title: "Test Section 1", text: "Test Section 1", sort_order: 1)
+Section.create(grant_id: 1, title: "Test Section 2", text: "Test Section 2", sort_order: 1)
+Section.create(grant_id: 1, title: "Test Section 3", text: "Test Section 3", sort_order: 1)
+Section.create(grant_id: 1, title: "Test Section 4", text: "Test Section 4", sort_order: 1)
+Section.create(grant_id: 1, title: "Test Section 5", text: "Test Section 5", sort_order: 1)
+Section.create(grant_id: 1, title: "Test Section 6", text: "Test Section 6", sort_order: 1)
 
 User.create(first_name: "Test User 1", last_name: "Test User 1", email: "Test User 1", password: "password", password_confirmation: "password")
 User.create(first_name: "Test User 2", last_name: "Test User 2", email: "Test User 2", password: "password", password_confirmation: "password")
