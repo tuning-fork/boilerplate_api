@@ -52,6 +52,12 @@ Rails.application.routes.draw do
     patch "/sections/:id" => "sections#update"
     delete "/sections/:id" => "sections#destroy"
 
+    get "/report_sections" => "report_sections#index"
+    post "/report_sections" => "report_sections#create"
+    get "/report_sections/:id" => "report_sections#show"
+    patch "/report_sections/:id" => "report_sections#update"
+    delete "/report_sections/:id" => "report_sections#destroy"
+
     get "/users" => "users#index"
     post "/users" => "users#create"
     get "/users/:id" => "users#show"
