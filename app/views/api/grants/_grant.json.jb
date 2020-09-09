@@ -1,6 +1,7 @@
 {
   id: grant.id,
   organization_id: grant.organization_id,
+  organization_name: grant.organization.name,
   title: grant.title,
   funding_org_id: grant.funding_org_id,
   funding_org_url: grant.funding_org.website,
@@ -11,5 +12,5 @@
   successful: grant.successful,
   created_at: grant.created_at,
   updated_at: grant.updated_at,
-  purpose: grant.purpose
+  purpose: grant.purpose,
 }

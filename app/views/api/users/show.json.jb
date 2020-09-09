@@ -1,1 +1,10 @@
-render partial: "user.json.jb", locals: {user: @user}
+user_hash = render partial: "user.json.jb", locals: { user: @user }
+
+user_hash[:organization_users] = @user.organization_users.map do |organization|
+  {
+    organization_id: organization.organization_id,
+    organization_name: organization.organization.name,
+  }
+end
+
+user_hash
