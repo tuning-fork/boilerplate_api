@@ -5,6 +5,4 @@ bio_hash[:organization] = {
   name: @bio.organization.name,
 }
 
-# bio_hash[:wordcount] = @bio.count_words(@bio.text)
-
 bio_hash

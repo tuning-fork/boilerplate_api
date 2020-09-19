@@ -5,6 +5,7 @@
   last_name: bio.last_name,
   text: bio.text,
   title: bio.title,
+  wordcount: bio.wordcount,
   created_at: bio.created_at,
   updated_at: bio.updated_at
 }

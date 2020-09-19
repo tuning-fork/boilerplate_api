@@ -17,6 +17,7 @@ class Api::BiosController < ApplicationController
       last_name: params[:last_name],
       title: params[:title],
       text: params[:text],
+      wordcount: params[:wordcount],
     )
     if @bio.save
       render "show.json.jb"
@@ -38,6 +39,7 @@ class Api::BiosController < ApplicationController
     @bio.last_name = params[:last_name] || @bio.last_name
     @bio.title = params[:title] || @bio.title
     @bio.text = params[:text] || @bio.text
+    @bio.wordcount = params[:wordcount] || @bio.wordcount
 
     if @bio.save
       render "show.json.jb"

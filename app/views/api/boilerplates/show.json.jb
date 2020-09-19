@@ -10,6 +10,4 @@ boilerplate_hash[:category] = {
   name: @boilerplate.category.name
 }
 
-boilerplate_hash[:wordcount] = @boilerplate.count_words(@boilerplate.text)
-
 boilerplate_hash

@@ -8,6 +8,7 @@ grant_hash[:sections] = @grant.sections.map do |section|
   { id: section.id,
     title: section.title,
     text: section.text,
+    wordcount: section.wordcount,
     sort_order: section.sort_order }
 end
 

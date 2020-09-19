@@ -15,6 +15,7 @@ class Api::SectionsController < ApplicationController
       grant_id: params[:grant_id],
       title: params[:title],
       text: params[:text],
+      wordcount: params[:wordcount],
       sort_order: params[:sort_order],
     )
     if @section.save
@@ -35,6 +36,7 @@ class Api::SectionsController < ApplicationController
     @section.grant_id = params[:grant_id] || @section.grant_id
     @section.title = params[:title] || @section.title
     @section.text = params[:text] || @section.text
+    @section.wordcount = params[:wordcount] || @section.wordcount
     @section.sort_order = params[:sort_order] || @section.sort_order
 
     if @section.save
