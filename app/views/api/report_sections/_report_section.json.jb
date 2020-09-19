@@ -3,7 +3,8 @@
   report_id: report_section.report_id,
   title: report_section.title,
   text: report_section.text,
+  wordcount: report_section.wordcount,
   submitted: report_section.sort_order,
   created_at: report_section.created_at,
-  updated_at: report_section.updated_at
+  updated_at: report_section.updated_at,
 }

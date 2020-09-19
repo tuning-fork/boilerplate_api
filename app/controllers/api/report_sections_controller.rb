@@ -15,6 +15,7 @@ class Api::ReportSectionsController < ApplicationController
       report_id: params[:report_id],
       title: params[:title],
       text: params[:text],
+      wordcount: params[:wordcount],
       sort_order: params[:sort_order],
     )
     if @report_section.save
@@ -35,6 +36,7 @@ class Api::ReportSectionsController < ApplicationController
     @report_section.report_id = params[:report_id] || @report_section.report_id
     @report_section.title = params[:title] || @report_section.title
     @report_section.text = params[:text] || @report_section.text
+    @report_section.wordcount = params[:wordcount] || @report_section.wordcount
     @report_section.sort_order = params[:sort_order] || @report_section.sort_order
 
     if @report_section.save
