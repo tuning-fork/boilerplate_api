@@ -9,7 +9,8 @@ grant_hash[:sections] = @grant.sections.map do |section|
     title: section.title,
     text: section.text,
     wordcount: section.wordcount,
-    sort_order: section.sort_order }
+    sort_order: section.sort_order,
+    grant_id: section.grant_id }
 end
 
 grant_hash[:reports] = @grant.reports.map do |report|
