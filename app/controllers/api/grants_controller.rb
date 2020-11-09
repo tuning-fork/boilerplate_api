@@ -1,6 +1,6 @@
 class Api::GrantsController < ApplicationController
 
-  # before_action :authenticate_user
+  before_action :authenticate_user
 
   def index
     @grants = Grant.all

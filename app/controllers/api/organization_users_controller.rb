@@ -1,4 +1,7 @@
 class Api::OrganizationUsersController < ApplicationController
+
+  before_action :authenticate_user
+
   def create
     if OrganizationUser.where(
         organization_id: params[:organization_id], 
