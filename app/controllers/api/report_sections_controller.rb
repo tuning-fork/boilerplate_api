@@ -1,6 +1,6 @@
 class Api::ReportSectionsController < ApplicationController
 
-  # before_action :authenticate_user
+  before_action :authenticate_user
 
   def index
     @report_sections = ReportSection.all

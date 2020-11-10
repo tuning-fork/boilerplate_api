@@ -1,6 +1,6 @@
 class Api::FundingOrgsController < ApplicationController
 
-  # before_action :authenticate_user
+  before_action :authenticate_user
 
   def index
     @funding_orgs = FundingOrg.all
