@@ -1,7 +1,9 @@
 {
   id: boilerplate.id,
   organization_id: boilerplate.organization_id,
+  organization_name: boilerplate.organization.name,
   category_id: boilerplate.category_id,
+  category_name: boilerplate.category.name,
   title: boilerplate.title,
   text: boilerplate.text,
   wordcount: boilerplate.wordcount,
