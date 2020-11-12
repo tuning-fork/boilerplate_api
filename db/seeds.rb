@@ -68,7 +68,6 @@
 # ReportSection.create(report_id: 2, title: "Test Report Section 5", text: "Test Report Section 5", sort_order: 1)
 # ReportSection.create(report_id: 2, title: "Test Report Section 6", text: "Test Report Section 6", sort_order: 1)
 
-
 # create_table "grants", force: :cascade do |t|
 #     t.integer "organization_id"
 #     t.string "title"
