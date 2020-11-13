@@ -4,7 +4,7 @@ grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 #   json = render partial: "/api/sections/section.json.jb", locals: { section: section }
 # end
 
-grant_hash[:sections] = @grant.sections.map do |section|
+grant_hash[:sections] = @grant.sections.sort_by(&:sort_order).map do |section|
   { id: section.id,
     title: section.title,
     text: section.text,
@@ -12,6 +12,8 @@ grant_hash[:sections] = @grant.sections.map do |section|
     sort_order: section.sort_order,
     grant_id: section.grant_id }
 end
+
+
 
 grant_hash[:reports] = @grant.reports.map do |report|
   { id: report.id,
