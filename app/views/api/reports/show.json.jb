@@ -1,6 +1,6 @@
 report_hash = render partial: "report.json.jb", locals: { report: @report }
 
-report_hash[:report_sections] = @report.report_sections.map do |report_section|
+report_hash[:report_sections] = @report.report_sections.sort_by(&:sort_order).map do |report_section|
   json = { id: report_section.id,
            title: report_section.title,
            text: report_section.text,
