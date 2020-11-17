@@ -2,12 +2,27 @@ report_hash = render partial: "report.json.jb", locals: { report: @report }
 
 report_hash[:report_sections] = @report.report_sections.sort_by(&:sort_order).map do |report_section|
   json = { id: report_section.id,
-           title: report_section.title,
-           text: report_section.text,
-           wordcount: report_section.wordcount,
-           sort_order: report_section.sort_order }
+          title: report_section.title,
+          text: report_section.text,
+          wordcount: report_section.wordcount,
+          sort_order: report_section.sort_order
+ #  grant_section_match: @report.grant.sections.find { |section| section.sort_order == report_section.sort_order }
+     }
 end
 
-report_hash[:grant] = @report.grant.select_stuff(:title, :funding_org, :rfp_url, :deadline)
+report_hash[:grant_sections] = @report.grant.sections.sort_by(&:sort_order).map do |section|
+  json = {
+    section: section,
+    # title: report_section.title,
+    # text: report_section.text,
+    # wordcount: report_section.wordcount,
+    # sort_order: report_section.sort_order,
+    grant_section_match: @report.report_sections.find { |report_section| section.sort_order == report_section.sort_order },
+  }
+end
+
+report_hash[:grant] = {
+  grant_sections: @report.grant.sections,
+}
 
 report_hash
