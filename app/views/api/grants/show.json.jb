@@ -4,16 +4,27 @@ grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 #   json = render partial: "/api/sections/section.json.jb", locals: { section: section }
 # end
 
+# def find_section(grant, sort_order)
+#   grant.reports.each do |report|
+#     report.report_sections.each do |report_section|
+#       if report_section.sort_order == sort_order
+#         return report_section
+#       end
+#     end
+#   end
+#   return nil
+# end
+
 grant_hash[:sections] = @grant.sections.sort_by(&:sort_order).map do |section|
   { id: section.id,
-    title: section.title,
-    text: section.text,
-    wordcount: section.wordcount,
-    sort_order: section.sort_order,
-    grant_id: section.grant_id }
+   title: section.title,
+   text: section.text,
+   wordcount: section.wordcount,
+   sort_order: section.sort_order,
+   grant_id: section.grant_id
+ # report_section_match: find_section(@grant, section.sort_order)
+     }
 end
-
-
 
 grant_hash[:reports] = @grant.reports.map do |report|
   { id: report.id,
