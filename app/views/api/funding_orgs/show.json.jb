@@ -1,1 +1,8 @@
-render partial: "funding_org.json.jb", locals: {funding_org: @funding_org}
+funding_org_hash = render partial: "funding_org.json.jb", locals: {funding_org: @funding_org}
+
+funding_org_hash[:organization] = {
+  id: @funding_org.organization.id,
+  name: @funding_org.organization.name
+}
+
+funding_org_hash
