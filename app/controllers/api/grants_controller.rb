@@ -61,4 +61,13 @@ class Api::GrantsController < ApplicationController
     grant.destroy
     render json: { message: "Grant successfully destroyed" }
   end
+
+  def reorder_sections
+    Section.where('grant_id = ?', params[:id]).each do |section|
+      if params[section.id.to_s]
+        section.sort_order = params[section.id.to_s]
+        section.save()
+      end
+    end
+  end
 end

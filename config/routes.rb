@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get "/grants/:id" => "grants#show"
     patch "/grants/:id" => "grants#update"
     delete "/grants/:id" => "grants#destroy"
+    post "/grants/:id/actions/reordersections" => "grants#reorder_sections"
 
     get "/grants/:id/copy" => "grants#copy"
 
