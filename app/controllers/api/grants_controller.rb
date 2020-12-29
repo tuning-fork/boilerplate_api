@@ -5,7 +5,7 @@ class Api::GrantsController < ApplicationController
   def index
     @grants = Grant.all
 
-    @grants = @grants.order(id: :asc)
+    @grants = @grants.order(id: :desc)
 
     render "index.json.jb"
   end

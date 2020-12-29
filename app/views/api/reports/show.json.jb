@@ -10,17 +10,6 @@ report_hash[:report_sections] = @report.report_sections.sort_by(&:sort_order).ma
      }
 end
 
-report_hash[:grant_sections] = @report.grant.sections.sort_by(&:sort_order).map do |section|
-  json = {
-    section: section,
-    # title: report_section.title,
-    # text: report_section.text,
-    # wordcount: report_section.wordcount,
-    # sort_order: report_section.sort_order,
-    grant_section_match: @report.report_sections.find { |report_section| section.sort_order == report_section.sort_order },
-  }
-end
-
 report_hash[:grant] = {
   grant_sections: @report.grant.sections,
 }
