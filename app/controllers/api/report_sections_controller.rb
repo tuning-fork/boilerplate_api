@@ -1,5 +1,4 @@
 class Api::ReportSectionsController < ApplicationController
-
   before_action :authenticate_user
 
   def index
@@ -49,6 +48,6 @@ class Api::ReportSectionsController < ApplicationController
   def destroy
     report_section = ReportSection.find(params[:id])
     report_section.destroy
-    render json: { message: "ReportSection successfully destroyed",  id: report_section.id } 
+    render json: { id: report_section.id, message: "ReportSection successfully destroyed" }
   end
 end

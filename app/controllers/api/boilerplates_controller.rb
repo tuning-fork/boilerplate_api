@@ -1,11 +1,10 @@
 class Api::BoilerplatesController < ApplicationController
-
   before_action :authenticate_user
 
   def index
     @boilerplates = Boilerplate.all
 
-    @boilerplates = @boilerplates.order(id: :asc)
+    @boilerplates = @boilerplates.order(:title)
 
     render "index.json.jb"
   end
@@ -21,7 +20,7 @@ class Api::BoilerplatesController < ApplicationController
     if @boilerplate.save
       render "show.json.jb"
     else
-      render json: {errors: @boilerplate.errors.full_messages}, status: :unprocessable_entity
+      render json: { errors: @boilerplate.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
