@@ -49,6 +49,6 @@ class Api::ReportSectionsController < ApplicationController
   def destroy
     report_section = ReportSection.find(params[:id])
     report_section.destroy
-    render json: { message: "ReportSection successfully destroyed" }
+    render json: { message: "ReportSection successfully destroyed",  id: report_section.id } 
   end
 end
