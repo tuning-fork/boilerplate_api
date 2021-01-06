@@ -28,6 +28,41 @@ class Api::GrantsController < ApplicationController
     end
   end
 
+  def copy
+    @grant_to_copy = Grant.find(params[:id])
+    # @grant_to_copy = Grant.where('id = ?', params[:id])
+    @grant = Grant.new(
+      organization_id: @grant_to_copy.organization_id,
+      title: params[:title],
+      funding_org_id: @grant_to_copy.funding_org_id,
+      rfp_url: params[:rfp_url],
+      deadline: params[:deadline],
+      submitted: params[:submitted],
+      successful: params[:successful],
+      purpose: @grant_to_copy.purpose,
+    )
+    if @grant.save
+      render "show.json.jb"
+    else
+      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
+    end
+    copy_sections(@grant_to_copy.id)
+  end 
+
+  def copy_sections(source_id)
+    @sections_to_copy = Section.where('grant_id = ?', source_id)
+    @sections_to_copy.map do |source_section|
+      @section = Section.new(
+        grant_id: @grant.id,
+        title: source_section.title,
+        text: source_section.text,
+        wordcount: source_section.wordcount,
+        sort_order: source_section.sort_order
+      )
+      @section.save
+    end 
+  end 
+
   def show
     @grant = Grant.find(params[:id])
     # render json: @grant, include: [:sections, :reports]
