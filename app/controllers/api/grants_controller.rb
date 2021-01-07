@@ -38,8 +38,8 @@ class Api::GrantsController < ApplicationController
       funding_org_id: @grant_to_copy.funding_org_id,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
-      submitted: params[:submitted],
-      successful: params[:successful],
+      submitted: false,
+      successful: false,
       purpose: @grant_to_copy.purpose,
     )
     @grant.save
