@@ -27,6 +27,8 @@ class Api::GrantsController < ApplicationController
     end
   end
 
+  #copy method for grant
+
   def copy
     @grant_to_copy = Grant.find(params[:id])
     # @grant_to_copy = Grant.where('id = ?', params[:id])
@@ -41,8 +43,11 @@ class Api::GrantsController < ApplicationController
       purpose: @grant_to_copy.purpose,
     )
     @grant.save
+    
+  #copy method for sections
 
-    @sections_to_copy = Section.where("grant_id = ?", @grant_to_copy.id)
+  def copy_sections(source_id)
+    @sections_to_copy = Section.where('grant_id = ?', source_id)
     @sections_to_copy.map do |source_section|
       @section = Section.new(
         grant_id: @grant.id,
