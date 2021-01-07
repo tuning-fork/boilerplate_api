@@ -1,5 +1,4 @@
 class Api::GrantsController < ApplicationController
-
   before_action :authenticate_user
 
   def index
@@ -43,14 +42,8 @@ class Api::GrantsController < ApplicationController
       successful: params[:successful],
       purpose: @grant_to_copy.purpose,
     )
-    if @grant.save
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
-    copy_sections(@grant_to_copy.id)
-  end 
-
+    @grant.save
+    
   #copy method for sections
 
   def copy_sections(source_id)
@@ -61,11 +54,32 @@ class Api::GrantsController < ApplicationController
         title: source_section.title,
         text: source_section.text,
         wordcount: source_section.wordcount,
-        sort_order: source_section.sort_order
+        sort_order: source_section.sort_order,
       )
       @section.save
-    end 
-  end 
+    end
+
+    if @grant.save && @section.save
+      render "show.json.jb"
+    else
+      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
+    end
+    # copy_sections(@grant_to_copy.id)
+  end
+
+  # def copy_sections(source_id)
+  #   @sections_to_copy = Section.where('grant_id = ?', source_id)
+  #   @sections_to_copy.map do |source_section|
+  #     @section = Section.new(
+  #       grant_id: @grant.id,
+  #       title: source_section.title,
+  #       text: source_section.text,
+  #       wordcount: source_section.wordcount,
+  #       sort_order: source_section.sort_order
+  #     )
+  #     @section.save
+  #   end
+  # end
 
   def show
     @grant = Grant.find(params[:id])
@@ -102,7 +116,7 @@ class Api::GrantsController < ApplicationController
   end
 
   def reorder_sections
-    Section.where('grant_id = ?', params[:id]).each do |section|
+    Section.where("grant_id = ?", params[:id]).each do |section|
       if params[section.id.to_s]
         section.sort_order = params[section.id.to_s]
         section.save()
