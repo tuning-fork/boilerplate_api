@@ -1,11 +1,10 @@
 class Api::FundingOrgsController < ApplicationController
-
   before_action :authenticate_user
 
   def index
     @funding_orgs = FundingOrg.all
 
-    @funding_orgs = @funding_orgs.order(id: :asc)
+    @funding_orgs = @funding_orgs.order(:name)
 
     render "index.json.jb"
   end
@@ -46,6 +45,6 @@ class Api::FundingOrgsController < ApplicationController
   def destroy
     funding_org = FundingOrg.find(params[:id])
     funding_org.destroy
-    render json: {message: "Funding Org successfully destroyed."}
+    render json: { message: "Funding Org successfully destroyed." }
   end
 end
