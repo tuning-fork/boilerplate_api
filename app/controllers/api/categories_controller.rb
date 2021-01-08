@@ -1,11 +1,10 @@
 class Api::CategoriesController < ApplicationController
-
   before_action :authenticate_user
-  
+
   def index
     @categories = Category.all
 
-    @categories = @categories.order(id: :asc)
+    @categories = @categories.order(:name)
 
     render "index.json.jb"
   end

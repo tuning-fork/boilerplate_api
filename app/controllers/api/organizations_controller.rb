@@ -1,11 +1,10 @@
 class Api::OrganizationsController < ApplicationController
-
   before_action :authenticate_user
 
   def index
     @organizations = Organization.all
 
-    @organizations = @organizations.order(id: :asc)
+    @organizations = @organizations.order(:name)
 
     render "index.json.jb"
   end
