@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     post "/sessions" => "sessions#create"
 
     # routes for reset password:
-    post 'api/v1/forgot_password' => "api/v1/passwords#forgot"
-    post 'api/v1/reset_password' => "api/v1/passwords#reset"
+    post '/forgot_password' => "passwords#forgot"
+    post '/reset_password' => "passwords#reset"
 
     get "/bios" => "bios#index"
     post "/bios" => "bios#create"
