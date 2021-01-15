@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   namespace :api do
     post "/sessions" => "sessions#create"
 
+    # routes for reset password:
+    post 'api/v1/forgot_password' => "api/v1/passwords#forgot"
+    post 'api/v1/reset_password' => "api/v1/passwords#reset"
+
     get "/bios" => "bios#index"
     post "/bios" => "bios#create"
     get "/bios/:id" => "bios#show"
@@ -70,5 +74,7 @@ Rails.application.routes.draw do
 
     post "/organization_users" => "organization_users#create"
     get "/organization_users/:id" => "organization_users#show"
+
+
   end
 end
