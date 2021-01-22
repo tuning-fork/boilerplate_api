@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -27,7 +27,7 @@ module BoilerplateRebuildApp
     config.load_defaults 6.0
     config.autoloader = :classic
 
-    config.middleware.use ActionDispatch::Cookies
+    # config.middleware.use ActionDispatch::Cookies
     # config.middleware.use ActionDispatch::Session::CookieStore
 
     # Settings in config/environments/* take precedence over those specified here.
