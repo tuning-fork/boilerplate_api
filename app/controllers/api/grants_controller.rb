@@ -30,7 +30,7 @@ class Api::GrantsController < ApplicationController
   #copy method for grant
 
   def copy
-    @grant_to_copy = Grant.find(params[:id])
+    @grant_to_copy = Grant.find(params[:original_grant_id])
     # @grant_to_copy = Grant.where('id = ?', params[:id])
     @grant = Grant.new(
       organization_id: @grant_to_copy.organization_id,
