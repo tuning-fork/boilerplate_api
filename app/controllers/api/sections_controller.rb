@@ -48,6 +48,6 @@ class Api::SectionsController < ApplicationController
   def destroy
     section = Section.find(params[:id])
     section.destroy
-    render json: { message: "Section successfully destroyed" }
+    render json: { message: "Section successfully destroyed", id: section.id }
   end
 end
