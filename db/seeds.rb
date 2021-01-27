@@ -1,8 +1,7 @@
 User.create!([
-  { first_name: "Jess", last_name: "White", email: "jessw@aol.com", password_digest: "$2a$12$ag2Ok/wI4vjPSRYreoYkAOUu2OhIlcsZ4qrQW.z5d1UgrOYakYBFe", active: true },
-  { first_name: "Jess", last_name: "White", email: "jess@aol.com", password_digest: "$2a$12$83XQ/wntjZq0QzLKfL2cCuHqLCpKrLRBeeMyI0rOwy6Y78RUzjGfW", active: true },
-  { first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password_digest: "$2a$12$7vZBAfQDLak2pwBuDU0pbOjnJx.6F/fN3BqEnqVcjB.uvghluknlS", active: true },
-  { first_name: "Joey", last_name: "White", email: "jwhite@aol.com", password_digest: "$2a$12$mdzuP2v626s9o9HfPiFpO.aAv5jSfrZ0QvtWqPCQqpchiiy3knNb2", active: true },
+  { first_name: "Jess", last_name: "White", email: "jess@aol.com", password_digest: "password", active: true },
+  { first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password_digest: "password", active: true },
+  { first_name: "Mike", last_name: "McFaddin", email: "mikemcfaddin@email.com", password_digest: "password", active: true },
 ])
 
 Organization.create!([
