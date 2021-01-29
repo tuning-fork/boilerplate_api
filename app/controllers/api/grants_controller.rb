@@ -43,46 +43,31 @@ class Api::GrantsController < ApplicationController
       purpose: @grant_to_copy.purpose,
     )
     @grant.save
+    if @grant.save
+      grant_copy_status = true
+    end 
     @sections_to_copy = Section.where("grant_id = ?", @grant_to_copy.id)
-    @sections_to_copy.map do |source_section|
-      @section = Section.new(
-        grant_id: @grant.id,
-        title: source_section.title,
-        text: source_section.text,
-        wordcount: source_section.wordcount,
-        sort_order: source_section.sort_order,
-      )
-      @section.save
-    end
-
-    if @grant.save && @section.save
+    if @sections_to_copy
+      @sections_to_copy.map do |source_section|
+        @section = Section.new(
+          grant_id: @grant.id,
+          title: source_section.title,
+          text: source_section.text,
+          wordcount: source_section.wordcount,
+          sort_order: source_section.sort_order,
+        )
+        @section.save
+      end 
+    end  
+    if grant_copy_status
       render "show.json.jb"
     else
       render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
     end
-    # copy_sections(@grant_to_copy.id)
   end
-
-  # def copy_sections(source_id)
-  #   @sections_to_copy = Section.where('grant_id = ?', source_id)
-  #   @sections_to_copy.map do |source_section|
-  #     @section = Section.new(
-  #       grant_id: @grant.id,
-  #       title: source_section.title,
-  #       text: source_section.text,
-  #       wordcount: source_section.wordcount,
-  #       sort_order: source_section.sort_order
-  #     )
-  #     @section.save
-  #   end
-  # end
 
   def show
     @grant = Grant.find(params[:id])
-    # render json: @grant, include: [:sections, :reports]
-    # # render 'show.json.jb'
-    # #this is the format for adding in report sections once I get them built out:
-    # # render json: @grant, include: [:sections, :reports{include: :report_sections}]
     render "show.json.jb"
   end
 
@@ -109,6 +94,7 @@ class Api::GrantsController < ApplicationController
     grant = Grant.find(params[:id])
     grant.destroy
     render json: { message: "Grant successfully destroyed" }
+    
   end
 
   def reorder_sections
