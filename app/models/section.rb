@@ -1,3 +1,3 @@
 class Section < ApplicationRecord
-  belongs_to :grant
+  belongs_to :grant, :dependent_destroy
 end
