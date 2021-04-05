@@ -2,7 +2,8 @@ class Api::GrantsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @grants = Grant.all
+    # @grants = Grant.all
+    @grants = Grant.where(organization_id: params[:organization_id])
 
     @grants = @grants.order(id: :desc)
 

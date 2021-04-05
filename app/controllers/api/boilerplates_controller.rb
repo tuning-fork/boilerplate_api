@@ -2,9 +2,10 @@ class Api::BoilerplatesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @boilerplates = Boilerplate.all
+    # @boilerplates = Boilerplate.all
+    @boilerplates = Boilerplate.where(organization_id: params[:organization_id])
 
-    @boilerplates = @boilerplates.order(:title)
+    # @boilerplates = @boilerplates.order(:title)
 
     render "index.json.jb"
   end

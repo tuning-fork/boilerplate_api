@@ -2,9 +2,10 @@ class Api::BiosController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @bios = Bio.all
+    # @bios = Bio.all
+    @bios = Bio.where(organization_id: params[:organization_id])
 
-    @bios = @bios.order(:last_name)
+    # @bios = @bios.order(:last_name)
 
     render "index.json.jb"
   end

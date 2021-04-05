@@ -30,21 +30,31 @@ Rails.application.routes.draw do
     patch "/funding_orgs/:id" => "funding_orgs#update"
     delete "/funding_orgs/:id" => "funding_orgs#destroy"
 
-    get "/grants" => "grants#index"
-    post "/grants" => "grants#create"
-    get "/grants/:id" => "grants#show"
-    patch "/grants/:id" => "grants#update"
-    delete "/grants/:id" => "grants#destroy"
+    # get "/grants" => "grants#index"
+    # get "/organizations/:organization_id/grants" => "grants#index"
+
+    # post "/grants" => "grants#create"
+    # get "/grants/:id" => "grants#show"
+    # patch "/grants/:id" => "grants#update"
+    # delete "/grants/:id" => "grants#destroy"
     post "/grants/:id/actions/reordersections" => "grants#reorder_sections"
 
     post "/grants/copy" => "grants#copy"
 
-    get "/organizations" => "organizations#index"
-    post "/organizations" => "organizations#create"
-    get "/organizations/:id" => "organizations#show"
-    patch "/organizations/:id" => "organizations#update"
-    delete "/organizations/:id" => "organizations#destroy"
+    # get "/organizations" => "organizations#index"
+    # post "/organizations" => "organizations#create"
+    # get "/organizations/:id" => "organizations#show"
+    # patch "/organizations/:id" => "organizations#update"
+    # delete "/organizations/:id" => "organizations#destroy"
 
+    resources :organizations do 
+      resources :bios
+      resources :boilerplates
+      resources :categories
+      resources :funding_orgs
+      resources :grants
+    end 
+  
     get "/reports" => "reports#index"
     post "/reports" => "reports#create"
     get "/reports/:id" => "reports#show"
