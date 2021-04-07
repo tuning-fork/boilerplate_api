@@ -6,29 +6,29 @@ Rails.application.routes.draw do
     post '/forgot_password' => "passwords#forgot"
     post '/reset_password' => "passwords#reset"
 
-    get "/bios" => "bios#index"
-    post "/bios" => "bios#create"
-    get "/bios/:id" => "bios#show"
-    patch "/bios/:id" => "bios#update"
-    delete "/bios/:id" => "bios#destroy"
+    # get "/bios" => "bios#index"
+    # post "/bios" => "bios#create"
+    # get "/bios/:id" => "bios#show"
+    # patch "/bios/:id" => "bios#update"
+    # delete "/bios/:id" => "bios#destroy"
 
-    get "/boilerplates" => "boilerplates#index"
-    post "/boilerplates" => "boilerplates#create"
-    get "/boilerplates/:id" => "boilerplates#show"
-    patch "/boilerplates/:id" => "boilerplates#update"
-    delete "/boilerplates/:id" => "boilerplates#destroy"
+    # get "/boilerplates" => "boilerplates#index"
+    # post "/boilerplates" => "boilerplates#create"
+    # get "/boilerplates/:id" => "boilerplates#show"
+    # patch "/boilerplates/:id" => "boilerplates#update"
+    # delete "/boilerplates/:id" => "boilerplates#destroy"
 
-    get "/categories" => "categories#index"
-    post "/categories" => "categories#create"
-    get "/categories/:id" => "categories#show"
-    patch "/categories/:id" => "categories#update"
-    delete "/categories/:id" => "categories#destroy"
+    # get "/categories" => "categories#index"
+    # post "/categories" => "categories#create"
+    # get "/categories/:id" => "categories#show"
+    # patch "/categories/:id" => "categories#update"
+    # delete "/categories/:id" => "categories#destroy"
 
-    get "/funding_orgs" => "funding_orgs#index"
-    post "/funding_orgs" => "funding_orgs#create"
-    get "/funding_orgs/:id" => "funding_orgs#show"
-    patch "/funding_orgs/:id" => "funding_orgs#update"
-    delete "/funding_orgs/:id" => "funding_orgs#destroy"
+    # get "/funding_orgs" => "funding_orgs#index"
+    # post "/funding_orgs" => "funding_orgs#create"
+    # get "/funding_orgs/:id" => "funding_orgs#show"
+    # patch "/funding_orgs/:id" => "funding_orgs#update"
+    # delete "/funding_orgs/:id" => "funding_orgs#destroy"
 
     # get "/grants" => "grants#index"
     # get "/organizations/:organization_id/grants" => "grants#index"
@@ -84,7 +84,8 @@ Rails.application.routes.draw do
 
     post "/organization_users" => "organization_users#create"
     get "/organization_users/:id" => "organization_users#show"
-
+    get "/organization_users" => "organization_users#index"
+    get "/organization_users/assoc/:id" => "organization_users#assoc"
 
   end
 end
