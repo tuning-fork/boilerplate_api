@@ -34,7 +34,8 @@ Rails.application.routes.draw do
     # get "/organizations/:organization_id/grants" => "grants#index"
 
     # post "/grants" => "grants#create"
-    # get "/grants/:id" => "grants#show"
+    get "/organizations/:organization_id/grants-finalize/:id" => "grants#show"
+
     # patch "/grants/:id" => "grants#update"
     # delete "/grants/:id" => "grants#destroy"
     post "/grants/:id/actions/reordersections" => "grants#reorder_sections"
@@ -52,8 +53,20 @@ Rails.application.routes.draw do
       resources :boilerplates
       resources :categories
       resources :funding_orgs
-      resources :grants
+      resources :grants do 
+        resources :sections
+      end 
     end 
+
+    # grant has many sections
+
+    # get "/sections" => "sections#index"
+    # post "/sections" => "sections#create"
+    # get "/sections/:id" => "sections#show"
+    # patch "/sections/:id" => "sections#update"
+    # delete "/sections/:id" => "sections#destroy"
+
+    # grant has many reports
   
     get "/reports" => "reports#index"
     post "/reports" => "reports#create"
@@ -61,11 +74,7 @@ Rails.application.routes.draw do
     patch "/reports/:id" => "reports#update"
     delete "/reports/:id" => "reports#destroy"
 
-    get "/sections" => "sections#index"
-    post "/sections" => "sections#create"
-    get "/sections/:id" => "sections#show"
-    patch "/sections/:id" => "sections#update"
-    delete "/sections/:id" => "sections#destroy"
+    # report has many report_sections 
 
     get "/report_sections" => "report_sections#index"
     post "/report_sections" => "report_sections#create"
