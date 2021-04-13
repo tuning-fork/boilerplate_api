@@ -55,6 +55,9 @@ Rails.application.routes.draw do
       resources :funding_orgs
       resources :grants do 
         resources :sections
+        resources :reports do
+          resources :report_sections
+        end 
       end 
     end 
 
@@ -68,19 +71,22 @@ Rails.application.routes.draw do
 
     # grant has many reports
   
-    get "/reports" => "reports#index"
-    post "/reports" => "reports#create"
-    get "/reports/:id" => "reports#show"
-    patch "/reports/:id" => "reports#update"
-    delete "/reports/:id" => "reports#destroy"
+    # get "/reports" => "reports#index"
+    # post "/reports" => "reports#create"
+    # get "/reports/:id" => "reports#show"
+    # patch "/reports/:id" => "reports#update"
+    # delete "/reports/:id" => "reports#destroy"
 
-    # report has many report_sections 
+    get "/organizations/:organization_id/reports-finalize/:id" => "reports#show"
 
-    get "/report_sections" => "report_sections#index"
-    post "/report_sections" => "report_sections#create"
-    get "/report_sections/:id" => "report_sections#show"
-    patch "/report_sections/:id" => "report_sections#update"
-    delete "/report_sections/:id" => "report_sections#destroy"
+
+    # # report has many report_sections 
+
+    # get "/report_sections" => "report_sections#index"
+    # post "/report_sections" => "report_sections#create"
+    # get "/report_sections/:id" => "report_sections#show"
+    # patch "/report_sections/:id" => "report_sections#update"
+    # delete "/report_sections/:id" => "report_sections#destroy"
 
     get "/users" => "users#index"
     post "/users" => "users#create"
