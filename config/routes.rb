@@ -82,11 +82,11 @@ Rails.application.routes.draw do
 
     # # report has many report_sections 
 
-    # get "/report_sections" => "report_sections#index"
-    # post "/report_sections" => "report_sections#create"
-    # get "/report_sections/:id" => "report_sections#show"
-    # patch "/report_sections/:id" => "report_sections#update"
-    # delete "/report_sections/:id" => "report_sections#destroy"
+    get "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections" => "report_sections#index"
+    post "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections" => "report_sections#create"
+    get "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#show"
+    patch "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#update"
+    delete "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#destroy"
 
     get "/users" => "users#index"
     post "/users" => "users#create"
