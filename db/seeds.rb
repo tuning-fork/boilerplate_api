@@ -100,16 +100,16 @@
 # ])
 
 OrganizationUser.create!([
-  {user_id: 8, org_id: 1},
-  {user_id: 8, org_id: 2},
-  {user_id: 8, org_id: 3},
-  {user_id: 8, org_id: 4},
-  {user_id: 8, org_id: 5},
-  {user_id: 8, org_id: 6},
-  {user_id: 8, org_id: 7},
-  {user_id: 8, org_id: 8},
-  {user_id: 8, org_id: 9},
-  {user_id: 8, org_id: 10},
-  {user_id: 8, org_id: 12},
-  {user_id: 8, org_id: 12},
+  {user_id: 8, organization_id: 1},
+  {user_id: 8, organization_id: 2},
+  {user_id: 8, organization_id: 3},
+  {user_id: 8, organization_id: 4},
+  {user_id: 8, organization_id: 5},
+  {user_id: 8, organization_id: 6},
+  {user_id: 8, organization_id: 7},
+  {user_id: 8, organization_id: 8},
+  {user_id: 8, organization_id: 9},
+  {user_id: 8, organization_id: 10},
+  {user_id: 8, organization_id: 12},
+  {user_id: 8, organization_id: 12},
 ])
