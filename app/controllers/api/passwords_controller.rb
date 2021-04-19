@@ -11,10 +11,12 @@ class Api::PasswordsController < ApplicationController
   end
 
   def reset
+    puts params
     user = User.find_by(password_reset_token: params[:token], email: params[:email])
+    puts "#{user.present?} #{user.password_token_valid?}"
     if user.present? && user.password_token_valid?
       if user.reset_password(params[:password])
-        render json: { message: "Your password has been successfuly reset!" }
+        render json: { message: "Your password has been successfully reset!" }
         session[:user_id] = user.id
       else
         render json: { error: user.errors.full_messages }, status: :unprocessable_entity

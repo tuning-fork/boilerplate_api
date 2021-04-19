@@ -2,9 +2,10 @@ class Api::CategoriesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @categories = Category.all
+    # @categories = Category.all
+    @categories = Category.where(organization_id: params[:organization_id])
 
-    @categories = @categories.order(:name)
+    # @categories = @categories.order(:name)
 
     render "index.json.jb"
   end

@@ -6,62 +6,87 @@ Rails.application.routes.draw do
     post '/forgot_password' => "passwords#forgot"
     post '/reset_password' => "passwords#reset"
 
-    get "/bios" => "bios#index"
-    post "/bios" => "bios#create"
-    get "/bios/:id" => "bios#show"
-    patch "/bios/:id" => "bios#update"
-    delete "/bios/:id" => "bios#destroy"
+    # get "/bios" => "bios#index"
+    # post "/bios" => "bios#create"
+    # get "/bios/:id" => "bios#show"
+    # patch "/bios/:id" => "bios#update"
+    # delete "/bios/:id" => "bios#destroy"
 
-    get "/boilerplates" => "boilerplates#index"
-    post "/boilerplates" => "boilerplates#create"
-    get "/boilerplates/:id" => "boilerplates#show"
-    patch "/boilerplates/:id" => "boilerplates#update"
-    delete "/boilerplates/:id" => "boilerplates#destroy"
+    # get "/boilerplates" => "boilerplates#index"
+    # post "/boilerplates" => "boilerplates#create"
+    # get "/boilerplates/:id" => "boilerplates#show"
+    # patch "/boilerplates/:id" => "boilerplates#update"
+    # delete "/boilerplates/:id" => "boilerplates#destroy"
 
-    get "/categories" => "categories#index"
-    post "/categories" => "categories#create"
-    get "/categories/:id" => "categories#show"
-    patch "/categories/:id" => "categories#update"
-    delete "/categories/:id" => "categories#destroy"
+    # get "/categories" => "categories#index"
+    # post "/categories" => "categories#create"
+    # get "/categories/:id" => "categories#show"
+    # patch "/categories/:id" => "categories#update"
+    # delete "/categories/:id" => "categories#destroy"
 
-    get "/funding_orgs" => "funding_orgs#index"
-    post "/funding_orgs" => "funding_orgs#create"
-    get "/funding_orgs/:id" => "funding_orgs#show"
-    patch "/funding_orgs/:id" => "funding_orgs#update"
-    delete "/funding_orgs/:id" => "funding_orgs#destroy"
+    # get "/funding_orgs" => "funding_orgs#index"
+    # post "/funding_orgs" => "funding_orgs#create"
+    # get "/funding_orgs/:id" => "funding_orgs#show"
+    # patch "/funding_orgs/:id" => "funding_orgs#update"
+    # delete "/funding_orgs/:id" => "funding_orgs#destroy"
 
-    get "/grants" => "grants#index"
-    post "/grants" => "grants#create"
-    get "/grants/:id" => "grants#show"
-    patch "/grants/:id" => "grants#update"
-    delete "/grants/:id" => "grants#destroy"
+    # get "/grants" => "grants#index"
+    # get "/organizations/:organization_id/grants" => "grants#index"
+
+    # post "/grants" => "grants#create"
+    get "/organizations/:organization_id/grants-finalize/:id" => "grants#show"
+
+    # patch "/grants/:id" => "grants#update"
+    # delete "/grants/:id" => "grants#destroy"
     post "/grants/:id/actions/reordersections" => "grants#reorder_sections"
 
     post "/grants/copy" => "grants#copy"
 
-    get "/organizations" => "organizations#index"
-    post "/organizations" => "organizations#create"
-    get "/organizations/:id" => "organizations#show"
-    patch "/organizations/:id" => "organizations#update"
-    delete "/organizations/:id" => "organizations#destroy"
+    # get "/organizations" => "organizations#index"
+    # post "/organizations" => "organizations#create"
+    # get "/organizations/:id" => "organizations#show"
+    # patch "/organizations/:id" => "organizations#update"
+    # delete "/organizations/:id" => "organizations#destroy"
 
-    get "/reports" => "reports#index"
-    post "/reports" => "reports#create"
-    get "/reports/:id" => "reports#show"
-    patch "/reports/:id" => "reports#update"
-    delete "/reports/:id" => "reports#destroy"
+    resources :organizations do 
+      resources :bios
+      resources :boilerplates
+      resources :categories
+      resources :funding_orgs
+      resources :grants do 
+        resources :sections
+        resources :reports do
+          resources :report_sections
+        end 
+      end 
+    end 
 
-    get "/sections" => "sections#index"
-    post "/sections" => "sections#create"
-    get "/sections/:id" => "sections#show"
-    patch "/sections/:id" => "sections#update"
-    delete "/sections/:id" => "sections#destroy"
+    # grant has many sections
 
-    get "/report_sections" => "report_sections#index"
-    post "/report_sections" => "report_sections#create"
-    get "/report_sections/:id" => "report_sections#show"
-    patch "/report_sections/:id" => "report_sections#update"
-    delete "/report_sections/:id" => "report_sections#destroy"
+    # get "/sections" => "sections#index"
+    # post "/sections" => "sections#create"
+    # get "/sections/:id" => "sections#show"
+    # patch "/sections/:id" => "sections#update"
+    # delete "/sections/:id" => "sections#destroy"
+
+    # grant has many reports
+  
+    # get "/reports" => "reports#index"
+    # post "/reports" => "reports#create"
+    # get "/reports/:id" => "reports#show"
+    # patch "/reports/:id" => "reports#update"
+    # delete "/reports/:id" => "reports#destroy"
+
+    get "/organizations/:organization_id/reports-finalize/:id" => "reports#show"
+
+
+    # # report has many report_sections 
+
+    get "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections" => "report_sections#index"
+    post "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections" => "report_sections#create"
+    get "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#show"
+    patch "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#update"
+    delete "/organizations/:organization_id/grants/grant_id/report/report_id/report_sections/:id" => "report_sections#destroy"
 
     get "/users" => "users#index"
     post "/users" => "users#create"
@@ -74,7 +99,8 @@ Rails.application.routes.draw do
 
     post "/organization_users" => "organization_users#create"
     get "/organization_users/:id" => "organization_users#show"
-
+    get "/organization_users" => "organization_users#index"
+    get "/organization_users/assoc/:id" => "organization_users#assoc"
 
   end
 end

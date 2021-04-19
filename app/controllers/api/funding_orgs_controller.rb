@@ -2,7 +2,8 @@ class Api::FundingOrgsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @funding_orgs = FundingOrg.all
+    # @funding_orgs = FundingOrg.all
+    @funding_orgs = FundingOrg.where(organization_id: params[:organization_id])
 
     @funding_orgs = @funding_orgs.order(:name)
 

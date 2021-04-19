@@ -2,6 +2,30 @@ class Api::OrganizationUsersController < ApplicationController
 
   before_action :authenticate_user
 
+  def index
+    @organization_users = OrganizationUser.where(user_id: params[:user_id])
+
+    @organization_users = @organization_users.order(id: :desc)
+
+    render "index.json.jb"
+  end
+
+  def assoc
+    puts "hello!"
+    organization_users = OrganizationUser.where(user_id: params[:id])
+    puts params
+    puts "all organization_users: #{organization_users}"
+    all_org_user_ids = organization_users.map { |f| f.id }
+    puts "all org ids: #{all_org_user_ids}"
+    all_org_user_organizations = Organization.where(id: all_org_user_ids)
+    # organization_users = all_org_users
+    # all_org_users = all_org_users.order(id: :desc)
+    puts "all org users: #{all_org_user_organizations}"
+    render :json => all_org_user_organizations
+    # render :json => all_org_users
+    # render "index.json.jb"
+  end
+
   def create
     if OrganizationUser.where(
         organization_id: params[:organization_id], 
