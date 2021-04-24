@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     post "/sessions" => "sessions#create"
+    get "/session" => "sessions#get_session"
 
     # routes for reset password:
     post '/forgot_password' => "passwords#forgot"
