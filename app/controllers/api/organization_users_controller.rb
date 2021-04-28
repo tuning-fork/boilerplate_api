@@ -11,11 +11,10 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def assoc
-    puts "hello!"
     organization_users = OrganizationUser.where(user_id: params[:id])
     puts params
     puts "all organization_users: #{organization_users}"
-    all_org_user_ids = organization_users.map { |f| f.id }
+    all_org_user_ids = organization_users.map { |f| f.organization_id }
     puts "all org ids: #{all_org_user_ids}"
     all_org_user_organizations = Organization.where(id: all_org_user_ids)
     # organization_users = all_org_users

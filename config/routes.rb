@@ -7,6 +7,19 @@ Rails.application.routes.draw do
     post '/forgot_password' => "passwords#forgot"
     post '/reset_password' => "passwords#reset"
 
+    resources :organizations do 
+      resources :bios
+      resources :boilerplates
+      resources :categories
+      resources :funding_orgs
+      resources :grants do 
+        resources :sections
+        resources :reports do
+          resources :report_sections
+        end 
+      end 
+    end 
+
     # get "/bios" => "bios#index"
     # post "/bios" => "bios#create"
     # get "/bios/:id" => "bios#show"
@@ -48,19 +61,6 @@ Rails.application.routes.draw do
     # get "/organizations/:id" => "organizations#show"
     # patch "/organizations/:id" => "organizations#update"
     # delete "/organizations/:id" => "organizations#destroy"
-
-    resources :organizations do 
-      resources :bios
-      resources :boilerplates
-      resources :categories
-      resources :funding_orgs
-      resources :grants do 
-        resources :sections
-        resources :reports do
-          resources :report_sections
-        end 
-      end 
-    end 
 
     # grant has many sections
 
