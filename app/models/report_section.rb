@@ -1,3 +1,3 @@
 class ReportSection < ApplicationRecord
-  belongs_to :report, dependent: :destroy
+  belongs_to :report
 end
