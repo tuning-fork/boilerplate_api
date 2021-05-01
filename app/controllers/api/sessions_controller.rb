@@ -18,8 +18,6 @@ class Api::SessionsController < ApplicationController
   end
 
   def get_session
-    # https://github.com/jwt/ruby-jwt
-    # eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4LCJleHAiOjE2MTkzMDQ5MTh9.XLDJh0WSFeQKFEqRtG87HVbHadCmpCKvil4kddWaSzQ
     begin
       authorization_header = request.headers["Authorization"]
       jwt = authorization_header.split(" ")[1]

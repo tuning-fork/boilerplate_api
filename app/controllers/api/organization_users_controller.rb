@@ -11,16 +11,14 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def assoc
-    organization_users = OrganizationUser.where(user_id: params[:id])
-    puts params
-    puts "all organization_users: #{organization_users}"
-    all_org_user_ids = organization_users.map { |f| f.organization_id }
-    puts "all org ids: #{all_org_user_ids}"
-    all_org_user_organizations = Organization.where(id: all_org_user_ids)
+    user = OrganizationUser.where(user_id: params[:id])
+    user = User.find_by(id: params[:id])
+    # all_org_user_ids = organization_users.map { |f| f.organization_id }
+    # all_org_user_organizations = Organization.where(id: all_org_user_ids)
     # organization_users = all_org_users
     # all_org_users = all_org_users.order(id: :desc)
-    puts "all org users: #{all_org_user_organizations}"
-    render :json => all_org_user_organizations
+    # puts "all org users: #{user.organizations}"
+    render :json => user.organizations
     # render :json => all_org_users
     # render "index.json.jb"
   end

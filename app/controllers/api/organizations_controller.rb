@@ -38,8 +38,9 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def destroy
-    if is_associated_with_org(current_user.id)
-      organization = Organization.find(params[:id])
+    organization_id = params[:id].to_i
+    if is_associated_with_org(organization_id, current_user)
+      organization = Organization.find(organization_id)
       organization.destroy
       render json: { message: "Organization successfully destroyed." }
     else
@@ -48,9 +49,7 @@ class Api::OrganizationsController < ApplicationController
   end
 
   private
-  def is_associated_with_org(user_id)
-    # Join user id on organization_users join table
-    # return true if associated and false if not
-    true
+  def is_associated_with_org(organization_id, user)
+    user.organizations.any? {|organization| organization.id == organization_id }
   end
 end
