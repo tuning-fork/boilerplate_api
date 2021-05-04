@@ -54,5 +54,5 @@ class Api::BiosController < ApplicationController
     bio.destroy
     render json: { message: "Bio successfully destroyed" }
   end
-  
+
 end
