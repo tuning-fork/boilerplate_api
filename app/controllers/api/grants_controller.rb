@@ -80,9 +80,12 @@ class Api::GrantsController < ApplicationController
     @grant.funding_org_id = params[:funding_org_id] || @grant.funding_org_id
     @grant.rfp_url = params[:rfp_url] || @grant.rfp_url
     @grant.deadline = params[:deadline] || @grant.deadline
-    @grant.submitted = params[:submitted] || @grant.submitted
-    @grant.successful = params[:successful] || @grant.successful
+    @grant.submitted = params[:submitted].nil? ? @grant.submitted : params[:submitted]
+    @grant.successful = params[:successful].nil? ? @grant.successful : params[:successful]
     @grant.purpose = params[:purpose] || @grant.purpose
+
+    puts "Checkboxes from client: submitted=#{params[:submitted]} successful=#{params[:successful]}"
+    puts "Grant created #{@grant}"
 
     if @grant.save
       render "show.json.jb"
