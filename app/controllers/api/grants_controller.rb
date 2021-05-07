@@ -84,9 +84,6 @@ class Api::GrantsController < ApplicationController
     @grant.successful = params[:successful].nil? ? @grant.successful : params[:successful]
     @grant.purpose = params[:purpose] || @grant.purpose
 
-    puts "Checkboxes from client: submitted=#{params[:submitted]} successful=#{params[:successful]}"
-    puts "Grant created #{@grant}"
-
     if @grant.save
       render "show.json.jb"
     else
