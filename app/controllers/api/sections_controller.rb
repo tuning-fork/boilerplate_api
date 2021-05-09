@@ -16,6 +16,7 @@ class Api::SectionsController < ApplicationController
       text: params[:text],
       wordcount: params[:wordcount],
       sort_order: params[:sort_order],
+      # archived: false
     )
     if @section.save
       render "show.json.jb"
@@ -37,6 +38,7 @@ class Api::SectionsController < ApplicationController
     @section.text = params[:text] || @section.text
     @section.wordcount = params[:wordcount] || @section.wordcount
     @section.sort_order = params[:sort_order] || @section.sort_order
+    @section.archived = params[:archived].nil? || @section.archived
 
     if @section.save
       render "show.json.jb"

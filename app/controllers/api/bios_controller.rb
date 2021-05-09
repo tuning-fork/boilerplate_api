@@ -18,6 +18,7 @@ class Api::BiosController < ApplicationController
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
+      # archived: false
     )
     if @bio.save
       render "show.json.jb"
@@ -40,6 +41,7 @@ class Api::BiosController < ApplicationController
     @bio.title = params[:title] || @bio.title
     @bio.text = params[:text] || @bio.text
     @bio.wordcount = params[:wordcount] || @bio.wordcount
+    @bio.archived = params[:archived].nil? || @bio.archived
 
     if @bio.save
       render "show.json.jb"
@@ -53,4 +55,5 @@ class Api::BiosController < ApplicationController
     bio.destroy
     render json: { message: "Bio successfully destroyed" }
   end
+
 end

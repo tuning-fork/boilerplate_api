@@ -20,6 +20,7 @@ class Api::GrantsController < ApplicationController
       submitted: params[:submitted],
       successful: params[:successful],
       purpose: params[:purpose],
+      # archived: false
     )
     if @grant.save
       render "show.json.jb"
@@ -83,6 +84,7 @@ class Api::GrantsController < ApplicationController
     @grant.submitted = params[:submitted].nil? ? @grant.submitted : params[:submitted]
     @grant.successful = params[:successful].nil? ? @grant.successful : params[:successful]
     @grant.purpose = params[:purpose] || @grant.purpose
+    @grant.archived = params[:archived].nil? || @grant.archived
 
     if @grant.save
       render "show.json.jb"
