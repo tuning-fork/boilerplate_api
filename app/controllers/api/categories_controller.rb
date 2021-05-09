@@ -14,6 +14,7 @@ class Api::CategoriesController < ApplicationController
     @category = Category.new(
       organization_id: params[:organization_id],
       name: params[:name],
+      # archived: false
     )
     if @category.save
       render "show.json.jb"
@@ -32,6 +33,7 @@ class Api::CategoriesController < ApplicationController
 
     @category.organization_id = params[:organization_id] || @category.organization_id
     @category.name = params[:name] || @category.name
+    @category.archived = params[:archived].nil? || @category.archived
 
     if @category.save
       render "show.json.jb"

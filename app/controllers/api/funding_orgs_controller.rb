@@ -15,7 +15,7 @@ class Api::FundingOrgsController < ApplicationController
       website: params[:website],
       name: params[:name],
       organization_id: params[:organization_id],
-
+      # archived: false
     )
     if @funding_org.save
       render "show.json.jb"
@@ -35,7 +35,7 @@ class Api::FundingOrgsController < ApplicationController
     @funding_org.website = params[:website] || @funding_org.website
     @funding_org.name = params[:name] || @funding_org.name
     @funding_org.organization_id = params[:organization_id] || @funding_org.organization_id
-
+    @funding_org.archived = params[:archived].nil? || @funding_org.archived
     if @funding_org.save
       render "show.json.jb"
     else

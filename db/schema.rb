@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_190223) do
+ActiveRecord::Schema.define(version: 2021_05_09_213717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.integer "wordcount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -49,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
   end
 
   create_table "funding_orgs", force: :cascade do |t|
@@ -57,6 +59,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.integer "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
   end
 
   create_table "grants", force: :cascade do |t|
@@ -70,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "purpose"
+    t.boolean "archived", default: false
   end
 
   create_table "organization_users", force: :cascade do |t|
@@ -93,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
+    t.boolean "archived", default: false
   end
 
   create_table "reports", force: :cascade do |t|
@@ -102,6 +107,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.boolean "submitted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
   end
 
   create_table "sections", force: :cascade do |t|
@@ -112,6 +118,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_190223) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
+    t.boolean "archived", default: false
   end
 
   create_table "users", force: :cascade do |t|

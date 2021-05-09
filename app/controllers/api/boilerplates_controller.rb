@@ -17,6 +17,7 @@ class Api::BoilerplatesController < ApplicationController
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
+      # archived: false
     )
     if @boilerplate.save
       render "show.json.jb"
@@ -38,6 +39,7 @@ class Api::BoilerplatesController < ApplicationController
     @boilerplate.title = params[:title] || @boilerplate.title
     @boilerplate.text = params[:text] || @boilerplate.text
     @boilerplate.wordcount = params[:wordcount] || @boilerplate.wordcount
+    @boilerplate.archived = params[:archived].nil? || @boilerplate.archived
 
     if @boilerplate.save
       render "show.json.jb"
