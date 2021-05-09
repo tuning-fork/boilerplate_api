@@ -1,5 +1,5 @@
 class Report < ApplicationRecord
-  belongs_to :grant, dependent: :destroy
+  belongs_to :grant
 
   has_many :report_sections
 
