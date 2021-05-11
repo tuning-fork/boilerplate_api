@@ -15,4 +15,3 @@ RSpec.describe Bio, type: :model do
     end 
   end
 end
-

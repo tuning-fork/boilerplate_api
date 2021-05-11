@@ -38,7 +38,7 @@ class Api::ReportsController < ApplicationController
     @report.deadline = params[:deadline] || @report.deadline
     @report.submitted = params[:submitted].nil? || @report.submitted
     @report.archived = params[:archived].nil? || @report.archived
-    
+
     if @report.save
       render "show.json.jb"
     else
