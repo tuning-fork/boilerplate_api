@@ -32,8 +32,7 @@ class Api::GrantsController < ApplicationController
   #copy method for grant
 
   def copy
-    @grant_to_copy = Grant.find(params[:original_grant_id])
-    # @grant_to_copy = Grant.where('id = ?', params[:id])
+    @grant_to_copy = Grant.find(params[:grant_id])
     @grant = Grant.new(
       organization_id: @grant_to_copy.organization_id,
       title: params[:title],
@@ -42,13 +41,13 @@ class Api::GrantsController < ApplicationController
       deadline: params[:deadline],
       submitted: false,
       successful: false,
-      purpose: @grant_to_copy.purpose,
+      purpose: params[:purpose]
     )
     @grant.save
     if @grant.save
       grant_copy_status = true
     end 
-    @sections_to_copy = Section.where("grant_id = ?", @grant_to_copy.id)
+    @sections_to_copy = Section.where(grant_id: params[:grant_id])
     if @sections_to_copy
       @sections_to_copy.map do |source_section|
         @section = Section.new(
@@ -100,12 +99,9 @@ class Api::GrantsController < ApplicationController
     
   end
 
-  def reorder_sections
-    Section.where("grant_id = ?", params[:id]).each do |section|
-      if params[section.id.to_s]
-        section.sort_order = params[section.id.to_s]
-        section.save()
-      end
-    end
+  def reorder_section
+    section = Section.find(params[:section_id])
+    section.sort_order_position = params[:sort_order]
+    section.save()
   end
 end

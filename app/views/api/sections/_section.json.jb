@@ -4,7 +4,7 @@
   title: section.title,
   text: section.text,
   wordcount: section.wordcount,
-  sort_order: section.sort_order,
+  sort_order: section.sort_order_rank,
   created_at: section.created_at,
   updated_at: section.updated_at
 }

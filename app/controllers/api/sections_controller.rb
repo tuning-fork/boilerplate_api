@@ -2,9 +2,8 @@ class Api::SectionsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @sections = Section.all
 
-    @sections = @sections.order(id: :asc)
+    @sections = Section.rank(:sort_order).all
 
     render "index.json.jb"
   end
