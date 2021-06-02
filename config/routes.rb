@@ -56,7 +56,7 @@ Rails.application.routes.draw do
     # post "/grants" => "grants#create"
     get "/organizations/:organization_id/grants-finalize/:id" => "grants#show"
 
-    # patch "/grants/:id" => "grants#update"
+    patch "/grants/:id" => "grants#update"
     # delete "/grants/:id" => "grants#destroy"
     patch "/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id" => "grants#reorder_section"
 
