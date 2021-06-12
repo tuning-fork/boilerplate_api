@@ -34,10 +34,7 @@ Run the following commands:
 ```bash
 # Install dependencies
 $ bundler install
-# Set credentials. This will open up an editor. Add the following to the end before closing:
-#   mailer:
-#     gmail_account: gmail@gmail.gmail
-#     password: gmail
+# Set credentials. This will open up an editor that you can exit to continue.
 $ rm config/credentials.yml.enc && rails credentials:edit
 # Create, migrate, and seed database
 $ rails db:create db:migrate db:seed
