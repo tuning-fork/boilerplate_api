@@ -160,6 +160,24 @@ describe Api::OrganizationsController do
         ),
       )
     end
+
+    it 'creates new organization with user that created it' do
+      chidi = User.create!({
+        email: 'chidi@good.place',
+        password: 'chidi',
+        first_name: "Chidi",
+        last_name: "Anagonye",
+      })
+
+      set_auth_header(jwt(chidi))
+
+      expect {
+        post :create, :params => { "name" => "The Good Place" }
+      }.to change(Organization, :count)
+       .and change(OrganizationUser, :count)
+
+      expect(Organization.last().name).to eq "The Good Place"
+    end
   end
 
   describe 'GET /organizations/:organization_id' do
