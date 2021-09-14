@@ -11,7 +11,6 @@ Organization.delete_all
 User.delete_all
 
 users = User.create!([
-  { first_name: "j", last_name: "j", email: "j@j.j", password: "jjjjj", active: true },
   { first_name: "Jess", last_name: "White", email: "jess@aol.com", password: "password", active: true },
   { first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password: "password", active: true },
   { first_name: "Mike", last_name: "McFaddin", email: "mikemcfaddin@email.com", password: "password", active: true },

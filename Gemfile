@@ -48,3 +48,7 @@ gem 'rack-cors'
 gem 'jb'
 
 gem 'ranked-model'
+
+gem 'graphql'
+
+gem 'graphiql-rails', group: :development
