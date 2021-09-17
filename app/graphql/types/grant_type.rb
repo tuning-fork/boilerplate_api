@@ -12,5 +12,7 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :purpose, String, null: true
     field :archived, Boolean, null: true
+    field :section, [Types::SectionType], null: true
+    field :reports, [Types::ReportType], null: true
   end
 end

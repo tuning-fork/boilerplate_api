@@ -12,3 +12,4 @@ module Types
     field :password_reset_sent_at, GraphQL::Types::ISO8601DateTime, null: true
   end
 end
+
