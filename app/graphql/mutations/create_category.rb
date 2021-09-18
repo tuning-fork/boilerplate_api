@@ -7,16 +7,16 @@ class Mutations::CreateCategory < Mutations::BaseMutation
     field :errors, [String], null: false 
   
     def resolve(organization_id:, name:, archived:,)
-      organization = Organization.new(name: name)
-          if organization.save
+      category = Category.new(organization_id: organization_id, name: name, archived: archived,)
+          if category.save
         {
-          organization: organization,
+          category: category,
           errors: []
         }
       else
         {
-          organization: nil,
-          errors: organization.errors.full_messages
+          category: nil,
+          errors: category.errors.full_messages
         }
       end
     end
