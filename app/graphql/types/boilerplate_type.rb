@@ -1,8 +1,8 @@
 module Types
   class BoilerplateType < Types::BaseObject
     field :id, ID, null: false
-    field :organization_id, Integer, null: true
-    field :category_id, Integer, null: true
+    field :organization_id, ID, null: true
+    field :category_id, ID, null: true
     field :title, String, null: true
     field :text, String, null: true
     field :wordcount, Integer, null: true

@@ -9,12 +9,13 @@ class Mutations::UpdateCategory < Mutations::BaseMutation
       category = Category.find(id)
         if category
         category.update!(attributes)
+        end
         if category.save
         {
           category: category,
           errors: []
         }
-      else
+        else
         {
           category: nil,
           errors: category.errors.full_messages

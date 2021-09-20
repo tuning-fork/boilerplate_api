@@ -19,3 +19,4 @@ class Mutations::CreateOrganization < Mutations::BaseMutation
       end
     end
 end
+

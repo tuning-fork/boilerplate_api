@@ -1,7 +1,7 @@
 module Types
   class SectionType < Types::BaseObject
     field :id, ID, null: false
-    field :grant_id, Integer, null: true
+    field :grant_id, ID, null: true
     field :title, String, null: true
     field :text, String, null: true
     field :sort_order, Integer, null: true

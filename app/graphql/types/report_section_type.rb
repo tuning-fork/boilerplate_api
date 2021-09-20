@@ -1,7 +1,7 @@
 module Types
   class ReportSectionType < Types::BaseObject
     field :id, ID, null: false
-    field :report_id, Integer, null: true
+    field :report_id, ID, null: true
     field :title, String, null: true
     field :text, String, null: true
     field :sort_order, Integer, null: true

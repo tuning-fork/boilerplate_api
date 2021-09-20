@@ -12,7 +12,7 @@ class Mutations::CreateGrant < Mutations::BaseMutation
     field :grant, Types::GrantType, null: false
     field :errors, [String], null: false 
   
-    def resolve(organization_id:, title:, funding_org_id:, rfp_url:, deadline:, submitted:, successful:, purpose:, archived:,)
+    def resolve(organization_id:, title:, funding_org_id:, rfp_url:, deadline:, submitted:, successful:, purpose:, archived:)
       grant = Grant.new(organization_id: organization_id, title: title, funding_org_id: funding_org_id, rfp_url: rfp_url, deadline: deadline, submitted: submitted, successful: successful, purpose: purpose, archived: archived)
           if grant.save
         {

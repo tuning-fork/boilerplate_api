@@ -7,9 +7,10 @@ class Mutations::UpdateOrganization < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       organization = Organization.find(id)
-        if organization
+      if organization
         organization.update!(attributes)
-        if organization.save
+      end
+      if organization.save
         {
           organization: organization,
           errors: []

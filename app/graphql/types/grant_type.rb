@@ -1,9 +1,9 @@
 module Types
   class GrantType < Types::BaseObject
     field :id, ID, null: false
-    field :organization_id, Integer, null: true
+    field :organization_id, ID, null: true
     field :title, String, null: true
-    field :funding_org_id, Integer, null: true
+    field :funding_org_id, ID, null: true
     field :rfp_url, String, null: true
     field :deadline, GraphQL::Types::ISO8601DateTime, null: true
     field :submitted, Boolean, null: true

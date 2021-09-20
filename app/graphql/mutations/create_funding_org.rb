@@ -7,7 +7,7 @@ class Mutations::CreateFundingOrg < Mutations::BaseMutation
     field :funding_org, Types::FundingOrgType, null: false
     field :errors, [String], null: false 
   
-    def resolve(website:, name:, organization_id:, archived:,)
+    def resolve(website:, name:, organization_id:, archived:)
       funding_org = FundingOrg.new(website: website, name: name, organiation_id: organization_id, archived: archived)
           if funding_org.save
         {

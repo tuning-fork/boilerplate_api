@@ -1,7 +1,7 @@
 module Types
   class ReportType < Types::BaseObject
     field :id, ID, null: false
-    field :grant_id, Integer, null: true
+    field :grant_id, ID, null: true
     field :title, String, null: true
     field :deadline, GraphQL::Types::ISO8601DateTime, null: true
     field :submitted, Boolean, null: true

@@ -14,7 +14,8 @@ class Mutations::UpdateBoilerplate < Mutations::BaseMutation
       boilerplate = Boilerplate.find(id)
         if boilerplate
         boilerplate.update!(attributes)
-        if boilerplate.save
+      end
+      if boilerplate.save
         {
           boilerplate: boilerplate,
           errors: []

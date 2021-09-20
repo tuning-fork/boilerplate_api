@@ -9,7 +9,7 @@ class Mutations::CreateReportSection < Mutations::BaseMutation
     field :report_section, Types::ReportSectionType, null: false
     field :errors, [String], null: false 
   
-    def resolve(report_id:, title:, text:, sort_order:, wordcount:, archived:,)
+    def resolve(report_id:, title:, text:, sort_order:, wordcount:, archived:)
       report_section = ReportSection.new(report_id: grant_id, title: title, text: text, sort_order: sort_order, wordcount: wordcount, archived: archived,)
           if report_section.save
         {

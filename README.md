@@ -38,7 +38,7 @@ $ bundler install
 #   mailer:
 #     gmail_account: gmail@gmail.gmail
 #     password: gmail
-$ rm config/credentials.yml.enc && rails credentials:edit
+$ rm config/credentials.yml.enc && EDITOR="vim" rails credentials:edit
 # Create, migrate, and seed database
 $ rails db:create db:migrate db:seed
 # Start server on port :3000
