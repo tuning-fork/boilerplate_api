@@ -1,7 +1,7 @@
 class Mutations::CreateReport < Mutations::BaseMutation
     argument :grant_id, Integer, required: true
     argument :title, String, required: true
-    argument :deadline, Date, required: true
+    argument :deadline, String, required: true
     argument :submitted, Boolean, required: true
     argument :archived, Boolean, required: true
 
