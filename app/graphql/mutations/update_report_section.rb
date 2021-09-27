@@ -14,6 +14,7 @@ class Mutations::UpdateReportSection < Mutations::BaseMutation
       report_section = ReportSection.find(id)
       if report_section
         report_section.update!(attributes)
+      end
       if report_section.save
         {
           report_section: report_section,

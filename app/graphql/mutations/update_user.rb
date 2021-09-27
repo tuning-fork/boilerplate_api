@@ -6,7 +6,7 @@ class Mutations::UpdateUser < Mutations::BaseMutation
     argument :password_digest, String, required: true
     argument :active, Boolean, required: true
     argument :password_reset_token, String, required: true
-    argument :password_reset_sent_at, Date, required: true
+    argument :password_reset_sent_at, String, required: true
   
     field :user, Types::UserType, null: false
     field :errors, [String], null: false 
