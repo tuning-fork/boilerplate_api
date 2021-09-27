@@ -12,7 +12,7 @@ class Mutations::UpdateBoilerplate < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       boilerplate = Boilerplate.find(id)
-        if boilerplate
+      if boilerplate
         boilerplate.update!(attributes)
       end
       if boilerplate.save

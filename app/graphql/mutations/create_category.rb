@@ -1,5 +1,5 @@
 class Mutations::CreateCategory < Mutations::BaseMutation
-    argument :organization_id, ID, required: true
+    argument :organization_id, Integer, required: true
     argument :name, String, required: true
     argument :archived, Boolean, required: true
   

@@ -1,5 +1,5 @@
 class Mutations::DestroyCategory < Mutations::BaseMutation
-    argument :id, ID, required: true
+    argument :id, Integer, required: true
   
     field :category, Types::CategoryType, null: false
     field :errors, [String], null: false 
@@ -9,4 +9,3 @@ class Mutations::DestroyCategory < Mutations::BaseMutation
         category.destroy
     end
 end
-

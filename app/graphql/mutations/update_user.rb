@@ -13,9 +13,10 @@ class Mutations::UpdateUser < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       user = User.find(id)
-        if user
+      if user
         user.update!(attributes)
-        if user.save
+      end
+      if user.save
         {
           user: user,
           errors: []

@@ -11,9 +11,10 @@ class Mutations::UpdateReport < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       report = Report.find(id)
-        if report
+      if report
         report.update!(attributes)
-        if report.save
+      end
+      if report.save
         {
           report: report,
           errors: []

@@ -10,10 +10,10 @@ class Mutations::UpdateFundingOrg < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       funding_org = FundingOrg.find(id)
-        if funding_org
-          funding_org.update!(attributes)
-        end
-        if funding_org.save
+      if funding_org
+        funding_org.update!(attributes)
+      end
+      if funding_org.save
         {
           funding_org: funding_org,
           errors: []

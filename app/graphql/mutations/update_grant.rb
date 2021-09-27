@@ -15,9 +15,10 @@ class Mutations::UpdateGrant < Mutations::BaseMutation
   
     def resolve(id:, **attributes)
       grant = Grant.find(id)
-        if grant
+      if grant
         grant.update!(attributes)
-        if grant.save
+      end
+      if grant.save
         {
           grant: grant,
           errors: []
