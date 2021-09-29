@@ -2,7 +2,7 @@ class Mutations::UpdateReport < Mutations::BaseMutation
     argument :id, Integer, required: true
     argument :grant_id, Integer, required: true
     argument :title, String, required: true
-    argument :deadline, String, required: true
+    argument :deadline, GraphQL::Types::DateTimeType, required: true
     argument :submitted, Boolean, required: true
     argument :archived, Boolean, required: true
   

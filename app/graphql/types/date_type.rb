@@ -1,5 +1,5 @@
 module Types
-    class DateType < GraphQL::Schema::Scalar
+    class DateType < Types::BaseScalar
       description "Returns a Date formatted as 'YYYY-MM-DD'"
   
       def self.coerce_input(value, _context)

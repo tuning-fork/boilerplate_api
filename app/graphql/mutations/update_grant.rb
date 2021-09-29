@@ -4,7 +4,7 @@ class Mutations::UpdateGrant < Mutations::BaseMutation
     argument :title, String, required: true
     argument :funding_org_id, Integer, required: true
     argument :rfp_url, String, required: true
-    argument :deadline, String, required: true
+    argument :deadline, GraphQL::Types::DateTimeType, required: true
     argument :submitted, Boolean, required: true
     argument :successful, Boolean, required: true
     argument :purpose, String, required: true

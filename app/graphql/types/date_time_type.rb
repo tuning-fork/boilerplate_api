@@ -1,5 +1,5 @@
 module Types
-    class DateTimeType < GraphQL::Schema::Scalar
+    class DateTimeType < BaseScalar
       description "Returns a DateTime as iso8601"
   
       def self.coerce_input(value, _context)
