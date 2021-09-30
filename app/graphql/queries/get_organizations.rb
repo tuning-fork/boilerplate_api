@@ -1,5 +1,5 @@
 module Queries
-    class FetchOrganizations < Queries::BaseQuery
+    class GetOrganizations < Queries::BaseQuery
       type [Types::OrganizationType], null: false
   
       def resolve
