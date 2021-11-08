@@ -1,5 +1,5 @@
 module Types
-  class MutationType < BaseObject
+  class MutationType < Types::BaseObject
     field :create_organization, mutation: Mutations::CreateOrganization
     field :destroy_organization, mutation: Mutations::DestroyOrganization
     field :update_organization, mutation: Mutations::UpdateOrganization

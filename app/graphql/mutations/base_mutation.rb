@@ -6,9 +6,9 @@ module Mutations
     object_class Types::BaseObject
   end
 
-  class UserMutations # if it didn't work, try `< Types::MutationType`
-    SignUp = GraphQL::ObjectType.define do
-        # your SignUp block
-    end
-end
+  # class UserMutations < Types::MutationType
+  #   SignUp = GraphQL::ObjectType.define do
+  #       # your SignUp block
+  #   end
+  # end
 end

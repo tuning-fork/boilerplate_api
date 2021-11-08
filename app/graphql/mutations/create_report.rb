@@ -1,7 +1,8 @@
 class Mutations::CreateReport < Mutations::BaseMutation
     argument :grant_id, Integer, required: true
     argument :title, String, required: true
-    argument :deadline, GraphQL::Types::DateTimeType, required: true
+    # argument :deadline, GraphQL::Types::DateTimeType, required: true
+    argument :deadline, GraphQL::Types::ISO8601DateTime, required: true
     argument :submitted, Boolean, required: true
     argument :archived, Boolean, required: true
 
