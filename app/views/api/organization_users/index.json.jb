@@ -1,3 +1,0 @@
-@organization_users.map do |organization_user|
-  render partial: "organization_users.json.jb", locals: {organization_user: organization_user}
-end

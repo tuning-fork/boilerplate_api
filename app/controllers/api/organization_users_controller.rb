@@ -1,13 +1,10 @@
 class Api::OrganizationUsersController < ApplicationController
-
   before_action :authenticate_user
 
   def index
-    @organization_users = OrganizationUser.where(user_id: params[:user_id])
-
-    @organization_users = @organization_users.order(id: :desc)
-
-    render "index.json.jb"
+    organization = Organization.find(params[:organization_id])
+    @users = organization.users.order(:id)
+    render "api/users/index.json.jb"
   end
 
   def assoc
@@ -25,7 +22,7 @@ class Api::OrganizationUsersController < ApplicationController
 
   def create
     if OrganizationUser.where(
-        organization_id: params[:organization_id], 
+        organization_id: params[:organization_id],
         user_id: params[:user_id])
       .exists?
       render json: { errors: @organization_user.errors.messages }, status: :unprocessable_entity
@@ -34,7 +31,7 @@ class Api::OrganizationUsersController < ApplicationController
         organization_id: params[:organization_id],
         user_id: params[:user_id]
       )
-    end 
+    end
     if @organization_user.save
       render "show.json.jb"
     else
