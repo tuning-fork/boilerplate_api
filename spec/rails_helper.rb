@@ -69,4 +69,6 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  config.render_views
 end

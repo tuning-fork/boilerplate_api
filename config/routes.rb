@@ -8,18 +8,19 @@ Rails.application.routes.draw do
     post '/reset_password' => "passwords#reset"
 
     resources :organization_users
-    resources :organizations do 
+    resources :organizations do
+      resources :organization_users, path: :users
       resources :bios
       resources :boilerplates
       resources :categories
       resources :funding_orgs
-      resources :grants do 
+      resources :grants do
         resources :sections
         resources :reports do
           resources :report_sections
-        end 
-      end 
-    end 
+        end
+      end
+    end
 
     # post "/organization_users" => "organization_users#create"
     # get "/organization_users/:id" => "organization_users#show"
@@ -77,7 +78,7 @@ Rails.application.routes.draw do
     # delete "/sections/:id" => "sections#destroy"
 
     # grant has many reports
-  
+
     # get "/reports" => "reports#index"
     # post "/reports" => "reports#create"
     # get "/reports/:id" => "reports#show"
@@ -87,7 +88,7 @@ Rails.application.routes.draw do
     get "/organizations/:organization_id/reports-finalize/:id" => "reports#show"
 
 
-    # # report has many report_sections 
+    # # report has many report_sections
 
     # get "/organizations/:organization_id/grants/:grant_id/report/:report_id/report_sections" => "report_sections#index"
     # post "/organizations/:organization_id/grants/:grant_id/report/:report_id/report_sections" => "report_sections#create"
