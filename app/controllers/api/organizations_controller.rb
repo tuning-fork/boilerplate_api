@@ -2,54 +2,49 @@ class Api::OrganizationsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @organizations = Organization.all
-
-    @organizations = @organizations.order(:name)
+    @organizations = Organization
+      .joins(:users)
+      .where("users.id" => current_user.id)
+      .order(:name)
 
     render "index.json.jb"
   end
 
   def create
-    @organization = Organization.new(
-      name: params[:name],
-    )
-    if @organization.save
-      render "show.json.jb"
-    else
-      render json: { errors: @organization.errors.messages }, status: :unprocessable_entity
-    end
+    @organization = Organization.create!(name: params[:name])
+    render "show.json.jb", status: 201
   end
 
   def show
-    @organization = Organization.find(params[:id])
+    ensure_user_is_in_organization
+
+    @organization = Organization.find_by!(id: params[:id])
     render "show.json.jb"
   end
 
   def update
-    @organization = Organization.find(params[:id])
+    ensure_user_is_in_organization
 
-    @organization.name = params[:name] || @organization.name
+    @organization = Organization.find_by!(id: params[:id])
+    @organization.name = params[:name]
+    @organization.save!
 
-    if @organization.save
-      render "show.json.jb"
-    else
-      render json: { errors: @organization.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
-    organization_id = params[:id].to_i
-    if is_associated_with_org(organization_id, current_user)
-      organization = Organization.find(organization_id)
-      organization.destroy
-      render json: { message: "Organization successfully destroyed." }
-    else
-      render json: {}, status: :not_found
-    end
+    ensure_user_is_in_organization
+
+    @organization = Organization.find_by!(id: params[:id])
+    @organization.destroy!
+
+    render "show.json.jb"
   end
 
   private
-  def is_associated_with_org(organization_id, user)
-    user.organizations.any? {|organization| organization.id == organization_id }
+  def ensure_user_is_in_organization
+    unless current_user.organizations.any? { |organization| organization.id == params[:id].to_i }
+      raise ActiveRecord::RecordNotFound
+    end
   end
 end
