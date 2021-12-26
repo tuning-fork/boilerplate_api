@@ -11,7 +11,10 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def create
-    @organization = Organization.create!(name: params[:name])
+    @organization = Organization.create!(
+      name: params[:name],
+      users: [current_user],
+    )
     render "show.json.jb", status: 201
   end
 
