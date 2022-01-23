@@ -41,7 +41,7 @@ class Api::GrantsController < ApplicationController
       deadline: params[:deadline],
       submitted: false,
       successful: false,
-      purpose: params[:purpose]
+      purpose: params[:purpose],
       archived: false
     )
     @grant.save
