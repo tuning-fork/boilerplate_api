@@ -13,4 +13,5 @@
   created_at: grant.created_at,
   updated_at: grant.updated_at,
   purpose: grant.purpose,
+  archived: grant.archived
 }
