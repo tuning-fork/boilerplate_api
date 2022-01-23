@@ -20,7 +20,7 @@ class Api::GrantsController < ApplicationController
       submitted: params[:submitted],
       successful: params[:successful],
       purpose: params[:purpose],
-      # archived: false
+      archived: false
     )
     if @grant.save
       render "show.json.jb"
@@ -42,6 +42,7 @@ class Api::GrantsController < ApplicationController
       submitted: false,
       successful: false,
       purpose: params[:purpose]
+      archived: false
     )
     @grant.save
     if @grant.save
