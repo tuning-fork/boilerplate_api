@@ -8,5 +8,6 @@
   text: boilerplate.text,
   wordcount: boilerplate.wordcount,
   created_at: boilerplate.created_at,
-  updated_at: boilerplate.updated_at
+  updated_at: boilerplate.updated_at,
+  archived: boilerplate.archived
 }

@@ -36,7 +36,7 @@ class Api::GrantsController < ApplicationController
     @grant = Grant.new(
       organization_id: @grant_to_copy.organization_id,
       title: params[:title],
-      funding_org_id: @grant_to_copy.funding_org_id,
+      funding_org_id: params[:funding_org_id] || @grant_to_copy.funding_org_id,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
       submitted: false,
