@@ -4,5 +4,6 @@
   organization_id: funding_org.organization_id,
   name: funding_org.name,
   created_at: funding_org.created_at,
-  updated_at: funding_org.updated_at
+  updated_at: funding_org.updated_at,
+  archived: funding_org.archived,
 }
