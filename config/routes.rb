@@ -10,7 +10,6 @@ Rails.application.routes.draw do
     resources :organization_users
     resources :organizations do
       resources :organization_users, path: :users
-      resources :bios
       resources :boilerplates
       resources :categories
       resources :funding_orgs
@@ -26,12 +25,6 @@ Rails.application.routes.draw do
     # get "/organization_users/:id" => "organization_users#show"
     # get "/organization_users" => "organization_users#index"
     get "/organization_users/assoc/:id" => "organization_users#assoc"
-
-    # get "/bios" => "bios#index"
-    # post "/bios" => "bios#create"
-    # get "/bios/:id" => "bios#show"
-    # patch "/bios/:id" => "bios#update"
-    # delete "/bios/:id" => "bios#destroy"
 
     # get "/boilerplates" => "boilerplates#index"
     # post "/boilerplates" => "boilerplates#create"
@@ -101,9 +94,6 @@ Rails.application.routes.draw do
     get "/users/:id" => "users#show"
     patch "/users/:id" => "users#update"
     delete "/users/:id" => "users#destroy"
-
-    # post "/bio_grants" => "bio_grants#create"
-    # get "/bio_grants/:id" => "bio_grants#show"
 
   end
 end

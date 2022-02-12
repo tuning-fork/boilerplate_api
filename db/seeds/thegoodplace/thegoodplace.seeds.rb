@@ -12,14 +12,6 @@ michael = User.create!({ first_name: "Michael", last_name: "", email: "michael@t
 the_good_place = Organization.create!({
   name: "The Good Place",
   users: [chidi, tahani, jason, elenor, janet, michael],
-  bios: [
-    Bio.new({ first_name: chidi.first_name, last_name: chidi.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Good Person", wordcount: 54 }),
-    Bio.new({ first_name: tahani.first_name, last_name: tahani.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Good Person", wordcount: 54 }),
-    Bio.new({ first_name: jason.first_name, last_name: jason.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Good Person", wordcount: 54 }),
-    Bio.new({ first_name: elenor.first_name, last_name: elenor.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Good Person", wordcount: 54 }),
-    Bio.new({ first_name: janet.first_name, last_name: janet.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Janet", wordcount: 54 }),
-    Bio.new({ first_name: michael.first_name, last_name: michael.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Demon", wordcount: 54 }),
-  ],
   funding_orgs: [
     FundingOrg.new({ website: "https://thegoodplace.com", name: "The Good Place" }),
   ],

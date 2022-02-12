@@ -10,29 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_213717) do
+ActiveRecord::Schema.define(version: 2022_02_12_205820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "bio_grants", force: :cascade do |t|
-    t.integer "grant_id"
-    t.integer "bio_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "bios", force: :cascade do |t|
-    t.integer "organization_id"
-    t.string "first_name"
-    t.string "last_name"
-    t.text "text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "title"
-    t.integer "wordcount"
-    t.boolean "archived", default: false
-  end
 
   create_table "boilerplates", force: :cascade do |t|
     t.integer "organization_id"

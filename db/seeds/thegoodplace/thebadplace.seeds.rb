@@ -10,12 +10,6 @@ bad_janet = User.create!({ first_name: "Bad Janet", last_name: "", email: "badja
 the_bad_place = Organization.create!({
   name: "The Bad Place",
   users: [shawn, vicky, trevor, bad_janet],
-  bios: [
-    Bio.new({ first_name: shawn.first_name, last_name: shawn.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Demon", wordcount: 54 }),
-    Bio.new({ first_name: vicky.first_name, last_name: vicky.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Demon", wordcount: 54 }),
-    Bio.new({ first_name: trevor.first_name, last_name: trevor.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Demon", wordcount: 54 }),
-    Bio.new({ first_name: bad_janet.first_name, last_name: bad_janet.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Janet", wordcount: 54 }),
-  ],
   funding_orgs: [
     FundingOrg.new({ website: "https://thebadplace.com", name: "The Bad Place" }),
   ],

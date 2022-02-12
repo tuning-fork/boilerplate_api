@@ -7,11 +7,6 @@ mira = Organization.create!({
     User.new({ first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password: "password", active: true }),
     User.new({ first_name: "Mike", last_name: "McFaddin", email: "mikemcfaddin@email.com", password: "password", active: true }),
   ],
-  bios: [
-    Bio.new({ first_name: "Laura", last_name: "Youngberg", text: "<p><span style=\"color: rgba(0, 0, 0, 0.9);\">Laura has served as director of MIRA since 2014. Her mission-driven leadership includes both financial and administrative responsibility for a social service organization serving over 800 Middle Eastern refugees and immigrants annually. Includes application, reporting, renewal, and management of private, state, and federal grants. Responsible for hiring, evaluation, and management of staff of 7. Doubled staff size and budget in 3 years. Expertise in leading in a multicultural environment, with colleagues and clients who are non-native English speakers and come from diverse social, educational, religious, and ethnic backgrounds.</span></p>", title: "Executive Director", wordcount: 93 }),
-    Bio.new({ first_name: "Jess", last_name: "White", text: "<p>Jess White has worked as a grant writer at MIRA for the past two years, and has secured several grants, most recently a six hundred thousand dollar grant from the Office of Refugee Resettlement (ORR). This work inspired her more recent project with MIRA, the creation and implementation of an original grantwriting app that incorporates streamlined grant writing templates and an intuitive grant materials library. </p>", title: "Grantwriter, Web Developer", wordcount: 66 }),
-    Bio.new({ first_name: "Michael", last_name: "McFaddin", text: "<p>Mike McFaddin's web development experience includes a full-stack certification as well as several additional months of web development projects. Mike has been collaborating on the creation and implementation of an original grantwriting app at MIRA for the past several months. Mike also has extensive experience in graphic design, events planning, and community outreach. </p>", title: "Web Developer", wordcount: 54 }),
-  ],
   funding_orgs: [
     FundingOrg.new({ website: "https://www.acf.hhs.gov/orr", name: "Office of Refugee Resettlement" }),
     FundingOrg.new({ website: "https://www.dhs.gov/", name: "Department of Homeland Security" }),
