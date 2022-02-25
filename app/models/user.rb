@@ -1,10 +1,12 @@
 class User < ApplicationRecord
+  validates :first_name, presence: true, length: { minimum: 2 }
+  validates :email, presence: true, uniqueness: true
+  validates :password, length: { minimum: 5, wrong_length: "Password must be at least 5 characters." }, if: :password
+
   has_many :organization_users
   has_many :organizations, through: :organization_users
 
   has_secure_password
-  validates :email, presence: true, uniqueness: true
-  validates :password, length: { minimum: 5, wrong_length: "Password must be at least 5 characters." }, if: :password
 
   def send_password_reset
     self.password_reset_token = generate_base64_token

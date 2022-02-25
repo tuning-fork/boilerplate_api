@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe User, type: :model do
   context "test associations" do
-    subject {User.create(email: "user_email")}
+    subject {User.create(first_name: "user", email: "user_email")}
     it {should have_many :organizations}
     it {should have_many :organization_users}
     it {should have_secure_password}
@@ -12,7 +12,7 @@ describe User, type: :model do
   end
 
   context "test forgot and reset password functions" do
-    subject {User.create(email: "user_email", password: "password")}
+    subject {User.create(first_name: "user", email: "user_email", password: "password")}
 
     describe "#password_reset" do
       it "updates the password value on the user object" do
@@ -40,6 +40,7 @@ describe User, type: :model do
   describe "#is_in_organization?" do
     subject {
       User.create!(
+        first_name: "user",
         email: "user@test.com",
         password: "password",
         organizations: [
