@@ -21,6 +21,8 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def create
+    user = User.find(params[:user_id])
+
     if OrganizationUser.where(
         organization_id: params[:organization_id],
         user_id: params[:user_id])
