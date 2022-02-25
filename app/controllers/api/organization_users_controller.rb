@@ -1,5 +1,5 @@
 class Api::OrganizationUsersController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     organization = Organization.find(params[:organization_id])
