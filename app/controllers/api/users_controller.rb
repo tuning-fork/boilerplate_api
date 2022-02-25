@@ -8,19 +8,15 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    user = User.new(
+    @user = User.create!(
       first_name: params[:first_name],
       last_name: params[:last_name],
       email: params[:email],
-      active: true,
       password: params[:password],
       password_confirmation: params[:password_confirmation],
+      active: true,
     )
-    if user.save
-      render json: { message: "User created successfully" }, status: :created
-    else
-      render json: { errors: user.errors.full_messages }, status: :bad_request
-    end
+    render "show.json.jb", status: 201
   end
 
   def show
@@ -31,19 +27,18 @@ class Api::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
+    # Users may only update their own attributes
+    if current_user.id != @user.id
+      raise ActiveRecord::RecordNotFound
+    end
+
     @user.first_name = params[:first_name] || @user.first_name
     @user.last_name = params[:last_name] || @user.last_name
     @user.email = params[:email] || @user.email
     @user.active = params[:active].nil? || @user.active
-    if params[:password]
-      @user.password = params[:password]
-      @user.password_confirmation = params[:password_confirmation]
-    end
-    if @user.save
-      render "show.json.jb"
-    else
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-    end
+    @user.save!
+
+    render "show.json.jb"
   end
 
   def destroy
