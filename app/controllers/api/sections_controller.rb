@@ -18,12 +18,18 @@ class Api::SectionsController < ApplicationController
   end
 
   def show
-    @section = Section.find(params[:id])
+    @section = Section.find_by!(
+      grant_id: params[:grant_id],
+      id: params[:id],
+    )
     render "show.json.jb"
   end
 
   def update
-    @section = Section.find(params[:id])
+    @section = Section.find_by!(
+      grant_id: params[:grant_id],
+      id: params[:id],
+    )
 
     @section.grant_id = params[:grant_id] || @section.grant_id
     @section.title = params[:title] || @section.title
@@ -40,9 +46,12 @@ class Api::SectionsController < ApplicationController
   end
 
   def destroy
-    section = Section.find(params[:id])
-    section.destroy
-    render json: { message: "Section successfully destroyed", id: section.id }
+    @section = Section.find_by!(
+      grant_id: params[:grant_id],
+      id: params[:id],
+    )
+    @section.destroy
+    render json: { message: "Section successfully destroyed", id: @section.id }
   end
 
   private
