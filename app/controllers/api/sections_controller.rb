@@ -54,10 +54,6 @@ class Api::SectionsController < ApplicationController
 
   private
 
-  def ensure_organization_exists
-    @organization = Organization.find(params[:organization_id])
-  end
-
   def ensure_grant_exists
     @grant = Grant.find_by!(
       organization_id: params[:organization_id],

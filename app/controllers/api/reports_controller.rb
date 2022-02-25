@@ -1,5 +1,5 @@
 class Api::ReportsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists, :ensure_user_is_in_organization
 
   def index
     @reports = Report
@@ -20,12 +20,18 @@ class Api::ReportsController < ApplicationController
   end
 
   def show
-    @report = Report.find(params[:id])
+    @report = Report.find_by!(
+      id: params[:id],
+      grant_id: params[:grant_id],
+    )
     render 'show.json.jb'
   end
 
   def update
-    @report = Report.find(params[:id])
+    @report = Report.find_by!(
+      id: params[:id],
+      grant_id: params[:grant_id],
+    )
 
     @report.grant_id = params[:name] || @report.grant_id
     @report.title = params[:title] || @report.title
@@ -38,9 +44,21 @@ class Api::ReportsController < ApplicationController
   end
 
   def destroy
-    @report = Report.find(params[:id])
+    @report = Report.find_by!(
+      id: params[:id],
+      grant_id: params[:grant_id],
+    )
     @report.destroy!
 
     render "show.json.jb"
+  end
+
+  private
+
+  def ensure_grant_exists
+    @grant = Grant.find_by!(
+      organization_id: params[:organization_id],
+      id: params[:grant_id],
+    )
   end
 end
