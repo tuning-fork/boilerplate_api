@@ -1,12 +1,6 @@
 class Api::UsersController < ApplicationController
   before_action :authenticate_user, except: [:create]
 
-  def index
-    @users = User.all
-    @users = @users.order(id: :asc)
-    render "index.json.jb"
-  end
-
   def create
     @user = User.create!(
       first_name: params[:first_name],
@@ -17,11 +11,6 @@ class Api::UsersController < ApplicationController
       active: true,
     )
     render "show.json.jb", status: 201
-  end
-
-  def show
-    @user = User.find(params[:id])
-    render "show.json.jb"
   end
 
   def update
@@ -39,11 +28,5 @@ class Api::UsersController < ApplicationController
     @user.save!
 
     render "show.json.jb"
-  end
-
-  def destroy
-    user = User.find(params[:id])
-    user.destroy
-    render json: { message: "User successfully destroyed" }
   end
 end
