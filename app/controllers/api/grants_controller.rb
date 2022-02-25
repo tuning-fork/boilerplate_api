@@ -25,43 +25,31 @@ class Api::GrantsController < ApplicationController
     render "show.json.jb", status: 201
   end
 
-  #copy method for grant
-
   def copy
-    @grant_to_copy = Grant.find(params[:grant_id])
-    @grant = Grant.new(
-      organization_id: @grant_to_copy.organization_id,
+    grant_to_copy = Grant.find(params[:grant_id])
+    sections_to_copy = Section.where(grant_id: params[:grant_id])
+
+    @grant = Grant.create!(
+      organization_id: grant_to_copy.organization_id,
       title: params[:title],
-      funding_org_id: params[:funding_org_id] || @grant_to_copy.funding_org_id,
+      funding_org_id: params[:funding_org_id] || grant_to_copy.funding_org_id,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
+      purpose: params[:purpose],
       submitted: false,
       successful: false,
-      purpose: params[:purpose],
-      archived: false
-    )
-    @grant.save
-    if @grant.save
-      grant_copy_status = true
-    end
-    @sections_to_copy = Section.where(grant_id: params[:grant_id])
-    if @sections_to_copy
-      @sections_to_copy.map do |source_section|
-        @section = Section.new(
-          grant_id: @grant.id,
-          title: source_section.title,
-          text: source_section.text,
-          wordcount: source_section.wordcount,
-          sort_order: source_section.sort_order,
+      archived: false,
+      sections: sections_to_copy.map do |section|
+        Section.new(
+          title: section.title,
+          text: section.text,
+          wordcount: section.wordcount,
+          sort_order: section.sort_order,
         )
-        @section.save
       end
-    end
-    if grant_copy_status
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+    )
+
+    render "show.json.jb"
   end
 
   def show
