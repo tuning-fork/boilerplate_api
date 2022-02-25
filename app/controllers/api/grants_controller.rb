@@ -82,8 +82,12 @@ class Api::GrantsController < ApplicationController
   end
 
   def reorder_section
-    section = Section.find(params[:section_id])
-    section.sort_order_position = params[:sort_order]
-    section.save()
+    Grant.find(params[:grant_id])
+
+    @section = Section.find(params[:section_id])
+    @section.sort_order_position = params[:sort_order]
+    @section.save!()
+
+    render "section.json.jb"
   end
 end
