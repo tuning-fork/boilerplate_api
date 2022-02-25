@@ -1,5 +1,5 @@
 class Api::CategoriesController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     @categories = Category.where(organization_id: params[:organization_id])
@@ -15,12 +15,18 @@ class Api::CategoriesController < ApplicationController
   end
 
   def show
-    @category = Category.find(params[:id])
+    @category = Category.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
     render "show.json.jb"
   end
 
   def update
-    @category = Category.find(params[:id])
+    @category = Category.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
 
     @category.organization_id = params[:organization_id] || @category.organization_id
     @category.name = params[:name] || @category.name
@@ -31,7 +37,10 @@ class Api::CategoriesController < ApplicationController
   end
 
   def destroy
-    @category = Category.find(params[:id])
+    @category = Category.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
     @category.destroy!
 
     render "show.json.jb"
