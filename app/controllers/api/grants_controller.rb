@@ -87,10 +87,10 @@ class Api::GrantsController < ApplicationController
   end
 
   def destroy
-    grant = Grant.find(params[:id])
-    grant.destroy
-    render json: { message: "Grant successfully destroyed" }
+    @grant = Grant.find(params[:id])
+    @grant.destroy!
 
+    render "show.json.jb"
   end
 
   def reorder_section
