@@ -273,8 +273,11 @@ describe Api::SectionsController do
     it "renders 401 if not apart of organization" do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
-      get :show, params: params
 
+      get :show, params: params
+      expect(response).to have_http_status(401)
+
+      get :show, params: { **params, organization_id: shawn.organizations.first.id  }
       expect(response).to have_http_status(401)
     end
 
@@ -357,8 +360,11 @@ describe Api::SectionsController do
     it "renders 401 if not apart of organization" do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
-      patch :update, params: update_section_params
 
+      patch :update, params: update_section_params
+      expect(response).to have_http_status(401)
+
+      patch :update, params: { **update_section_params, organization_id: shawn.organizations.first.id  }
       expect(response).to have_http_status(401)
     end
 
@@ -454,8 +460,11 @@ describe Api::SectionsController do
     it "renders 401 if not apart of organization" do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
-      delete :destroy, params: delete_section_params
 
+      delete :destroy, params: delete_section_params
+      expect(response).to have_http_status(401)
+
+      delete :destroy, params: { **delete_section_params, organization_id: shawn.organizations.first.id  }
       expect(response).to have_http_status(401)
     end
 

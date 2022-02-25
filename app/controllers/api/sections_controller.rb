@@ -59,6 +59,9 @@ class Api::SectionsController < ApplicationController
   end
 
   def ensure_grant_exists
-    @grant = Grant.find(params[:grant_id])
+    @grant = Grant.find_by!(
+      organization_id: params[:organization_id],
+      id: params[:grant_id],
+    )
   end
 end
