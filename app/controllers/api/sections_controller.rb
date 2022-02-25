@@ -2,8 +2,7 @@ class Api::SectionsController < ApplicationController
   before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists, :ensure_user_is_in_organization
 
   def index
-    @sections = Section.rank(:sort_order).all
-
+    @sections = @grant.sections.rank(:sort_order)
     render "index.json.jb"
   end
 
@@ -54,10 +53,10 @@ class Api::SectionsController < ApplicationController
   private
 
   def ensure_organization_exists
-    Organization.find(params[:organization_id])
+    @organization = Organization.find(params[:organization_id])
   end
 
   def ensure_grant_exists
-    Grant.find(params[:grant_id])
+    @grant = Grant.find(params[:grant_id])
   end
 end
