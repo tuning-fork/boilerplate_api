@@ -81,12 +81,9 @@ class Api::GrantsController < ApplicationController
     @grant.successful = params[:successful].nil? ? @grant.successful : params[:successful]
     @grant.purpose = params[:purpose] || @grant.purpose
     @grant.archived = params[:archived].nil? ? @grant.archived : params[:archived]
+    @grant.save!
 
-    if @grant.save
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
