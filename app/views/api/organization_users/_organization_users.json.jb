@@ -1,6 +1,1 @@
-{
-  id: organization_user.id,
-  organization_id: organization_user.organization_id,
-  organization_name: organization_user.organization.name,
-  user_id: organization_user.user_id,
-}
+render partial: "api/users/user.json.jb", locals: {user: @organization_user.user}

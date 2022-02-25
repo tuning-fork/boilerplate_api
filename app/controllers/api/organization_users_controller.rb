@@ -22,23 +22,12 @@ class Api::OrganizationUsersController < ApplicationController
 
   def create
     user = User.find(params[:user_id])
+    @organization_user = OrganizationUser.create!(
+      organization_id: params[:organization_id],
+      user: user,
+    )
 
-    if OrganizationUser.where(
-        organization_id: params[:organization_id],
-        user_id: params[:user_id])
-      .exists?
-      render json: { errors: @organization_user.errors.messages }, status: :unprocessable_entity
-    else
-      @organization_user = OrganizationUser.new(
-        organization_id: params[:organization_id],
-        user_id: params[:user_id]
-      )
-    end
-    if @organization_user.save
-      render "show.json.jb"
-    else
-      render json: { errors: @organization_user.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb", status: 201
   end
 
   def show
