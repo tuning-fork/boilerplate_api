@@ -1,8 +1,7 @@
 class Api::SectionsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists
 
   def index
-
     @sections = Section.rank(:sort_order).all
 
     render "index.json.jb"
@@ -50,5 +49,15 @@ class Api::SectionsController < ApplicationController
     section = Section.find(params[:id])
     section.destroy
     render json: { message: "Section successfully destroyed", id: section.id }
+  end
+
+  private
+
+  def ensure_organization_exists
+    Organization.find(params[:organization_id])
+  end
+
+  def ensure_grant_exists
+    Grant.find(params[:grant_id])
   end
 end
