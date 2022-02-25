@@ -1,5 +1,5 @@
 class Api::GrantsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     # @grants = Grant.all
@@ -47,7 +47,7 @@ class Api::GrantsController < ApplicationController
     @grant.save
     if @grant.save
       grant_copy_status = true
-    end 
+    end
     @sections_to_copy = Section.where(grant_id: params[:grant_id])
     if @sections_to_copy
       @sections_to_copy.map do |source_section|
@@ -59,8 +59,8 @@ class Api::GrantsController < ApplicationController
           sort_order: source_section.sort_order,
         )
         @section.save
-      end 
-    end  
+      end
+    end
     if grant_copy_status
       render "show.json.jb"
     else
@@ -97,7 +97,7 @@ class Api::GrantsController < ApplicationController
     grant = Grant.find(params[:id])
     grant.destroy
     render json: { message: "Grant successfully destroyed" }
-    
+
   end
 
   def reorder_section

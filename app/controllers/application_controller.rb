@@ -36,4 +36,10 @@ class ApplicationController < ActionController::Base
       render json: {}, status: :unauthorized
     end
   end
+
+  def ensure_user_is_in_organization(organization_id = params[:organization_id])
+    unless current_user.is_in_organization?(organization_id)
+      raise ActiveRecord::RecordNotFound
+    end
+  end
 end
