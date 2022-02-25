@@ -1,3 +1,0 @@
-@bios.map do |bio|
-  render partial: "bio.json.jb", locals: {bio: bio}
-end

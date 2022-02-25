@@ -5,7 +5,6 @@ Section.delete_all
 Boilerplate.delete_all
 ReportSection.delete_all
 Report.delete_all
-Bio.delete_all
 FundingOrg.delete_all
 Grant.delete_all
 OrganizationUser.delete_all

@@ -7,9 +7,6 @@ mindy = User.create!({ first_name: "Mindy", email: "mindy@themediumplace.com", p
 the_medium_place = Organization.create!({
   name: "The Medium Place",
   users: [mindy],
-  bios: [
-    Bio.new({ first_name: mindy.first_name, last_name: mindy.last_name, text: "<p>#{lorem_ipsum}</p>", title: "Demon", wordcount: 54 }),
-  ],
   funding_orgs: [
     FundingOrg.new({ website: "https://themediumplace.com", name: "The Medium Place" }),
   ],
