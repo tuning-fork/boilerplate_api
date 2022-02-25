@@ -23,6 +23,10 @@ class User < ApplicationRecord
     save!
   end
 
+  def is_in_organization?(organization_id)
+    self.organizations.any? { |organization| organization.id.to_s == organization_id.to_s }
+  end
+
   private
 
   def generate_base64_token
