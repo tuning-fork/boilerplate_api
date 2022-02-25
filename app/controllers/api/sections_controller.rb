@@ -37,12 +37,9 @@ class Api::SectionsController < ApplicationController
     @section.wordcount = params[:wordcount] || @section.wordcount
     @section.sort_order = params[:sort_order] || @section.sort_order
     @section.archived = params[:archived].nil? || @section.archived
+    @section.save!
 
-    if @section.save
-      render "show.json.jb"
-    else
-      render json: { errors: @section.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
