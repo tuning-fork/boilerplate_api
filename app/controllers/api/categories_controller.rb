@@ -2,25 +2,16 @@ class Api::CategoriesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    # @categories = Category.all
     @categories = Category.where(organization_id: params[:organization_id])
-
-    # @categories = @categories.order(:name)
-
     render "index.json.jb"
   end
 
   def create
-    @category = Category.new(
+    @category = Category.create!(
       organization_id: params[:organization_id],
       name: params[:name],
-      # archived: false
     )
-    if @category.save
-      render "show.json.jb"
-    else
-      render json: { errors: @category.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb", status: 201
   end
 
   def show
@@ -34,17 +25,15 @@ class Api::CategoriesController < ApplicationController
     @category.organization_id = params[:organization_id] || @category.organization_id
     @category.name = params[:name] || @category.name
     @category.archived = params[:archived].nil? ? @category.archived : params[:archived]
+    @category.save!
 
-    if @category.save
-      render "show.json.jb"
-    else
-      render json: { errors: @category.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
-    category = Category.find(params[:id])
-    category.destroy
-    render json: { message: "Category successfully destroyed" }
+    @category = Category.find(params[:id])
+    @category.destroy!
+
+    render "show.json.jb"
   end
 end
