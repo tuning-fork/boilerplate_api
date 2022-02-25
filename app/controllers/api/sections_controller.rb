@@ -1,5 +1,5 @@
 class Api::SectionsController < ApplicationController
-  before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists
+  before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists, :ensure_user_is_in_organization
 
   def index
     @sections = Section.rank(:sort_order).all
