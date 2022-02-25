@@ -2,10 +2,9 @@ class Api::GrantsController < ApplicationController
   before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
-    # @grants = Grant.all
-    @grants = Grant.where(organization_id: params[:organization_id])
-
-    @grants = @grants.order(id: :desc)
+    @grants = Grant
+      .where(organization_id: params[:organization_id])
+      .order(id: :desc)
 
     render "index.json.jb"
   end
