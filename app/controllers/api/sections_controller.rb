@@ -47,8 +47,9 @@ class Api::SectionsController < ApplicationController
       grant_id: params[:grant_id],
       id: params[:id],
     )
-    @section.destroy
-    render json: { message: "Section successfully destroyed", id: @section.id }
+    @section.destroy!
+
+    render "show.json.jb"
   end
 
   private
