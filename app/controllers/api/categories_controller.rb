@@ -28,7 +28,6 @@ class Api::CategoriesController < ApplicationController
       organization_id: params[:organization_id],
     )
 
-    @category.organization_id = params[:organization_id] || @category.organization_id
     @category.name = params[:name] || @category.name
     @category.archived = params[:archived].nil? ? @category.archived : params[:archived]
     @category.save!

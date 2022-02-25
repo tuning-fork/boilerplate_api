@@ -24,7 +24,6 @@ class Api::BoilerplatesController < ApplicationController
   end
 
   def update
-    @boilerplate.organization_id = params[:organization_id] || @boilerplate.organization_id
     @boilerplate.category_id = params[:category_id] || @boilerplate.category_id
     @boilerplate.title = params[:title] || @boilerplate.title
     @boilerplate.text = params[:text] || @boilerplate.text

@@ -60,7 +60,6 @@ class Api::GrantsController < ApplicationController
   def update
     @grant = Grant.find(params[:id])
 
-    @grant.organization_id = params[:organization_id] || @grant.organization_id
     @grant.title = params[:title] || @grant.title
     @grant.funding_org_id = params[:funding_org_id] || @grant.funding_org_id
     @grant.rfp_url = params[:rfp_url] || @grant.rfp_url
