@@ -7,19 +7,14 @@ class Api::SectionsController < ApplicationController
   end
 
   def create
-    @section = Section.new(
+    @section = Section.create!(
       grant_id: params[:grant_id],
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
       sort_order: params[:sort_order],
-      # archived: false
     )
-    if @section.save
-      render "show.json.jb"
-    else
-      render json: { errors: @section.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def show
