@@ -1,5 +1,5 @@
 class Api::FundingOrgsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     @funding_orgs = FundingOrg
@@ -19,12 +19,18 @@ class Api::FundingOrgsController < ApplicationController
   end
 
   def show
-    @funding_org = FundingOrg.find(params[:id])
+    @funding_org = FundingOrg.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
     render "show.json.jb"
   end
 
   def update
-    @funding_org = FundingOrg.find(params[:id])
+    @funding_org = FundingOrg.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
 
     @funding_org.website = params[:website] || @funding_org.website
     @funding_org.name = params[:name] || @funding_org.name
@@ -35,7 +41,10 @@ class Api::FundingOrgsController < ApplicationController
   end
 
   def destroy
-    @funding_org = FundingOrg.find(params[:id])
+    @funding_org = FundingOrg.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
     @funding_org.destroy!
 
     render "show.json.jb"
