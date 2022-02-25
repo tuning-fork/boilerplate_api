@@ -22,12 +22,22 @@ class Api::OrganizationUsersController < ApplicationController
 
   def create
     user = User.find(params[:user_id])
-    @organization_user = OrganizationUser.create!(
+
+    @organization_user = OrganizationUser.find_by(
       organization_id: params[:organization_id],
-      user: user,
+      user: params[:user_id],
     )
 
-    render "show.json.jb", status: 201
+    if @organization_user
+      render "show.json.jb", status: 200
+    else
+      @organization_user = OrganizationUser.create!(
+        organization_id: params[:organization_id],
+        user: user,
+      )
+
+      render "show.json.jb", status: 201
+    end
   end
 
   def show

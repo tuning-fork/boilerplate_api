@@ -136,6 +136,18 @@ describe Api::OrganizationUsersController do
         ),
       )
     end
+
+    it "renders 200 when user is already in organization" do
+      set_auth_header(chidi)
+
+      post :create, params: new_organization_user_params
+      expect(response).to have_http_status(201)
+
+      post :create, params: new_organization_user_params
+      expect(response).to have_http_status(200)
+
+      expect(OrganizationUser.where(organization_id: good_place.id).count()).to eq(3)
+    end
   end
 
   describe "GET /organizations/:organization_id/users/:user_id" do
