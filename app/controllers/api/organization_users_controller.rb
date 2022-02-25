@@ -8,16 +8,7 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def assoc
-    user = OrganizationUser.where(user_id: params[:id])
-    user = User.find_by(id: params[:id])
-    # all_org_user_ids = organization_users.map { |f| f.organization_id }
-    # all_org_user_organizations = Organization.where(id: all_org_user_ids)
-    # organization_users = all_org_users
-    # all_org_users = all_org_users.order(id: :desc)
-    # puts "all org users: #{user.organizations}"
-    render :json => user.organizations
-    # render :json => all_org_users
-    # render "index.json.jb"
+    redirect_to controller: 'organizations', action: 'index'
   end
 
   def create

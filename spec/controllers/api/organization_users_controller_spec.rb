@@ -204,4 +204,12 @@ describe Api::OrganizationUsersController do
       )
     end
   end
+
+  describe "GET /organizations/:organization_id/users/:user_id/assoc" do
+    it "redirects to /organizations" do
+      set_auth_header(chidi)
+      get :assoc, params: { organization_id: good_place.id, id: chidi.id }
+      expect(response).to redirect_to("/api/organizations")
+    end
+  end
 end
