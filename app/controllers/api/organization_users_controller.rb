@@ -41,7 +41,10 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def show
-    @organization_user = OrganizationUser.find(params[:id])
+    @organization_user = OrganizationUser.find_by!(
+      organization_id: params[:organization_id],
+      user_id: params[:id],
+    )
     render "show.json.jb"
   end
 end
