@@ -1,5 +1,6 @@
 class Api::BoilerplatesController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
+  before_action :ensure_boilerplate_exists, only: [:show, :update, :destroy]
 
   def index
     # @boilerplates = Boilerplate.all
@@ -27,13 +28,10 @@ class Api::BoilerplatesController < ApplicationController
   end
 
   def show
-    @boilerplate = Boilerplate.find(params[:id])
     render "show.json.jb"
   end
 
   def update
-    @boilerplate = Boilerplate.find(params[:id])
-
     @boilerplate.organization_id = params[:organization_id] || @boilerplate.organization_id
     @boilerplate.category_id = params[:category_id] || @boilerplate.category_id
     @boilerplate.title = params[:title] || @boilerplate.title
@@ -49,8 +47,16 @@ class Api::BoilerplatesController < ApplicationController
   end
 
   def destroy
-    boilerplate = Boilerplate.find(params[:id])
-    boilerplate.destroy
+    @boilerplate.destroy
     render json: { message: "Boilerplate successfully destroyed" }
+  end
+
+  private
+
+  def ensure_boilerplate_exists
+    @boilerplate = Boilerplate.find_by!(
+      organization_id: params[:organization_id],
+      id: params[:id],
+    )
   end
 end
