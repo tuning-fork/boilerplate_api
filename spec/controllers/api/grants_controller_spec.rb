@@ -169,17 +169,7 @@ describe Api::GrantsController do
       post :create, params: new_grant_fields
 
       expect(response).to have_http_status(201)
-      expect(JSON.parse(response.body).keys).to contain_exactly(
-        "id",
-        "deadline",
-        "created_at",
-        "updated_at",
-        "title",
-        "rfp_url",
-        "submitted",
-        "successful",
-        "purpose",
-      )
+      expect(JSON.parse(response.body).keys).to contain_exactly(*grant_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
           "id" => kind_of(Integer),

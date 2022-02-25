@@ -11,7 +11,7 @@ class Api::GrantsController < ApplicationController
   end
 
   def create
-    @grant = Grant.new(
+    @grant = Grant.create!(
       organization_id: params[:organization_id],
       title: params[:title],
       funding_org_id: params[:funding_org_id],
@@ -22,11 +22,7 @@ class Api::GrantsController < ApplicationController
       purpose: params[:purpose],
       archived: false
     )
-    if @grant.save
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb", status: 201
   end
 
   #copy method for grant
