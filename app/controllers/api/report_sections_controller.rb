@@ -1,9 +1,12 @@
 class Api::ReportSectionsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user,
+    :ensure_organization_exists,
+    :ensure_grant_exists,
+    :ensure_report_exists,
+    :ensure_user_is_in_organization
 
   def index
-    @report_sections = ReportSection.all.order(id: :asc)
-
+    @report_sections = @report.report_sections.order(id: :asc)
     render "index.json.jb"
   end
 
@@ -19,12 +22,18 @@ class Api::ReportSectionsController < ApplicationController
   end
 
   def show
-    @report_section = ReportSection.find(params[:id])
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
     render "show.json.jb"
   end
 
   def update
-    @report_section = ReportSection.find(params[:id])
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
 
     @report_section.report_id = params[:report_id] || @report_section.report_id
     @report_section.title = params[:title] || @report_section.title
@@ -38,9 +47,28 @@ class Api::ReportSectionsController < ApplicationController
   end
 
   def destroy
-    @report_section = ReportSection.find(params[:id])
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
     @report_section.destroy!
 
     render "show.json.jb"
+  end
+
+  private
+
+  def ensure_grant_exists
+    @grant = Grant.find_by!(
+      organization_id: params[:organization_id],
+      id: params[:grant_id],
+    )
+  end
+
+  def ensure_report_exists
+    @report = Report.find_by!(
+      grant_id: params[:grant_id],
+      id: params[:report_id],
+    )
   end
 end
