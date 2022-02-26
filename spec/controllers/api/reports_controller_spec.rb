@@ -279,7 +279,7 @@ describe Api::ReportsController do
       expect(response).to have_http_status(401)
     end
 
-    it "renders 200 with organization" do
+    it "renders 200 with reports" do
       set_auth_header(chidi)
       get :show, params: params
 
@@ -405,7 +405,7 @@ describe Api::ReportsController do
         grant: good_place.grants.first,
         title: "Existing report",
         deadline: DateTime.now.next_week.utc,
-        submitted: 7,
+        submitted: true,
       })
     }
     let(:delete_report_params) {
