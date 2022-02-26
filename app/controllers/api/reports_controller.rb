@@ -36,7 +36,7 @@ class Api::ReportsController < ApplicationController
     @report.grant_id = params[:name] || @report.grant_id
     @report.title = params[:title] || @report.title
     @report.deadline = params[:deadline] || @report.deadline
-    @report.submitted = params[:submitted].nil? || @report.submitted
+    @report.submitted = params[:submitted].nil? ? @report.submitted : params[:submitted]
     @report.archived = params[:archived].nil? || @report.archived
     @report.save!
 

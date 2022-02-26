@@ -147,7 +147,7 @@ describe Api::ReportsController do
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
         title: "New report",
-        deadline: DateTime.now.iso8601(3),
+        deadline: DateTime.now.utc.iso8601(3),
         submitted: true,
       }
     }
@@ -304,7 +304,7 @@ describe Api::ReportsController do
         grant: good_place.grants.first,
         title: "Existing report",
         deadline: DateTime.now.utc,
-        submitted: 7,
+        submitted: false,
       })
     }
     let(:update_report_params) {
