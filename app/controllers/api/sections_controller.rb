@@ -14,7 +14,7 @@ class Api::SectionsController < ApplicationController
       wordcount: params[:wordcount],
       sort_order: params[:sort_order],
     )
-    render "show.json.jb"
+    render "show.json.jb", status: 201
   end
 
   def show
