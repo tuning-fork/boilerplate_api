@@ -38,7 +38,7 @@ class Api::SessionsController < ApplicationController
 
   def encode_jwt(user)
     JWT.encode(
-      { user_id: user.id, exp: 24.hours.from_now.to_i },
+      { user_id: user.id, exp: 4.hours.from_now.to_i },
       jwt_secret,
       jwt_algorithm,
     )
