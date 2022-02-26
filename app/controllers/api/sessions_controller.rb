@@ -1,94 +1,55 @@
 class Api::SessionsController < ApplicationController
-
   def create
-    user = User.find_by(email: params[:email])
-    if user && user.authenticate(params[:password])
-      jwt = JWT.encode(
-        {
-          user_id: user.id, # the data to encode
-          exp: 24.hours.from_now.to_i # the expiration time
-        },
-        Rails.application.credentials.fetch(:secret_key_base), # the secret key
-        "HS256" # the encryption algorithm
-      )
-      render json: { jwt: jwt, email: user.email, user_id: user.id }, status: :created
+    user = User.find_by!(email: params[:email])
+    if user.authenticate(params[:password])
+      jwt = encode_jwt(user)
+      payload = {
+        jwt: jwt,
+        email: user.email,
+        user_id: user.id,
+      }
+
+      render json: payload, status: 201
     else
-      render json: {}, status: :unauthorized
+      raise ActiveRecord::RecordNotFound
     end
   end
 
   def get_session
-    begin
-      authorization_header = request.headers["Authorization"]
-      jwt = authorization_header.split(" ")[1]
-      decoded_token = JWT.decode(
-        jwt,
-        Rails.application.credentials.fetch(:secret_key_base),
-        true,
-        {algorithm: "HS256"}
-      )
-      user_id = decoded_token[0]["user_id"]
-      user = User.find_by(id: user_id)
-      render json: { jwt: jwt, user: user }
-    rescue => error
-      puts "JWT authentication failed: #{error}"
-      render json: {}, status: :unauthorized
-    end
+    authorization_header = request.headers["Authorization"]
+    token = authorization_header[/(?<=\A(Bearer ))\S+\z/] if authorization_header
+
+    decoded_claims = decode_jwt(token)
+    user_id = decoded_claims.first["user_id"]
+    @user = User.find(user_id)
+
+    render "show.json.jb"
   end
 
+  private
+
+  def jwt_algorithm
+    "HS256"
+  end
+
+  def jwt_secret
+    Rails.application.credentials.fetch(:secret_key_base)
+  end
+
+  def encode_jwt(user)
+    JWT.encode(
+      { user_id: user.id, exp: 24.hours.from_now.to_i },
+      jwt_secret,
+      jwt_algorithm,
+    )
+  end
+
+  def decode_jwt(token)
+    JWT.decode(
+      token,
+      jwt_secret,
+      true,
+      { algorithm: jwt_algorithm },
+    )
+  end
 end
-
-
-# def create
-#   user = User.find_by(params[:email])
-#   if user && user.authenticate(params[:password])
-#     created_jwt = issue_token({id: user.id})
-#     cookies.signed[:jwt] = {value:  created_jwt, httponly: true}
-#     render json: {username: user.username}
-#   else
-#     render json: {
-#       error: 'Username or password incorrect'
-#     }, status: 404
-#   end
-# end
-
-# pre-cookies version:
-
-# def create
-#   user = User.find_by(email: params[:email])
-#   if user && user.authenticate(params[:password])
-#     jwt = JWT.encode(
-#       {
-#         user_id: user.id, # the data to encode
-#         exp: 24.hours.from_now.to_i # the expiration time
-#       },
-#       Rails.application.credentials.fetch(:secret_key_base), # the secret key
-#       "HS256" # the encryption algorithm
-#     )
-#     render json: { jwt: jwt, email: user.email, user_id: user.id }, status: :created
-#   else
-#     render json: {}, status: :unauthorized
-#   end
-# end
-
-  # def create
-  #   user = User.find_by(email: params[:email])
-  #   if user && user.authenticate(params[:password])
-  #     created_jwt = 
-  #       JWT.encode(
-  #         {
-  #           user_id: user.id, # the data to encode
-  #           exp: 24.hours.from_now.to_i # the expiration time
-  #         },
-  #         Rails.application.credentials.fetch(:secret_key_base), 
-  #         # the secret key
-  #         "HS256" 
-  #         # the encryption algorithm
-  #       )
-  #     # session[:user_id] = user.id
-  #     cookies.signed[:jwt] = {value: created_jwt, httponly: true, expires: 1.hour.from_now, domain: :all}
-  #     render json: { email: user.email, user_id: user.id }, status: :created
-  #   else
-  #     render json: {}, status: :unauthorized
-  #   end
-  # end
