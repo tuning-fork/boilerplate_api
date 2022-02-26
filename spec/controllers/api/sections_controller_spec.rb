@@ -21,6 +21,9 @@ describe Api::SectionsController do
       {
         title: "Bad Place Neighborhood Grant",
         funding_org: org.funding_orgs.first,
+        sections: [
+          Section.new({ title: "Evil section", text: "Lorem ipsum evil", wordcount: 3 }),
+        ],
       },
     ])
 
@@ -119,22 +122,22 @@ describe Api::SectionsController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
+          "sort_order" => kind_of(Integer),
           "id" => section1.id,
           "created_at" => section1.created_at.iso8601(3),
           "updated_at" => section1.updated_at.iso8601(3),
           "title" => section1.title,
           "text" => section1.text,
           "wordcount" => section1.wordcount,
-          "sort_order" => section1.sort_order,
         ),
         a_hash_including(
+          "sort_order" => kind_of(Integer),
           "id" => section2.id,
           "created_at" => section2.created_at.iso8601(3),
           "updated_at" => section2.updated_at.iso8601(3),
           "title" => section2.title,
           "text" => section2.text,
           "wordcount" => section2.wordcount,
-          "sort_order" => section2.sort_order,
         ),
       ])
     end
@@ -201,17 +204,17 @@ describe Api::SectionsController do
       set_auth_header(chidi)
       post :create, params: new_section_params
 
-      # expect(response).to have_http_status(201)
+      expect(response).to have_http_status(201)
       expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
           "id" => kind_of(Integer),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
+          "sort_order" => kind_of(Integer),
           "title" => new_section_params[:title],
           "text" => new_section_params[:text],
           "wordcount" => new_section_params[:wordcount],
-          "sort_order" => new_section_params[:sort_order],
         ),
       )
     end
@@ -289,13 +292,13 @@ describe Api::SectionsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
+          "sort_order" => kind_of(Integer),
           "id" => section.id,
           "created_at" => section.created_at.iso8601(3),
           "updated_at" => section.updated_at.iso8601(3),
           "title" => section.title,
           "text" => section.text,
           "wordcount" => section.wordcount,
-          "sort_order" => section.sort_order,
         ),
       )
     end
@@ -394,8 +397,8 @@ describe Api::SectionsController do
         a_hash_including(
           "id" => section.id,
           "created_at" => section.created_at.iso8601(3),
-          "sort_order" => section.sort_order,
           "updated_at" => kind_of(String),
+          "sort_order" => kind_of(Integer),
           "title" => update_section_params[:title],
           "text" => update_section_params[:text],
           "wordcount" => update_section_params[:wordcount],
@@ -476,13 +479,13 @@ describe Api::SectionsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
+          "sort_order" => kind_of(Integer),
           "id" => section.id,
           "created_at" => section.created_at.iso8601(3),
           "updated_at" => section.updated_at.iso8601(3),
           "title" => section.title,
           "text" => section.text,
           "wordcount" => section.wordcount,
-          "sort_order" => section.sort_order,
         ),
       )
     end
