@@ -1,5 +1,5 @@
 class Api::GrantsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     # @grants = Grant.all
@@ -11,7 +11,7 @@ class Api::GrantsController < ApplicationController
   end
 
   def create
-    @grant = Grant.new(
+    @grant = Grant.create!(
       organization_id: params[:organization_id],
       title: params[:title],
       funding_org_id: params[:funding_org_id],
@@ -22,50 +22,34 @@ class Api::GrantsController < ApplicationController
       purpose: params[:purpose],
       archived: false
     )
-    if @grant.save
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb", status: 201
   end
 
-  #copy method for grant
-
   def copy
-    @grant_to_copy = Grant.find(params[:grant_id])
-    @grant = Grant.new(
-      organization_id: @grant_to_copy.organization_id,
+    grant_to_copy = Grant.find(params[:grant_id])
+    sections_to_copy = Section.where(grant_id: params[:grant_id])
+
+    @grant = Grant.create!(
+      organization_id: grant_to_copy.organization_id,
       title: params[:title],
-      funding_org_id: params[:funding_org_id] || @grant_to_copy.funding_org_id,
+      funding_org_id: params[:funding_org_id] || grant_to_copy.funding_org_id,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
+      purpose: params[:purpose],
       submitted: false,
       successful: false,
-      purpose: params[:purpose],
-      archived: false
-    )
-    @grant.save
-    if @grant.save
-      grant_copy_status = true
-    end 
-    @sections_to_copy = Section.where(grant_id: params[:grant_id])
-    if @sections_to_copy
-      @sections_to_copy.map do |source_section|
-        @section = Section.new(
-          grant_id: @grant.id,
-          title: source_section.title,
-          text: source_section.text,
-          wordcount: source_section.wordcount,
-          sort_order: source_section.sort_order,
+      archived: false,
+      sections: sections_to_copy.map do |section|
+        Section.new(
+          title: section.title,
+          text: section.text,
+          wordcount: section.wordcount,
+          sort_order: section.sort_order,
         )
-        @section.save
-      end 
-    end  
-    if grant_copy_status
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+      end
+    )
+
+    render "show.json.jb"
   end
 
   def show
@@ -85,24 +69,25 @@ class Api::GrantsController < ApplicationController
     @grant.successful = params[:successful].nil? ? @grant.successful : params[:successful]
     @grant.purpose = params[:purpose] || @grant.purpose
     @grant.archived = params[:archived].nil? ? @grant.archived : params[:archived]
+    @grant.save!
 
-    if @grant.save
-      render "show.json.jb"
-    else
-      render json: { errors: @grant.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
-    grant = Grant.find(params[:id])
-    grant.destroy
-    render json: { message: "Grant successfully destroyed" }
-    
+    @grant = Grant.find(params[:id])
+    @grant.destroy!
+
+    render "show.json.jb"
   end
 
   def reorder_section
-    section = Section.find(params[:section_id])
-    section.sort_order_position = params[:sort_order]
-    section.save()
+    Grant.find(params[:grant_id])
+
+    @section = Section.find(params[:section_id])
+    @section.sort_order_position = params[:sort_order]
+    @section.save!()
+
+    render "section.json.jb"
   end
 end
