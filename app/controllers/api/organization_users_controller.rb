@@ -1,5 +1,5 @@
 class Api::OrganizationUsersController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
     organization = Organization.find(params[:organization_id])
@@ -8,39 +8,34 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def assoc
-    user = OrganizationUser.where(user_id: params[:id])
-    user = User.find_by(id: params[:id])
-    # all_org_user_ids = organization_users.map { |f| f.organization_id }
-    # all_org_user_organizations = Organization.where(id: all_org_user_ids)
-    # organization_users = all_org_users
-    # all_org_users = all_org_users.order(id: :desc)
-    # puts "all org users: #{user.organizations}"
-    render :json => user.organizations
-    # render :json => all_org_users
-    # render "index.json.jb"
+    redirect_to controller: 'organizations', action: 'index'
   end
 
   def create
-    if OrganizationUser.where(
-        organization_id: params[:organization_id],
-        user_id: params[:user_id])
-      .exists?
-      render json: { errors: @organization_user.errors.messages }, status: :unprocessable_entity
+    user = User.find(params[:user_id])
+
+    @organization_user = OrganizationUser.find_by(
+      organization_id: params[:organization_id],
+      user: params[:user_id],
+    )
+
+    if @organization_user
+      render "show.json.jb", status: 200
     else
-      @organization_user = OrganizationUser.new(
+      @organization_user = OrganizationUser.create!(
         organization_id: params[:organization_id],
-        user_id: params[:user_id]
+        user: user,
       )
-    end
-    if @organization_user.save
-      render "show.json.jb"
-    else
-      render json: { errors: @organization_user.errors.messages }, status: :unprocessable_entity
+
+      render "show.json.jb", status: 201
     end
   end
 
   def show
-    @organization_user = OrganizationUser.find(params[:id])
+    @organization_user = OrganizationUser.find_by!(
+      organization_id: params[:organization_id],
+      user_id: params[:id],
+    )
     render "show.json.jb"
   end
 end

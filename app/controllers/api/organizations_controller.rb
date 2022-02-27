@@ -1,5 +1,6 @@
 class Api::OrganizationsController < ApplicationController
   before_action :authenticate_user
+  before_action :ensure_user_is_in_organization, except: [:index, :create]
 
   def index
     @organizations = Organization
@@ -19,15 +20,11 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def show
-    ensure_user_is_in_organization
-
     @organization = Organization.find_by!(id: params[:id])
     render "show.json.jb"
   end
 
   def update
-    ensure_user_is_in_organization
-
     @organization = Organization.find_by!(id: params[:id])
     @organization.name = params[:name]
     @organization.save!
@@ -36,18 +33,9 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def destroy
-    ensure_user_is_in_organization
-
     @organization = Organization.find_by!(id: params[:id])
     @organization.destroy!
 
     render "show.json.jb"
-  end
-
-  private
-  def ensure_user_is_in_organization
-    unless current_user.organizations.any? { |organization| organization.id == params[:id].to_i }
-      raise ActiveRecord::RecordNotFound
-    end
   end
 end
