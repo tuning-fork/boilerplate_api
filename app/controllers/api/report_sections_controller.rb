@@ -1,37 +1,39 @@
 class Api::ReportSectionsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user,
+    :ensure_organization_exists,
+    :ensure_grant_exists,
+    :ensure_report_exists,
+    :ensure_user_is_in_organization
 
   def index
-    @report_sections = ReportSection.all
-
-    @report_sections = @report_sections.order(id: :asc)
-
+    @report_sections = @report.report_sections.order(id: :asc)
     render "index.json.jb"
   end
 
   def create
-    @report_section = ReportSection.new(
+    @report_section = ReportSection.create!(
       report_id: params[:report_id],
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
       sort_order: params[:sort_order],
-      # archived: false
     )
-    if @report_section.save
-      render "show.json.jb"
-    else
-      render json: { errors: @report_section.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb", status: 201
   end
 
   def show
-    @report_section = ReportSection.find(params[:id])
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
     render "show.json.jb"
   end
 
   def update
-    @report_section = ReportSection.find(params[:id])
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
 
     @report_section.report_id = params[:report_id] || @report_section.report_id
     @report_section.title = params[:title] || @report_section.title
@@ -39,17 +41,34 @@ class Api::ReportSectionsController < ApplicationController
     @report_section.wordcount = params[:wordcount] || @report_section.wordcount
     @report_section.sort_order = params[:sort_order] || @report_section.sort_order
     @report_section.archived = params[:archived].nil? || @report_section.archived
+    @report_section.save!
 
-    if @report_section.save
-      render "show.json.jb"
-    else
-      render json: { errors: @report_section.errors.messages }, status: :unprocessable_entity
-    end
+    render "show.json.jb"
   end
 
   def destroy
-    report_section = ReportSection.find(params[:id])
-    report_section.destroy
-    render json: { id: report_section.id, message: "ReportSection successfully destroyed" }
+    @report_section = ReportSection.find_by!(
+      id: params[:id],
+      report_id: params[:report_id],
+    )
+    @report_section.destroy!
+
+    render "show.json.jb"
+  end
+
+  private
+
+  def ensure_grant_exists
+    @grant = Grant.find_by!(
+      organization_id: params[:organization_id],
+      id: params[:grant_id],
+    )
+  end
+
+  def ensure_report_exists
+    @report = Report.find_by!(
+      grant_id: params[:grant_id],
+      id: params[:report_id],
+    )
   end
 end
