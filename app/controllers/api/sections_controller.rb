@@ -14,7 +14,7 @@ class Api::SectionsController < ApplicationController
       wordcount: params[:wordcount],
       sort_order: params[:sort_order],
     )
-    render "show.json.jb"
+    render "show.json.jb", status: 201
   end
 
   def show
@@ -53,10 +53,6 @@ class Api::SectionsController < ApplicationController
   end
 
   private
-
-  def ensure_organization_exists
-    @organization = Organization.find(params[:organization_id])
-  end
 
   def ensure_grant_exists
     @grant = Grant.find_by!(

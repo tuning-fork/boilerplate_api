@@ -1,9 +1,9 @@
 require "rails_helper"
 
-describe Api::SectionsController do
-  section_fields = %w(
-    id created_at updated_at title text wordcount sort_order
-    grant_id
+describe Api::ReportsController do
+  report_fields = %w(
+    id created_at updated_at title deadline submitted
+    grant_id grant report_sections
   )
 
   before(:example) {
@@ -21,8 +21,8 @@ describe Api::SectionsController do
       {
         title: "Bad Place Neighborhood Grant",
         funding_org: org.funding_orgs.first,
-        sections: [
-          Section.new({ title: "Evil section", text: "Lorem ipsum evil", wordcount: 3 }),
+        reports: [
+          Report.new({ title: "Bad Report", deadline: DateTime.now.next_week.utc, submitted: true }),
         ],
       },
     ])
@@ -50,16 +50,16 @@ describe Api::SectionsController do
       {
         title: "Good Place Neighborhood Grant",
         funding_org: good_place.funding_orgs.first,
-        sections: [
-          Section.new({ title: "Overview of the Organization", text: "Lorem ipsum overview", sort_order: 0, wordcount: 3 }),
-          Section.new({ title: "Program Goals", text: "Lorem ipsum goals", sort_order: 1, wordcount: 3 }),
+        reports: [
+          Report.new({ title: "Report 1", deadline: DateTime.now.utc, submitted: true }),
+          Report.new({ title: "Report 2", deadline: DateTime.now.next_week.utc, submitted: false }),
         ],
       },
       {
         title: "Bad Janet Restorative Justice Initiative Grant",
         funding_org: good_place.funding_orgs.first,
-        sections: [
-          Section.new({ title: "Leaders of the Program/Project", text: "Janet", sort_order: 0, wordcount: 1 }),
+        reports: [
+          Report.new({ title: "Janet Report", deadline: DateTime.now.next_week.utc, submitted: true }),
         ],
       },
     ])
@@ -67,7 +67,7 @@ describe Api::SectionsController do
     good_place
   }
 
-  describe "GET /organizations/:organization_id/grants/:grant_id/sections" do
+  describe "GET /organizations/:organization_id/grants/:grant_id/reports" do
     it "renders 401 if unauthenticated" do
       get :index, params: {
         organization_id: good_place.id,
@@ -109,9 +109,9 @@ describe Api::SectionsController do
       expect(response).to have_http_status(401)
     end
 
-    it "renders 200 with grant's sections" do
-      section1 = good_place.grants.first.sections.first
-      section2 = good_place.grants.first.sections.second
+    it "renders 200 with grant's reports" do
+      report1 = good_place.grants.first.reports.first
+      report2 = good_place.grants.first.reports.second
 
       set_auth_header(chidi)
       get :index, params: {
@@ -122,55 +122,52 @@ describe Api::SectionsController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
-          "sort_order" => kind_of(Integer),
-          "id" => section1.id,
-          "created_at" => section1.created_at.iso8601(3),
-          "updated_at" => section1.updated_at.iso8601(3),
-          "title" => section1.title,
-          "text" => section1.text,
-          "wordcount" => section1.wordcount,
+          "id" => report1.id,
+          "created_at" => report1.created_at.iso8601(3),
+          "updated_at" => report1.updated_at.iso8601(3),
+          "deadline" => report1.deadline.iso8601(3),
+          "title" => report1.title,
+          "submitted" => report1.submitted,
         ),
         a_hash_including(
-          "sort_order" => kind_of(Integer),
-          "id" => section2.id,
-          "created_at" => section2.created_at.iso8601(3),
-          "updated_at" => section2.updated_at.iso8601(3),
-          "title" => section2.title,
-          "text" => section2.text,
-          "wordcount" => section2.wordcount,
+          "id" => report2.id,
+          "created_at" => report2.created_at.iso8601(3),
+          "updated_at" => report2.updated_at.iso8601(3),
+          "deadline" => report2.deadline.iso8601(3),
+          "title" => report2.title,
+          "submitted" => report2.submitted,
         ),
       ])
     end
   end
 
-  describe "POST /organizations/:organization_id/grants/:grant_id/sections" do
-    let(:new_section_params) {
+  describe "POST /organizations/:organization_id/grants/:grant_id/reports" do
+    let(:new_report_params) {
       {
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
-        title: "New section",
-        text: "This is the new section",
-        wordcount: 5,
-        sort_order: good_place.grants.first.sections.last.sort_order + 1,
+        title: "New report",
+        deadline: DateTime.now.utc.iso8601(3),
+        submitted: true,
       }
     }
 
     it "renders 401 if unauthenticated" do
-      post :create, params: new_section_params
+      post :create, params: new_report_params
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      post :create, params: { **new_section_params, organization_id: "123" }
+      post :create, params: { **new_report_params, organization_id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if grant does not exist" do
       set_auth_header(chidi)
-      post :create, params: { **new_section_params, grant_id: "123" }
+      post :create, params: { **new_report_params, grant_id: "123" }
 
       expect(response).to have_http_status(401)
     end
@@ -179,7 +176,7 @@ describe Api::SectionsController do
       shawn = User.find_by!(first_name: "Shawn")
 
       set_auth_header(shawn)
-      post :create, params: new_section_params
+      post :create, params: new_report_params
 
       expect(response).to have_http_status(401)
     end
@@ -187,7 +184,7 @@ describe Api::SectionsController do
     it "renders 422 if given invalid or missing params" do
       set_auth_header(chidi)
       post :create, params: {
-        **new_section_params,
+        **new_report_params,
         title: "",
       }
 
@@ -200,41 +197,39 @@ describe Api::SectionsController do
       )
     end
 
-    it "renders 201 with created section" do
+    it "renders 201 with created report" do
       set_auth_header(chidi)
-      post :create, params: new_section_params
+      post :create, params: new_report_params
 
       expect(response).to have_http_status(201)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*report_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
           "id" => kind_of(Integer),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "sort_order" => kind_of(Integer),
-          "title" => new_section_params[:title],
-          "text" => new_section_params[:text],
-          "wordcount" => new_section_params[:wordcount],
+          "title" => new_report_params[:title],
+          "deadline" => new_report_params[:deadline],
+          "submitted" => new_report_params[:submitted],
         ),
       )
     end
   end
 
-  describe "GET /organizations/:organization_id/grants/:grant_id/sections/:section_id" do
-    let(:section) {
-      Section.create!({
+  describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id" do
+    let(:report) {
+      Report.create!({
         grant: good_place.grants.first,
-        title: "Existing section",
-        text: "This is an existing section to fetch",
-        wordcount: 7,
-        sort_order: good_place.grants.first.sections.last.sort_order + 1,
+        title: "Existing report",
+        deadline: DateTime.now.utc,
+        submitted: false,
       })
     }
     let(:params) {
       {
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
-        id: section.id,
+        id: report.id,
       }
     }
 
@@ -258,17 +253,17 @@ describe Api::SectionsController do
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section does not exist" do
+    it "renders 401 if report does not exist" do
       set_auth_header(chidi)
       get :show, params: { **params, id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section is not apart of grant" do
-      different_section = good_place.grants.second.sections.first
+    it "renders 401 if report is not apart of grant" do
+      different_report = good_place.grants.second.reports.first
       set_auth_header(chidi)
-      get :show, params: { **params, id: different_section.id }
+      get :show, params: { **params, id: different_report.id }
 
       expect(response).to have_http_status(401)
     end
@@ -284,78 +279,76 @@ describe Api::SectionsController do
       expect(response).to have_http_status(401)
     end
 
-    it "renders 200 with organization" do
+    it "renders 200 with reports" do
       set_auth_header(chidi)
       get :show, params: params
 
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*report_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "sort_order" => kind_of(Integer),
-          "id" => section.id,
-          "created_at" => section.created_at.iso8601(3),
-          "updated_at" => section.updated_at.iso8601(3),
-          "title" => section.title,
-          "text" => section.text,
-          "wordcount" => section.wordcount,
+          "id" => report.id,
+          "created_at" => report.created_at.iso8601(3),
+          "updated_at" => report.updated_at.iso8601(3),
+          "deadline" => report.deadline.iso8601(3),
+          "title" => report.title,
+          "submitted" => report.submitted,
         ),
       )
     end
   end
 
-  describe "PATCH /organizations/:organization_id/grants/:grant_id/sections/:section_id" do
-    let(:section) {
-      Section.create!({
+  describe "PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id" do
+    let(:report) {
+      Report.create!({
         grant: good_place.grants.first,
-        title: "Existing section",
-        text: "This is an existing section to update",
-        wordcount: 7,
-        sort_order: good_place.grants.first.sections.last.sort_order + 1,
+        title: "Existing report",
+        deadline: DateTime.now.utc,
+        submitted: false,
       })
     }
-    let(:update_section_params) {
+    let(:update_report_params) {
       {
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
-        id: section.id,
-        title: "Updated section title",
-        text: "Updated section text",
-        wordcount: 3,
+        id: report.id,
+        title: "Updated report title",
+        deadline: DateTime.now.next_week.utc.iso8601(3),
+        submitted: true,
       }
     }
 
     it "renders 401 if unauthenticated" do
-      patch :update, params: update_section_params
+      patch :update, params: update_report_params
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      patch :update, params: { **update_section_params, organization_id: "123" }
+      patch :update, params: { **update_report_params, organization_id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if grant does not exist" do
       set_auth_header(chidi)
-      patch :update, params: { **update_section_params, grant_id: "123" }
+      patch :update, params: { **update_report_params, grant_id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section does not exist" do
+    it "renders 401 if report does not exist" do
       set_auth_header(chidi)
-      patch :update, params: { **update_section_params, id: "123" }
+      patch :update, params: { **update_report_params, id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section is not apart of grant" do
-      different_section = good_place.grants.second.sections.first
+    it "renders 401 if report is not apart of grant" do
+      different_report = good_place.grants.second.reports.first
       set_auth_header(chidi)
-      patch :update, params: { **update_section_params, id: different_section.id }
+      patch :update, params: { **update_report_params, id: different_report.id }
 
       expect(response).to have_http_status(401)
     end
@@ -364,18 +357,18 @@ describe Api::SectionsController do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
 
-      patch :update, params: update_section_params
+      patch :update, params: update_report_params
       expect(response).to have_http_status(401)
 
-      patch :update, params: { **update_section_params, organization_id: shawn.organizations.first.id  }
+      patch :update, params: { **update_report_params, organization_id: shawn.organizations.first.id  }
       expect(response).to have_http_status(401)
     end
 
     it "renders 422 if given invalid or missing params" do
       set_auth_header(chidi)
       patch :update, params: {
-        **update_section_params,
-        title: ""
+        **update_report_params,
+        title: "",
       }
 
       expect(response).to have_http_status(422)
@@ -387,75 +380,73 @@ describe Api::SectionsController do
       )
     end
 
-    it "renders 200 with updated section" do
+    it "renders 200 with updated report" do
       set_auth_header(chidi)
-      patch :update, params: update_section_params
+      patch :update, params: update_report_params
 
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*report_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => section.id,
-          "created_at" => section.created_at.iso8601(3),
+          "id" => report.id,
+          "created_at" => report.created_at.iso8601(3),
           "updated_at" => kind_of(String),
-          "sort_order" => kind_of(Integer),
-          "title" => update_section_params[:title],
-          "text" => update_section_params[:text],
-          "wordcount" => update_section_params[:wordcount],
+          "title" => update_report_params[:title],
+          "deadline" => update_report_params[:deadline],
+          "submitted" => update_report_params[:submitted],
         ),
       )
     end
   end
 
-  describe "DELETE /organizations/:organization_id/grants/:grant_id/sections/:section_id" do
-    let(:section) {
-      Section.create!({
+  describe "DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id" do
+    let(:report) {
+      Report.create!({
         grant: good_place.grants.first,
-        title: "Existing section",
-        text: "This is an existing section to delete",
-        wordcount: 7,
-        sort_order: good_place.grants.first.sections.last.sort_order + 1,
+        title: "Existing report",
+        deadline: DateTime.now.next_week.utc,
+        submitted: true,
       })
     }
-    let(:delete_section_params) {
+    let(:delete_report_params) {
       {
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
-        id: section.id,
+        id: report.id,
       }
     }
 
     it "renders 401 if unauthenticated" do
-      delete :destroy, params: delete_section_params
+      delete :destroy, params: delete_report_params
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { **delete_section_params, organization_id: "123" }
+      delete :destroy, params: { **delete_report_params, organization_id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if grant does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { **delete_section_params, grant_id: "123" }
+      delete :destroy, params: { **delete_report_params, grant_id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section does not exist" do
+    it "renders 401 if report does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { **delete_section_params, id: "123" }
+      delete :destroy, params: { **delete_report_params, id: "123" }
 
       expect(response).to have_http_status(401)
     end
 
-    it "renders 401 if section is not apart of grant" do
-      different_section = good_place.grants.second.sections.first
+    it "renders 401 if report is not apart of grant" do
+      different_report = good_place.grants.second.reports.first
       set_auth_header(chidi)
-      delete :destroy, params: { **delete_section_params, id: different_section.id }
+      delete :destroy, params: { **delete_report_params, id: different_report.id }
 
       expect(response).to have_http_status(401)
     end
@@ -464,28 +455,27 @@ describe Api::SectionsController do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
 
-      delete :destroy, params: delete_section_params
+      delete :destroy, params: delete_report_params
       expect(response).to have_http_status(401)
 
-      delete :destroy, params: { **delete_section_params, organization_id: shawn.organizations.first.id  }
+      delete :destroy, params: { **delete_report_params, organization_id: shawn.organizations.first.id  }
       expect(response).to have_http_status(401)
     end
 
-    it "renders 200 with deleted section" do
+    it "renders 200 with deleted report" do
       set_auth_header(chidi)
-      delete :destroy, params: delete_section_params
+      delete :destroy, params: delete_report_params
 
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*report_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "sort_order" => kind_of(Integer),
-          "id" => section.id,
-          "created_at" => section.created_at.iso8601(3),
-          "updated_at" => section.updated_at.iso8601(3),
-          "title" => section.title,
-          "text" => section.text,
-          "wordcount" => section.wordcount,
+          "id" => report.id,
+          "created_at" => report.created_at.iso8601(3),
+          "updated_at" => report.updated_at.iso8601(3),
+          "deadline" => report.deadline.iso8601(3),
+          "title" => report.title,
+          "submitted" => report.submitted,
         ),
       )
     end

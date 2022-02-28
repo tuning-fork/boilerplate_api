@@ -58,7 +58,7 @@ describe Api::FundingOrgsController do
       expect(response).to have_http_status(401)
     end
 
-    it "renders 200 with organization funding_orgs" do
+    it "renders 200 with organization funding orgs" do
       set_auth_header(chidi)
       get :index, params: { organization_id: good_place.id }
 
