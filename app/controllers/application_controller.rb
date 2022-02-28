@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::Base
-  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+  rescue_from JWT::DecodeError, with: :handle_unauthorized
+  rescue_from JWT::VerificationError, with: :handle_unauthorized
+  rescue_from JWT::ExpiredSignature, with: :handle_unauthorized
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_unauthorized
   rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
 
   protect_from_forgery with: :null_session
   helper_method :current_user
 
-  def handle_record_not_found(exception)
+  def handle_unauthorized(exception)
     render status: 401, json: { errors: ["Unauthorized"] }
   end
 
