@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     post '/forgot_password' => "passwords#forgot"
     post '/reset_password' => "passwords#reset"
 
+    resources :users, only: [:create, :update]
+
     resources :organization_users
     resources :organizations do
       resources :organization_users, path: :users
@@ -88,12 +90,5 @@ Rails.application.routes.draw do
     # get "/organizations/:organization_id/grants/:grant_id/report/:report_id/report_sections/:id" => "report_sections#show"
     # patch "/organizations/:organization_id/grants/:grant_id/report/:report_id/report_sections/:id" => "report_sections#update"
     # delete "/organizations/:organization_id/grants/:grant_id/report/:report_id/report_sections/:id" => "report_sections#destroy"
-
-    get "/users" => "users#index"
-    post "/users" => "users#create"
-    get "/users/:id" => "users#show"
-    patch "/users/:id" => "users#update"
-    delete "/users/:id" => "users#destroy"
-
   end
 end
