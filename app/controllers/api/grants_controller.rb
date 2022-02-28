@@ -2,10 +2,9 @@ class Api::GrantsController < ApplicationController
   before_action :authenticate_user, :ensure_user_is_in_organization
 
   def index
-    # @grants = Grant.all
-    @grants = Grant.where(organization_id: params[:organization_id])
-
-    @grants = @grants.order(id: :desc)
+    @grants = Grant
+      .where(organization_id: params[:organization_id])
+      .order(id: :desc)
 
     render "index.json.jb"
   end
@@ -60,7 +59,6 @@ class Api::GrantsController < ApplicationController
   def update
     @grant = Grant.find(params[:id])
 
-    @grant.organization_id = params[:organization_id] || @grant.organization_id
     @grant.title = params[:title] || @grant.title
     @grant.funding_org_id = params[:funding_org_id] || @grant.funding_org_id
     @grant.rfp_url = params[:rfp_url] || @grant.rfp_url
