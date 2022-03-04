@@ -75,11 +75,6 @@ test:
 #
 # You can use this database configuration with:
 #
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
 production:
   <<: *default
-  database: boilerplate_rebuild_app_production
-  username: boilerplate_rebuild_app
-  password: <%= ENV['BOILERPLATE_REBUILD_APP_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
