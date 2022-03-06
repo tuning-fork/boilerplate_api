@@ -6,7 +6,7 @@ module Helpers
           user_id: user.id,
           exp: 24.hours.from_now.to_i,
         },
-        Rails.application.credentials.fetch(:secret_key_base),
+        ENV['SECRET_KEY_BASE'],
         "HS256",
       )
       request.headers["Authorization"] = "Bearer #{jwt}"

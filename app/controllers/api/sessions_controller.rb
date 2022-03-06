@@ -33,7 +33,7 @@ class Api::SessionsController < ApplicationController
   end
 
   def jwt_secret
-    Rails.application.credentials.fetch(:secret_key_base)
+    ENV['SECRET_KEY_BASE']
   end
 
   def encode_jwt(user)
