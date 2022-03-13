@@ -1,18 +1,26 @@
 class Api::SessionsController < ApplicationController
   def create
-    user = User.find_by!(email: params[:email])
-    if user.authenticate(params[:password])
-      jwt = encode_jwt(user)
-      payload = {
-        jwt: jwt,
-        email: user.email,
-        user_id: user.id,
-      }
+    user = User.find_by(email: params[:email])
 
-      render json: payload, status: 201
-    else
+    if !user
+      logger.info("Attempt to create session for user without account: email=#{params[:email]}")
       raise ActiveRecord::RecordNotFound
     end
+
+    if !user.authenticate(params[:password])
+      logger.info("Incorrect password given when trying to create session for #{user}")
+      raise ActiveRecord::RecordNotFound
+    end
+
+    jwt = encode_jwt(user)
+    payload = {
+      jwt: jwt,
+      email: user.email,
+      user_id: user.id,
+    }
+
+    logger.info("Session created for #{user}")
+    render json: payload, status: 201
   end
 
   def get_session

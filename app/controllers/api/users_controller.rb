@@ -10,6 +10,9 @@ class Api::UsersController < ApplicationController
       password_confirmation: params[:password_confirmation],
       active: true,
     )
+
+    logger.info("New user created #{@user}")
+
     render "show.json.jb", status: 201
   end
 

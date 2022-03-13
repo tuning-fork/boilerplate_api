@@ -7,4 +7,8 @@ class Organization < ApplicationRecord
   has_many :funding_orgs
   has_many :organization_users
   has_many :users, through: :organization_users
+
+  def to_s
+    "#<Organization:#{self.id}>"
+  end
 end

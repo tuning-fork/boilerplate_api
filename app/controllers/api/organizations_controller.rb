@@ -16,6 +16,7 @@ class Api::OrganizationsController < ApplicationController
       name: params[:name],
       users: [current_user],
     )
+    logger.info("New organization #{@organization} created by #{current_user}")
     render "show.json.jb", status: 201
   end
 

@@ -11,6 +11,7 @@ class Api::PasswordsController < ApplicationController
     user = User.find_by!(password_reset_token: params[:token], email: params[:email])
     if user.password_token_valid? && user.reset_password(params[:password])
       session[:user_id] = user.id
+      logger.info("Password reset for #{user}")
       render json: { message: "Your password has been successfully reset!" }
     else
       render json: { error: ["Link expired. Try generating a new link."] }, status: 400
