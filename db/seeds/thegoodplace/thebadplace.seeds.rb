@@ -2,10 +2,10 @@ print "Seeding The Bad Place data..."
 
 lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet felis sit tortor morbi tempus, pretium. Consequat, in cursus eget nunc nam. Massa sodales eget ultricies vulputate consequat egestas quis. Amet, id arcu sollicitudin tincidunt curabitur tincidunt. Amet, amet, viverra luctus praesent fames ante mauris commodo. Et ut non tincidunt quis vulputate orci amet scelerisque. Quis nulla pharetra bibendum faucibus id quam sociis at. Enim, eget arcu sit tortor arcu, aliquam. Ante turpis rutrum magnis mauris feugiat sed interdum pharetra tellus. Mauris risus nibh condimentum etiam."
 
-shawn = User.create!({ first_name: "Shawn", last_name: "", email: "shawn@thebadplace.com", password: "shawn", active: true })
-vicky = User.create!({ first_name: "Vicky", last_name: "", email: "vicky@thebadplace.com", password: "vicky", active: true })
-trevor = User.create!({ first_name: "Trevor", last_name: "", email: "trevor@thebadplace.com", password: "trevor", active: true })
-bad_janet = User.create!({ first_name: "Bad Janet", last_name: "", email: "badjanet@thebadplace.com", password: "badjanet", active: true })
+shawn = User.create!({ first_name: "Shawn", last_name: "", email: "shawn@thebadplace.com", password: SecureRandom.hex, active: true })
+vicky = User.create!({ first_name: "Vicky", last_name: "", email: "vicky@thebadplace.com", password: SecureRandom.hex, active: true })
+trevor = User.create!({ first_name: "Trevor", last_name: "", email: "trevor@thebadplace.com", password: SecureRandom.hex, active: true })
+bad_janet = User.create!({ first_name: "Bad Janet", last_name: "", email: "badjanet@thebadplace.com", password: SecureRandom.hex, active: true })
 
 the_bad_place = Organization.create!({
   name: "The Bad Place",

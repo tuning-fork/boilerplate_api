@@ -7,10 +7,6 @@ class Api::OrganizationUsersController < ApplicationController
     render "api/users/index.json.jb"
   end
 
-  def assoc
-    redirect_to controller: 'organizations', action: 'index'
-  end
-
   def create
     user = User.find(params[:user_id])
 

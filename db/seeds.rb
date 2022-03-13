@@ -1,18 +1,21 @@
-print "Clearing out data..."
+require "securerandom"
 
-Category.delete_all
-Section.delete_all
-Boilerplate.delete_all
-ReportSection.delete_all
-Report.delete_all
-FundingOrg.delete_all
-Grant.delete_all
-OrganizationUser.delete_all
-Organization.delete_all
-User.delete_all
+unless ENV["RAILS_ENV"] == "production"
+  print "Clearing out data..."
 
-puts "Data cleared!"
-puts
+  Category.delete_all
+  Section.delete_all
+  Boilerplate.delete_all
+  ReportSection.delete_all
+  Report.delete_all
+  FundingOrg.delete_all
+  Grant.delete_all
+  OrganizationUser.delete_all
+  Organization.delete_all
+  User.delete_all
+
+  puts "Data cleared!\n"
+end
 
 Dir[File.join(Rails.root, "db/seeds/**/*.rb")].sort.each do |seed|
   load seed
