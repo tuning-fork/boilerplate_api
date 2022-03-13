@@ -2,12 +2,12 @@ print "Seeding The Good Place data..."
 
 lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet felis sit tortor morbi tempus, pretium. Consequat, in cursus eget nunc nam. Massa sodales eget ultricies vulputate consequat egestas quis. Amet, id arcu sollicitudin tincidunt curabitur tincidunt. Amet, amet, viverra luctus praesent fames ante mauris commodo. Et ut non tincidunt quis vulputate orci amet scelerisque. Quis nulla pharetra bibendum faucibus id quam sociis at. Enim, eget arcu sit tortor arcu, aliquam. Ante turpis rutrum magnis mauris feugiat sed interdum pharetra tellus. Mauris risus nibh condimentum etiam."
 
-chidi = User.create!({ first_name: "Chidi", last_name: "Anagonye", email: "canagonye@thegoodplace.com", password: "chidi", active: true })
-tahani = User.create!({ first_name: "Tahani", last_name: "Al-Jamil", email: "taljamil@thegoodplace.com", password: "tahani", active: true })
-jason = User.create!({ first_name: "Jason", last_name: "Mendoza", email: "jmendoza@thegoodplace.com", password: "jason", active: true })
-elenor = User.create!({ first_name: "Elenor", last_name: "Shellstrop", email: "eshellstrop@thegoodplace.com", password: "elenor", active: true })
-janet = User.create!({ first_name: "Janet", last_name: "", email: "janet@thegoodplace.com", password: "janet", active: true })
-michael = User.create!({ first_name: "Michael", last_name: "", email: "michael@thegoodplace.com", password: "michael", active: true })
+chidi = User.create!({ first_name: "Chidi", last_name: "Anagonye", email: "canagonye@thegoodplace.com", password: SecureRandom.hex, active: true })
+tahani = User.create!({ first_name: "Tahani", last_name: "Al-Jamil", email: "taljamil@thegoodplace.com", password: SecureRandom.hex, active: true })
+jason = User.create!({ first_name: "Jason", last_name: "Mendoza", email: "jmendoza@thegoodplace.com", password: SecureRandom.hex, active: true })
+elenor = User.create!({ first_name: "Elenor", last_name: "Shellstrop", email: "eshellstrop@thegoodplace.com", password: SecureRandom.hex, active: true })
+janet = User.create!({ first_name: "Janet", last_name: "", email: "janet@thegoodplace.com", password: SecureRandom.hex, active: true })
+michael = User.create!({ first_name: "Michael", last_name: "", email: "michael@thegoodplace.com", password: SecureRandom.hex, active: true })
 
 the_good_place = Organization.create!({
   name: "The Good Place",

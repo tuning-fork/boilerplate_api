@@ -3,9 +3,9 @@ print "Seeding MIRA data..."
 mira = Organization.create!({
   name: "Middle Eastern Immigrant and Refugee Alliance (MIRA)",
   users: [
-    User.new({ first_name: "Jess", last_name: "White", email: "jess@aol.com", password: "password", active: true }),
-    User.new({ first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password: "password", active: true }),
-    User.new({ first_name: "Mike", last_name: "McFaddin", email: "mikemcfaddin@email.com", password: "password", active: true }),
+    User.new({ first_name: "Jess", last_name: "White", email: "jess@aol.com", password: SecureRandom.hex, active: true }),
+    User.new({ first_name: "Jemima", last_name: "Jones", email: "jj@aol.com", password: SecureRandom.hex, active: true }),
+    User.new({ first_name: "Mike", last_name: "McFaddin", email: "mikemcfaddin@email.com", password: SecureRandom.hex, active: true }),
   ],
   funding_orgs: [
     FundingOrg.new({ website: "https://www.acf.hhs.gov/orr", name: "Office of Refugee Resettlement" }),
