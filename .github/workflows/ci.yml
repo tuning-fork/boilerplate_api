@@ -1,0 +1,42 @@
+name: Test
+
+on: push
+
+env:
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/boilerplate_rebuild_app_test
+  FRONTEND_ORIGIN: localhost:4000
+  SECRET_KEY_BASE: a93ec4496d45466cacf1a29c365d25a2f129d38f4fed48689e4f437175f41efb
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: boilerplate_rebuild_app_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports: ["5432:5432"]
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby environment
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup test database
+        run: bin/rails db:migrate
+
+      - name: Run unit tests
+        run: bundle exec rspec
