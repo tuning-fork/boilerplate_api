@@ -11,4 +11,11 @@ class Organization < ApplicationRecord
   def to_s
     "#<Organization:#{self.id}>"
   end
+
+  @_uuid = nil
+  def uuid
+    ret = @_uuid || attributes["uuid"] || Organization.find(self.id).uuid
+    @_uuid = ret
+    ret
+  end
 end

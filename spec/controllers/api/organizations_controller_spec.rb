@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Api::OrganizationsController do
   organization_fields = %w(
-    id created_at updated_at name
+    id uuid created_at updated_at name
   )
 
   before(:example) {
@@ -281,7 +281,7 @@ describe Api::OrganizationsController do
   end
 
   # tests using uuid
-  xdescribe "GET /organizations" do
+  describe "GET /organizations" do
     it "renders 401 if unauthenticated" do
       get :index
 
@@ -303,7 +303,7 @@ describe Api::OrganizationsController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "name" => "The Bad Place",
@@ -315,7 +315,7 @@ describe Api::OrganizationsController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "name" => "The Medium Place",
@@ -324,7 +324,7 @@ describe Api::OrganizationsController do
     end
   end
 
-  xdescribe "POST /organizations" do
+  describe "POST /organizations" do
     it "renders 401 if unauthenticated" do
       post :create, params: { name: "The Good Place" }
 
@@ -354,7 +354,7 @@ describe Api::OrganizationsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*organization_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "name" => "The Good Place",
@@ -373,7 +373,7 @@ describe Api::OrganizationsController do
     end
   end
 
-  describe "GET /organizations/:organization_id" do
+  describe "GET /organizations/:organization_uuid" do
     let(:chidi) { create_chidi_user() }
     let(:good_place) { create_good_place_org(chidi) }
 
@@ -414,12 +414,12 @@ describe Api::OrganizationsController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_id" do
+  describe "PATCH /organizations/:organization_uuid" do
     let(:chidi) { create_chidi_user() }
     let(:good_place) { create_good_place_org(chidi) }
     let(:update_organization_params) {
       {
-        id: good_place.id,
+        id: good_place.uuid,
         name: "The (Not So) Good Place",
       }
     }
@@ -432,7 +432,7 @@ describe Api::OrganizationsController do
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      patch :update, params: { **update_organization_params, id: "123" }
+      patch :update, params: { **update_organization_params, id: "4901ea41-a839-4f98-b098-e3651d78c36e" }
 
       expect(response).to have_http_status(401)
     end
@@ -466,7 +466,7 @@ describe Api::OrganizationsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*organization_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => good_place.id,
+          "uuid" => good_place.uuid,
           "created_at" => good_place.created_at.iso8601(3),
           "updated_at" => kind_of(String),
           "name" => "The (Not So) Good Place",
@@ -475,19 +475,19 @@ describe Api::OrganizationsController do
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_id" do
+  describe "DELETE /organizations/:organization_uuid" do
     let(:chidi) { create_chidi_user() }
     let(:good_place) { create_good_place_org(chidi) }
 
     it "renders 401 if unauthenticated" do
-      delete :destroy, params: { id: good_place.id }
+      delete :destroy, params: { id: good_place.uuid }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { id: "123" }
+      delete :destroy, params: { id: "9a4706fc-ea63-4cb3-a214-e7a065f97a44" }
 
       expect(response).to have_http_status(401)
     end
@@ -495,20 +495,20 @@ describe Api::OrganizationsController do
     it "renders 401 if not member of organization" do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
-      get :show, params: { id: good_place.id }
+      get :show, params: { id: good_place.uuid }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 200 with deleted organization" do
       set_auth_header(chidi)
-      delete :destroy, params: { id: good_place.id }
+      delete :destroy, params: { id: good_place.uuid }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*organization_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => good_place.id,
+          "uuid" => good_place.uuid,
           "created_at" => good_place.created_at.iso8601(3),
           "updated_at" => good_place.updated_at.iso8601(3),
           "name" => good_place.name,

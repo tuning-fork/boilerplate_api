@@ -30,7 +30,9 @@ class User < ApplicationRecord
   end
 
   def is_in_organization?(organization_id)
-    self.organizations.any? { |organization| organization.id.to_s == organization_id.to_s }
+    self.organizations.any? do |organization|
+      organization.id.to_s == organization_id.to_s || organization.uuid == organization_id
+    end
   end
 
   private
