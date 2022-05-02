@@ -1,5 +1,6 @@
 {
   id: grant.id,
+  uuid: grant.uuid,
   organization_id: grant.organization_id,
   organization_name: grant.organization.name,
   title: grant.title,

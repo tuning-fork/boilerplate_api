@@ -5,13 +5,29 @@ class Api::GrantsController < ApplicationController
     @grants = Grant
       .where(organization_id: params[:organization_id])
       .order(id: :desc)
+    
+    @grants = if @grants.empty?
+      Grant
+        .where(organization_uuid: params[:organization_id])
+        .order(id: :desc)
+    else 
+      @grants
+    end
 
     render "index.json.jb"
   end
 
   def create
+    puts "params[:organization_id]=#{params[:organization_id]}"
+    organization_id = if Uuid.validate?(params[:organization_id])
+      Organization.find_by!(uuid: params[:organization_id]).id
+    else
+      params[:organization_id]
+    end
+    puts "organization_id=#{organization_id}"
+
     @grant = Grant.create!(
-      organization_id: params[:organization_id],
+      organization_id: organization_id,
       title: params[:title],
       funding_org_id: params[:funding_org_id],
       rfp_url: params[:rfp_url],
