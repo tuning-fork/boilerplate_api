@@ -1,5 +1,6 @@
 {
   id: funding_org.id,
+  uuid: funding_org.uuid,
   website: funding_org.website,
   organization_id: funding_org.organization_id,
   name: funding_org.name,

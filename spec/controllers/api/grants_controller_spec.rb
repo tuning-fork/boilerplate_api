@@ -3,7 +3,8 @@ require "rails_helper"
 describe Api::GrantsController do
   grant_fields = %w(
     uuid id created_at updated_at deadline title rfp_url submitted successful purpose archived
-    funding_org funding_org_id funding_org_name funding_org_url organization_id organization_name reports sections
+    funding_org funding_org_id funding_org_uuid funding_org_name funding_org_url
+    organization_id organization_uuid organization_name reports sections
   )
 
   before(:example) {
@@ -441,7 +442,7 @@ describe Api::GrantsController do
   end
 
   describe "PATCH /organizations/:organization_id/grants/:grant_id/reorder_section/:section_id" do
-    section_fields = %w(id created_at updated_at grant_id title text wordcount sort_order)
+    section_fields = %w(id uuid created_at updated_at grant_id grant_uuid title text wordcount sort_order)
 
     let(:sections) {
       good_place.grants.first.sections.create!([
@@ -608,7 +609,7 @@ describe Api::GrantsController do
       expect(response).to have_http_status(401)
     end
 
-    fit "renders 422 if given invalid or missing params" do
+    it "renders 422 if given invalid or missing params" do
       set_auth_header(chidi)
       post :create, params: {
         organization_id: good_place.uuid,
@@ -645,11 +646,11 @@ describe Api::GrantsController do
     end
   end
 
-  xdescribe "GET /organizations/:organization_uuid/grants/:grant_uuid" do
+  describe "GET /organizations/:organization_uuid/grants/:grant_uuid" do
     it "renders 401 if unauthenticated" do
       get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
       }
 
       expect(response).to have_http_status(401)
@@ -660,8 +661,8 @@ describe Api::GrantsController do
 
       set_auth_header(shawn)
       get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
       }
 
       expect(response).to have_http_status(401)
@@ -670,8 +671,8 @@ describe Api::GrantsController do
     it "renders 401 if grant does not exist" do
       set_auth_header(chidi)
       get :show, params: {
-        organization_id: good_place.id,
-        id: "123",
+        organization_id: good_place.uuid,
+        id: "4f21e4e8-2275-4e5e-bbe4-b746d07f6e3c",
       }
 
       expect(response).to have_http_status(401)
@@ -680,16 +681,15 @@ describe Api::GrantsController do
     it "renders 200 with grant" do
       set_auth_header(chidi)
       get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
       }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*grant_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "deadline" => kind_of(String),
@@ -703,11 +703,11 @@ describe Api::GrantsController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/grants/:grant_uuid" do
+  describe "PATCH /organizations/:organization_uuid/grants/:grant_uuid" do
     let(:updated_grant_fields) {
       {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
         title: "(Not So) Good Place Neighborhood Grant",
         submitted: true,
         purpose: "very general funding",
@@ -733,7 +733,7 @@ describe Api::GrantsController do
       set_auth_header(chidi)
       patch :update, params: {
         **updated_grant_fields,
-        id: "123",
+        id: "6a7fc2fd-6c84-4e2c-a16e-13a060682ad8",
       }
 
       expect(response).to have_http_status(401)
@@ -742,8 +742,8 @@ describe Api::GrantsController do
     it "renders 422 if given invalid or missing params" do
       set_auth_header(chidi)
       patch :update, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
         title: "",
       }
 
@@ -766,7 +766,7 @@ describe Api::GrantsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*grant_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => grant.id,
+          "uuid" => grant.uuid,
           "created_at" => grant.created_at.iso8601(3),
           "updated_at" => kind_of(String),
           "deadline" => grant.deadline.iso8601(3),
@@ -780,11 +780,11 @@ describe Api::GrantsController do
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_uuid/grants/:grant_uuid" do
+  describe "DELETE /organizations/:organization_uuid/grants/:grant_uuid" do
     it "renders 401 if unauthenticated" do
       delete :destroy, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
       }
 
       expect(response).to have_http_status(401)
@@ -795,8 +795,8 @@ describe Api::GrantsController do
 
       set_auth_header(shawn)
       delete :destroy, params: {
-        organization_id: good_place.id,
-        id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        id: good_place.grants.first.uuid,
       }
 
       expect(response).to have_http_status(401)
@@ -805,8 +805,8 @@ describe Api::GrantsController do
     it "renders 401 if grant does not exist" do
       set_auth_header(chidi)
       delete :destroy, params: {
-        organization_id: good_place.id,
-        id: "123",
+        organization_id: good_place.uuid,
+        id: "25e24962-0415-452f-86ac-d29cf5b466bd",
       }
 
       expect(response).to have_http_status(401)
@@ -817,14 +817,14 @@ describe Api::GrantsController do
 
       set_auth_header(chidi)
       delete :destroy, params: {
-        organization_id: good_place.id,
-        id: grant.id,
+        organization_id: good_place.uuid,
+        id: grant.uuid,
       }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => grant.id,
+          "uuid" => grant.uuid,
           "created_at" => grant.created_at.iso8601(3),
           "updated_at" => grant.updated_at.iso8601(3),
           "deadline" => grant.deadline.iso8601(3),
@@ -838,11 +838,11 @@ describe Api::GrantsController do
     end
   end
 
-  xdescribe "POST /organizations/:organization_uuid/grants/:grant_uuid/copy" do
+  describe "POST /organizations/:organization_uuid/grants/:grant_uuid/copy" do
     let(:copied_grant_fields) {
       {
-        organization_id: good_place.id,
-        grant_id: good_place.grants.first.id,
+        organization_id: good_place.uuid,
+        grant_id: good_place.grants.first.uuid,
         title: "Good Place Neighborhood Grant (copy)",
         rfp_url: "https://newgrant",
         deadline: DateTime.now.next_week.utc.iso8601(3),
@@ -869,7 +869,7 @@ describe Api::GrantsController do
       set_auth_header(chidi)
       post :copy, params: {
         **copied_grant_fields,
-        grant_id: "123",
+        grant_id: "c5e27727-b0a4-4796-b658-1ec14a3daf80",
       }
 
       expect(response).to have_http_status(401)
@@ -883,7 +883,7 @@ describe Api::GrantsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*grant_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "submitted" => false,
@@ -898,8 +898,8 @@ describe Api::GrantsController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reorder_section/:section_uuid" do
-    section_fields = %w(id created_at updated_at grant_id title text wordcount sort_order)
+  describe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reorder_section/:section_uuid" do
+    section_fields = %w(id uuid created_at updated_at grant_id grant_uuid title text wordcount sort_order)
 
     let(:sections) {
       good_place.grants.first.sections.create!([
@@ -925,9 +925,9 @@ describe Api::GrantsController do
     }
     let(:reorder_params) {
       {
-        organization_id: good_place.id,
-        grant_id: good_place.grants.first.id,
-        section_id: sections.second.id,
+        organization_id: good_place.uuid,
+        grant_id: good_place.grants.first.uuid,
+        section_id: sections.second.uuid,
         sort_order: 0,
       }
     }
@@ -951,7 +951,7 @@ describe Api::GrantsController do
       set_auth_header(chidi)
       patch :reorder_section, params: {
         **reorder_params,
-        grant_id: "123",
+        grant_id: "cf8fdd90-916c-464e-8d44-bfcac45df28b",
       }
 
       expect(response).to have_http_status(401)
@@ -961,7 +961,7 @@ describe Api::GrantsController do
       set_auth_header(chidi)
       patch :reorder_section, params: {
         **reorder_params,
-        section_id: "123",
+        section_id: "87512c49-bc0d-4eae-8a9a-aaa296de87c3",
       }
 
       expect(response).to have_http_status(401)
@@ -975,7 +975,7 @@ describe Api::GrantsController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "id" => kind_of(Integer),
+          "uuid" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
           "grant_id" => sections.second.grant_id,

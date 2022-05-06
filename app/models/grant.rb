@@ -1,6 +1,8 @@
 class Grant < ApplicationRecord
-  before_save :set_organization_uuid
-    
+  include TempUuidFallback
+
+  before_save :set_foreign_key_uuids
+
   validates :title, length: { in: 2..100 }
 
   belongs_to :organization
@@ -10,7 +12,8 @@ class Grant < ApplicationRecord
 
   private
 
-  def set_organization_uuid
-    self.organization_uuid = self.organization.uuid if self.organization_uuid === nil
+  def set_foreign_key_uuids
+    self.organization_uuid ||= self.organization.uuid
+    self.funding_org_uuid ||= self.funding_org.uuid
   end
 end
