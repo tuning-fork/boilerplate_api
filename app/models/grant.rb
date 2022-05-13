@@ -10,7 +10,7 @@ class Grant < ApplicationRecord
   has_many :reports, dependent: :destroy
   has_many :sections, dependent: :destroy
 
-  private
+  private 
 
   def set_foreign_key_uuids
     self.organization_uuid ||= self.organization.uuid
