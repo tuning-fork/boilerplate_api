@@ -39,6 +39,7 @@ describe Api::BoilerplatesController do
       ],
       categories: [
         Category.new({ name: "General Purpose" }),
+        Category.new({ name: "Bad Janet Truth and Reconciliation" }),
       ],
     })
 
@@ -398,7 +399,7 @@ describe Api::BoilerplatesController do
   end
 
   # tests using uuid
-  xdescribe "GET /organizations/:organization_uuid/boilerplates" do
+  describe "GET /organizations/:organization_uuid/boilerplates" do
     it "renders 401 if unauthenticated" do
       get :index, params: { organization_id: good_place.uuid }
 
@@ -456,7 +457,7 @@ describe Api::BoilerplatesController do
     end
   end
 
-  xdescribe "POST /organizations/:organization_uuid/boilerplates" do
+  describe "POST /organizations/:organization_uuid/boilerplates" do
     let(:new_boilerplate_fields) {
       {
         organization_id: good_place.uuid,
@@ -528,7 +529,7 @@ describe Api::BoilerplatesController do
     end
   end
 
-  xdescribe "GET /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "GET /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
     it "renders 401 if unauthenticated" do
       get :show, params: {
         organization_id: good_place.uuid,
@@ -597,10 +598,11 @@ describe Api::BoilerplatesController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "PATCH /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
     let(:updated_boilerplate_fields) {
       {
         organization_id: good_place.uuid,
+        category_id: good_place.categories.second.uuid,
         id: good_place.boilerplates.first.uuid,
         title: "Updated Bio",
         text: "This is the updated boilerplate",
@@ -676,12 +678,13 @@ describe Api::BoilerplatesController do
           "title" => updated_boilerplate_fields[:title],
           "text" => updated_boilerplate_fields[:text],
           "wordcount" => updated_boilerplate_fields[:wordcount],
+          "category_uuid" => updated_boilerplate_fields[:category_id],
         ),
       )
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "DELETE /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
     it "renders 401 if unauthenticated" do
       delete :destroy, params: { organization_id: good_place.uuid, id: good_place.boilerplates.first.uuid }
 
