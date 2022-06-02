@@ -1,0 +1,61 @@
+class Api::ReviewerssController < ApplicationController
+  before_action :authenticate_user, :ensure_user_is_in_organization
+
+  def index
+    grant = Grant.find(params[:grant_id])
+    @reviewers = grant.reviewers.order(:id)
+    render "api/reviewers/index.json.jb"
+  end
+
+  def create
+    grant = Grant.find(params[:grant_id])
+
+    @reviewer = Reviewers.find_by(
+      grant_id: params[:grant_id],
+      user: params[:user_id],
+    )
+
+    if @reviewer
+      render "show.json.jb", status: 200
+    else
+      @reviewer = Reviewers.create!(
+        grant_id: params[:grant_id],
+        user: user,
+      )
+
+      render "show.json.jb", status: 201
+    end
+  end
+
+  def show
+    @reviewer = Reviewers.find_by!(
+      grant_id: params[:grant_id],
+      user_id: params[:id],
+    )
+    render "show.json.jb"
+  end
+
+# update currently not needed, may build out for more functionality
+#   def update
+#     @reviewer = Reviewer.find_by!(
+#       id: params[:id],
+#       organization_id: params[:organization_id],
+#     )
+
+#     @reviewer.grant_id = params[:grant_id] || @reviewer.grant_id
+#     @reviewer.user_id = params[:user_id] ? @reviewer.user_id : params[:user_id]
+#     @reviewer.save!
+
+#     render "show.json.jb"
+#   end
+
+  def destroy
+    @reviewer = Reviewer.find_by!(
+      id: params[:id],
+      organization_id: params[:organization_id],
+    )
+    @reviewer.destroy!
+
+    render "show.json.jb"
+  end
+end
