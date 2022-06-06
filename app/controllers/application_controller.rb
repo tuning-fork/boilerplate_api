@@ -44,9 +44,29 @@ class ApplicationController < ActionController::Base
     @organization = Organization.find(params[:organization_id])
   end
 
+  def ensure_organization_exists
+    @organization = Organization.find(params[:organization_id])
+    @organization ||= Organization.find!(
+      organization_uuid: params[:organization_id],
+    )
+  end
+
   def ensure_user_is_in_organization(organization_id = params[:organization_id] || params[:id])
     unless current_user.is_in_organization?(organization_id)
       raise ActiveRecord::RecordNotFound
     end
+  end
+
+  def ensure_grant_exists
+    # We're searching by both the ID and organization ID to prevent someone on
+    # Organization A performing operations on Organization B
+    @grant = Grant.find_by(
+      organization_id: params[:organization_id],
+      id: params[:grant_id],
+    )
+    @grant ||= Grant.find_by!(
+      organization_uuid: params[:organization_id],
+      uuid: params[:grant_id],
+    )
   end
 end

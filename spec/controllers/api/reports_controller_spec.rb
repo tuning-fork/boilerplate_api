@@ -483,7 +483,7 @@ describe Api::ReportsController do
   end
   
   # tests using uuid
-  xdescribe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports" do
+  describe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports" do
     it "renders 401 if unauthenticated" do
       get :index, params: {
         organization_id: good_place.uuid,

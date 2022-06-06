@@ -5,6 +5,14 @@ class Api::ReportsController < ApplicationController
     @reports = Report
       .where(grant_id: params[:grant_id])
       .order(id: :asc)
+    
+    @reports = if @reports.empty?
+      Report
+        .where(grant_uuid: params[:grant_id])
+        .order(id: :asc)
+    else 
+      @reports
+    end
 
     render "index.json.jb"
   end
@@ -51,14 +59,5 @@ class Api::ReportsController < ApplicationController
     @report.destroy!
 
     render "show.json.jb"
-  end
-
-  private
-
-  def ensure_grant_exists
-    @grant = Grant.find_by!(
-      organization_id: params[:organization_id],
-      id: params[:grant_id],
-    )
   end
 end
