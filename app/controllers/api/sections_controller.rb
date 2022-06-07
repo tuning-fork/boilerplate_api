@@ -7,16 +7,9 @@ class Api::SectionsController < ApplicationController
   end
 
   def create
-    grant = Grant.find_by(
-      if Uuid.validate?(params[:grant_id])
-        { uuid: params[:grant_id] }
-      else
-        { id: params[:grant_id] }
-      end
-    )
     @section = Section.create!(
-      grant_id: grant&.id,
-      grant_uuid: grant&.uuid,
+      grant_id: @grant.id,
+      grant_uuid: @grant.uuid,
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
@@ -44,16 +37,9 @@ class Api::SectionsController < ApplicationController
         { id: params[:id], grant_id: params[:grant_id] }
       end
     )
-    grant = Grant.find_by(
-      if Uuid.validate?(params[:grant_id])
-        { uuid: params[:grant_id] }
-      else
-        { id: params[:grant_id] }
-      end
-    )
 
-    @section.grant_id = grant&.id || @section.grant_id
-    @section.grant_uuid = grant&.uuid || @section.grant_uuid
+    @section.grant_id = @grant&.id || @section.grant_id
+    @section.grant_uuid = @grant&.uuid || @section.grant_uuid
     @section.title = params[:title] || @section.title
     @section.text = params[:text] || @section.text
     @section.wordcount = params[:wordcount] || @section.wordcount
@@ -75,18 +61,5 @@ class Api::SectionsController < ApplicationController
     @section.destroy!
 
     render "show.json.jb"
-  end
-
-  private
-
-  def ensure_grant_exists
-    @grant = Grant.find_by(
-      organization_id: params[:organization_id],
-      id: params[:grant_id],
-    )
-    @grant ||= Grant.find_by!(
-      organization_uuid: params[:organization_id],
-      uuid: params[:grant_id],
-    )
   end
 end

@@ -557,7 +557,7 @@ describe Api::ReportsController do
     end
   end
 
-  xdescribe "POST /organizations/:organization_uuid/grants/:grant_uuid/reports" do
+  describe "POST /organizations/:organization_uuid/grants/:grant_uuid/reports" do
     let(:new_report_params) {
       {
         organization_id: good_place.uuid,
@@ -632,7 +632,7 @@ describe Api::ReportsController do
     end
   end
 
-  xdescribe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
+  describe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
     let(:report) {
       Report.create!({
         grant: good_place.grants.first,
@@ -714,7 +714,7 @@ describe Api::ReportsController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
+  describe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
     let(:report) {
       Report.create!({
         grant: good_place.grants.first,
@@ -815,7 +815,7 @@ describe Api::ReportsController do
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
+  describe "DELETE /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid" do
     let(:report) {
       Report.create!({
         grant: good_place.grants.first,
