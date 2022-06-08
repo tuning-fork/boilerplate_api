@@ -1,4 +1,5 @@
 class Reviewer < ApplicationRecord
-  belongs_to :grants
-  belongs_to :users
+  belongs_to :grant
+  belongs_to :user
 end
+ 
