@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   has_many :organization_users
   has_many :organizations, through: :organization_users
+  has_many :reviewers
   has_many :grants, through: :reviewers
 
   has_secure_password
