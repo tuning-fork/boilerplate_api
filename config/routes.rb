@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     post '/forgot_password' => "passwords#forgot"
     post '/reset_password' => "passwords#reset"
 
+    post '/contact_us' => "contact#create"
+
     resources :users, only: [:create, :update]
 
     resources :organizations do
