@@ -10,9 +10,12 @@ class Api::ContactsController < ApplicationController
     def create
       @contact = Contact.create!(
         name: params[:name],
-        users: [current_user],
+        title: params[:title],
+        email: params[:email],
+        organization_name: params[:organization_name],
+        message: params[:message],
       )
-      logger.info("New organization #{@contact} created by #{current_user}")
+      logger.info("New contact #{@contact} created")
       render "show.json.jb", status: 201
     end
   
