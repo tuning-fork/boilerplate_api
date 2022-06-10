@@ -44,13 +44,6 @@ class ApplicationController < ActionController::Base
     @organization = Organization.find(params[:organization_id])
   end
 
-  def ensure_organization_exists
-    @organization = Organization.find(params[:organization_id])
-    @organization ||= Organization.find!(
-      organization_uuid: params[:organization_id],
-    )
-  end
-
   def ensure_user_is_in_organization(organization_id = params[:organization_id] || params[:id])
     unless current_user.is_in_organization?(organization_id)
       raise ActiveRecord::RecordNotFound

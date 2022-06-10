@@ -345,7 +345,7 @@ describe Api::CategoriesController do
   end
   
   # tests using uuid
-  xdescribe "GET /organizations/:organization_uuid/categories" do
+  describe "GET /organizations/:organization_uuid/categories" do
     it "renders 401 if unauthenticated" do
       get :index, params: { organization_id: good_place.uuid }
 
@@ -391,7 +391,7 @@ describe Api::CategoriesController do
     end
   end
 
-  xdescribe "POST /organizations/:organization_uuid/categories" do
+  describe "POST /organizations/:organization_uuid/categories" do
     let(:new_category_fields) {
       {
         organization_id: good_place.uuid,
@@ -454,7 +454,7 @@ describe Api::CategoriesController do
     end
   end
 
-  xdescribe "GET /organizations/:organization_uuid/categories/:category_uuid" do
+  describe "GET /organizations/:organization_uuid/categories/:category_uuid" do
     it "renders 401 if unauthenticated" do
       get :show, params: {
         organization_id: good_place.uuid,
@@ -521,7 +521,7 @@ describe Api::CategoriesController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/categories/:category_uuid" do
+  describe "PATCH /organizations/:organization_uuid/categories/:category_uuid" do
     let(:updated_category_fields) {
       {
         organization_id: good_place.uuid,
@@ -601,7 +601,7 @@ describe Api::CategoriesController do
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_uuid/categories/:category_uuid" do
+  describe "DELETE /organizations/:organization_uuid/categories/:category_uuid" do
     it "renders 401 if unauthenticated" do
       delete :destroy, params: { organization_id: good_place.uuid, id: good_place.categories.first.uuid }
 

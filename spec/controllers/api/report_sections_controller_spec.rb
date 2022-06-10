@@ -89,7 +89,7 @@ describe Api::ReportSectionsController do
   }
 
   # tests using id
-  describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/sections" do
+  describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections" do
     let(:report) {
       good_place.grants.first.reports.first
     }
@@ -167,7 +167,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe "POST /organizations/:organization_id/grants/:grant_id/reports/:report_id/sections" do
+  describe "POST /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections" do
     let(:new_section_params) {
       {
         organization_id: good_place.id,
@@ -251,7 +251,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/sections/:section_id" do
+  describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
@@ -343,7 +343,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe "PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id/sections/:section_id" do
+  describe "PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
@@ -455,7 +455,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe "DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id/sections/:section_id" do
+  describe "DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
@@ -548,7 +548,7 @@ describe Api::ReportSectionsController do
   end
 
   # tests using uuid
-  xdescribe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/sections" do
+  describe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/report_sections" do
     let(:report) {
       good_place.grants.first.reports.first
     }
@@ -626,7 +626,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  xdescribe "POST /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/sections" do
+  describe "POST /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/report_sections" do
     let(:new_section_params) {
       {
         organization_id: good_place.uuid,
@@ -710,7 +710,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  xdescribe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/sections/:section_uuid" do
+  describe "GET /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/report_sections/:section_uuid" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
@@ -802,7 +802,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  xdescribe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/sections/:section_uuid" do
+  describe "PATCH /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/report_sections/:section_uuid" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
@@ -914,7 +914,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  xdescribe "DELETE /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/sections/:section_uuid" do
+  describe "DELETE /organizations/:organization_uuid/grants/:grant_uuid/reports/:report_uuid/report_sections/:section_uuid" do
     let(:section) {
       ReportSection.create!({
         report: good_place.grants.first.reports.first,
