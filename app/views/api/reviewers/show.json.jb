@@ -1,1 +1,1 @@
-render partial: "reviewers.json.jb", locals: { reviewer: @reviewer }
+render partial: "reviewer.json.jb", locals: { reviewer: @reviewer }

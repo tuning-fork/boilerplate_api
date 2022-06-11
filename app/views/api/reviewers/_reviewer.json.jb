@@ -1,1 +1,9 @@
-render partial: "api/users/user.json.jb", locals: {user: @reviewer.user}
+{
+  id: reviewer.id,
+  grant_id: reviewer.grant_id,
+  user_id: reviewer.user_id,
+  user_first_name: reviewer.user.first_name,
+  user_last_name: reviewer.user.last_name,
+  created_at: reviewer.created_at,
+  updated_at: reviewer.updated_at,
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_18_182512) do
+ActiveRecord::Schema.define(version: 2022_06_10_202949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(version: 2022_05_18_182512) do
     t.boolean "archived", default: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.uuid "organization_uuid"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.string "email"
+    t.string "organization_name"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "funding_orgs", force: :cascade do |t|
@@ -111,13 +121,11 @@ ActiveRecord::Schema.define(version: 2022_05_18_182512) do
     t.uuid "grant_uuid"
   end
 
-  create_table "reviewers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "grants_id", null: false
-    t.bigint "users_id", null: false
+  create_table "reviewers", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "grant_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["grants_id"], name: "index_reviewers_on_grants_id"
-    t.index ["users_id"], name: "index_reviewers_on_users_id"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -146,6 +154,4 @@ ActiveRecord::Schema.define(version: 2022_05_18_182512) do
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
-  add_foreign_key "reviewers", "grants", column: "grants_id"
-  add_foreign_key "reviewers", "users", column: "users_id"
 end
