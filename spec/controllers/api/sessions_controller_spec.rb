@@ -38,12 +38,13 @@ describe Api::SessionsController do
       expect(response).to have_http_status(201)
 
       expect(JSON.parse(response.body).keys).to contain_exactly(
-        "jwt", "email", "user_id"
+        "jwt", "email", "user_id", "user_uuid"
       )
       expect(JSON.parse(response.body)).to match(
         "jwt" => kind_of(String),
         "email" => user.email,
         "user_id" => user.id,
+        "user_uuid" => user.uuid,
       )
     end
   end
@@ -79,6 +80,7 @@ describe Api::SessionsController do
       expect(JSON.parse(response.body)).to eq(
         "user" => {
           "id" => user.id,
+          "uuid" => user.uuid,
           "first_name" => user.first_name,
           "last_name" => user.last_name,
           "email" => user.email,
