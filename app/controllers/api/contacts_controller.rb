@@ -1,5 +1,4 @@
 class Api::ContactsController < ApplicationController
-  
     def index
       @contacts = Contact
         .order(:name)
