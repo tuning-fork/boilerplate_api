@@ -48,6 +48,36 @@ class Api::ReviewersController < ApplicationController
     @reviewer.destroy!
   end 
 
+  def save_selected_reviewers
+    @selected_reviewers = params[:reviewers]
+    grant = Grant.find_by(
+      if Uuid.validate?(params[:grant_id])
+        { uuid: params[:grant_id] }
+      else
+        { id: params[:grant_id] }
+      end
+    )
+    @reviewers = grant.reviewers
+    @reviewers.each do |reviewer|
+      #if a reviewer is not in selected_reviewers, run delete
+      unless selected_reviewers.include(reviewer) do 
+        @reviewer.destroy!
+      end 
+    end 
+    @selected_reviewers.each do |selected_reviewer|
+      #if a selected_reviewer is not in reviewers, run create
+      unless reviewers.include(selected_reviewer) do 
+        @reviewer = Reviewer.create!(
+          grant_id: params[grant_id],
+          user_id: selected_reviewer.id,
+        )
+      end 
+    end 
+    p "all new reviewer selections saved!!"
+      p grant.reviewers
+      render "index.json.jb", status: 201
+  end 
+
   private
 
   def ensure_grant_exists

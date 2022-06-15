@@ -22,8 +22,14 @@ Rails.application.routes.draw do
       end
     end
 
+    # route for bulk adding/deleting to update saved reviewer selections (grant reviewers on grants show)
+    post "/organizations/:organization_id/grants/:grant_id/reviewers/save_selected_reviewers" => "reviewers#save_selected_reviewers"
+
+    #route for copying grants
     post "/organizations/:organization_id/grants/:grant_id/copy" => "grants#copy"
+    #route for reordering grant sections
     patch "/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id" => "grants#reorder_section"
+    #route for finalizing reports (WIP)
     get "/organizations/:organization_id/reports-finalize/:id" => "reports#show"
   end
 end
