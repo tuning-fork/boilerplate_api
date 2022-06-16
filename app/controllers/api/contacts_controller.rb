@@ -15,6 +15,7 @@ class Api::ContactsController < ApplicationController
         message: params[:message],
       )
       logger.info("New contact #{@contact} created")
+      @contact.send_contact_email(@contact)
       render "show.json.jb", status: 201
     end
   
