@@ -5,13 +5,22 @@ class Api::ReportsController < ApplicationController
     @reports = Report
       .where(grant_id: params[:grant_id])
       .order(id: :asc)
+    
+    @reports = if @reports.empty?
+      Report
+        .where(grant_uuid: params[:grant_id])
+        .order(id: :asc)
+    else 
+      @reports
+    end
 
     render "index.json.jb"
   end
 
   def create
     @report = Report.create!(
-      grant_id: params[:grant_id],
+      grant_id: @grant.id,
+      grant_uuid: @grant.uuid,
       title: params[:title],
       deadline: params[:deadline],
       submitted: params[:submitted],
@@ -21,19 +30,26 @@ class Api::ReportsController < ApplicationController
 
   def show
     @report = Report.find_by!(
-      id: params[:id],
-      grant_id: params[:grant_id],
+      if Uuid.validate?(params[:id])
+        { uuid: params[:id], grant_uuid: params[:grant_id] }
+      else
+        { id: params[:id], grant_id: params[:grant_id] }
+      end
     )
     render 'show.json.jb'
   end
 
   def update
     @report = Report.find_by!(
-      id: params[:id],
-      grant_id: params[:grant_id],
+      if Uuid.validate?(params[:id])
+        { uuid: params[:id], grant_uuid: params[:grant_id] }
+      else
+        { id: params[:id], grant_id: params[:grant_id] }
+      end
     )
 
-    @report.grant_id = params[:name] || @report.grant_id
+    @report.grant_id = @grant&.id || @report.grant_id
+    @report.grant_uuid = @grant&.uuid || @report.grant_uuid
     @report.title = params[:title] || @report.title
     @report.deadline = params[:deadline] || @report.deadline
     @report.submitted = params[:submitted].nil? ? @report.submitted : params[:submitted]
@@ -45,20 +61,14 @@ class Api::ReportsController < ApplicationController
 
   def destroy
     @report = Report.find_by!(
-      id: params[:id],
-      grant_id: params[:grant_id],
+      if Uuid.validate?(params[:id])
+        { uuid: params[:id], grant_uuid: params[:grant_id] }
+      else
+        { id: params[:id], grant_id: params[:grant_id] }
+      end
     )
     @report.destroy!
 
     render "show.json.jb"
-  end
-
-  private
-
-  def ensure_grant_exists
-    @grant = Grant.find_by!(
-      organization_id: params[:organization_id],
-      id: params[:grant_id],
-    )
   end
 end

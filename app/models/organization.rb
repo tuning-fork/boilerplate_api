@@ -1,4 +1,6 @@
 class Organization < ApplicationRecord
+  include TempUuidFallback
+
   validates :name, length: { in: 2..60 }
 
   has_many :boilerplates

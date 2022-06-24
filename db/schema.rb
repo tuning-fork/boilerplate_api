@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_061044) do
+ActiveRecord::Schema.define(version: 2022_04_17_230512) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "boilerplates", force: :cascade do |t|
@@ -24,6 +25,9 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_uuid"
+    t.uuid "category_uuid"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -32,6 +36,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_uuid"
   end
 
   create_table "funding_orgs", force: :cascade do |t|
@@ -41,6 +47,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_uuid"
   end
 
   create_table "grants", force: :cascade do |t|
@@ -55,6 +63,9 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "purpose"
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_uuid"
+    t.uuid "funding_org_uuid"
   end
 
   create_table "organization_users", force: :cascade do |t|
@@ -62,6 +73,9 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_uuid"
+    t.uuid "user_uuid"
     t.index ["organization_id", "user_id"], name: "index_organization_users_on_organization_id_and_user_id", unique: true
   end
 
@@ -69,6 +83,7 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
   create_table "report_sections", force: :cascade do |t|
@@ -80,6 +95,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "report_uuid"
   end
 
   create_table "reports", force: :cascade do |t|
@@ -90,6 +107,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "grant_uuid"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -101,6 +120,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
     t.boolean "archived", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "grant_uuid"
   end
 
   create_table "users", force: :cascade do |t|
@@ -113,6 +134,7 @@ ActiveRecord::Schema.define(version: 2022_02_25_061044) do
     t.boolean "active"
     t.string "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
 end

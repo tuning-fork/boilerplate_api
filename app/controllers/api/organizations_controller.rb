@@ -21,12 +21,12 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def show
-    @organization = Organization.find_by!(id: params[:id])
+    @organization = Organization.find(params[:id])
     render "show.json.jb"
   end
 
   def update
-    @organization = Organization.find_by!(id: params[:id])
+    @organization = Organization.find(params[:id])
     @organization.name = params[:name]
     @organization.save!
 
@@ -34,7 +34,7 @@ class Api::OrganizationsController < ApplicationController
   end
 
   def destroy
-    @organization = Organization.find_by!(id: params[:id])
+    @organization = Organization.find(params[:id])
     @organization.destroy!
 
     render "show.json.jb"

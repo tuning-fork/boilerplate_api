@@ -4,14 +4,36 @@ class Api::BoilerplatesController < ApplicationController
 
   def index
     @boilerplates = Boilerplate.where(organization_id: params[:organization_id])
+    
+    @boilerplates = if @boilerplates.empty?
+      Boilerplate.where(organization_uuid: params[:organization_id])
+    else 
+      @boilerplates
+    end
 
     render "index.json.jb"
   end
 
   def create
+    organization = Organization.find_by(
+      if Uuid.validate?(params[:organization_id])
+        { uuid: params[:organization_id] }
+      else
+        { id: params[:organization_id] }
+      end
+    )
+    category = Category.find_by(
+      if Uuid.validate?(params[:category_id])
+        { uuid: params[:category_id] }
+      else
+        { id: params[:category_id] }
+      end
+    )
     @boilerplate = Boilerplate.create!(
-      organization_id: params[:organization_id],
-      category_id: params[:category_id],
+      organization_id: organization&.id,
+      organization_uuid: organization&.uuid,
+      category_id: category&.id,
+      category_uuid: category&.uuid,
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
@@ -24,7 +46,16 @@ class Api::BoilerplatesController < ApplicationController
   end
 
   def update
-    @boilerplate.category_id = params[:category_id] || @boilerplate.category_id
+    category = Category.find_by(
+      if Uuid.validate?(params[:category_id])
+        { uuid: params[:category_id] }
+      else
+        { id: params[:category_id] }
+      end
+    )
+
+    @boilerplate.category_id = category&.id || @boilerplate.category_id
+    @boilerplate.category_uuid = category&.uuid || @boilerplate.category_uuid
     @boilerplate.title = params[:title] || @boilerplate.title
     @boilerplate.text = params[:text] || @boilerplate.text
     @boilerplate.wordcount = params[:wordcount] || @boilerplate.wordcount
@@ -43,8 +74,11 @@ class Api::BoilerplatesController < ApplicationController
 
   def ensure_boilerplate_exists
     @boilerplate = Boilerplate.find_by!(
-      organization_id: params[:organization_id],
-      id: params[:id],
+      if Uuid.validate?(params[:id])
+        { uuid: params[:id], organization_uuid: params[:organization_id] }
+      else
+        { id: params[:id], organization_id: params[:organization_id] }
+      end
     )
   end
 end

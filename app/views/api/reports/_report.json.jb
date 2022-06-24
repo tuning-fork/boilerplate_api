@@ -1,6 +1,8 @@
 {
   id: report.id,
   grant_id: report.grant_id,
+  uuid: report.uuid,
+  grant_uuid: report.grant_uuid,
   title: report.title,
   deadline: report.deadline,
   submitted: report.submitted,

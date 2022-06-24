@@ -1,6 +1,8 @@
 {
   id: section.id,
+  uuid: section.uuid,
   grant_id: section.grant_id,
+  grant_uuid: section.grant_uuid,
   title: section.title,
   text: section.text,
   wordcount: section.wordcount,

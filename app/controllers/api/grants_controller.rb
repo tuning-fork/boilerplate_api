@@ -5,15 +5,34 @@ class Api::GrantsController < ApplicationController
     @grants = Grant
       .where(organization_id: params[:organization_id])
       .order(id: :desc)
+    
+    @grants = if @grants.empty?
+      Grant
+        .where(organization_uuid: params[:organization_id])
+        .order(id: :desc)
+    else 
+      @grants
+    end
 
     render "index.json.jb"
   end
 
   def create
+    organization = Organization.find(params[:organization_id])
+    funding_org = FundingOrg.find_by(
+      if Uuid.validate?(params[:funding_org_id])
+        { uuid: params[:funding_org_id] }
+      else
+        { id: params[:funding_org_id] }
+      end
+    )
+
     @grant = Grant.create!(
-      organization_id: params[:organization_id],
+      organization_id: organization.id,
+      organization_uuid: organization.uuid,
       title: params[:title],
-      funding_org_id: params[:funding_org_id],
+      funding_org_id: funding_org&.id,
+      funding_org_uuid: funding_org&.uuid,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
       submitted: params[:submitted],
@@ -58,9 +77,17 @@ class Api::GrantsController < ApplicationController
 
   def update
     @grant = Grant.find(params[:id])
+    funding_org = FundingOrg.find_by(
+      if Uuid.validate?(params[:funding_org_id])
+        { uuid: params[:funding_org_id] }
+      else
+        { id: params[:funding_org_id] }
+      end
+    )
 
     @grant.title = params[:title] || @grant.title
-    @grant.funding_org_id = params[:funding_org_id] || @grant.funding_org_id
+    @grant.funding_org_id = funding_org&.id || @grant.funding_org_id
+    @grant.funding_org_uuid = funding_org&.uuid || @grant.funding_org_uuid
     @grant.rfp_url = params[:rfp_url] || @grant.rfp_url
     @grant.deadline = params[:deadline] || @grant.deadline
     @grant.submitted = params[:submitted].nil? ? @grant.submitted : params[:submitted]

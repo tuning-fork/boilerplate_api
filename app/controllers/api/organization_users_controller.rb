@@ -8,29 +8,34 @@ class Api::OrganizationUsersController < ApplicationController
   end
 
   def create
-    user = User.find(params[:user_id])
+    user = User.find(params[:id])
+    organization = Organization.find(params[:organization_id])
 
     @organization_user = OrganizationUser.find_by(
-      organization_id: params[:organization_id],
-      user: params[:user_id],
+      if Uuid.validate?(params[:organization_id])
+        { organization_uuid: params[:organization_id], user_uuid: params[:id] }
+      else
+        { organization_id: params[:organization_id], user_id: params[:id] }
+      end
     )
 
-    if @organization_user
-      render "show.json.jb", status: 200
-    else
-      @organization_user = OrganizationUser.create!(
-        organization_id: params[:organization_id],
-        user: user,
-      )
+    @organization_user = OrganizationUser.create!(
+      organization: organization,
+      user: user,
+    )
 
-      render "show.json.jb", status: 201
-    end
+    render "show.json.jb", status: 201
+  rescue ActiveRecord::RecordNotUnique => e
+    render "show.json.jb", status: 200
   end
 
   def show
     @organization_user = OrganizationUser.find_by!(
-      organization_id: params[:organization_id],
-      user_id: params[:id],
+      if Uuid.validate?(params[:organization_id])
+        { organization_uuid: params[:organization_id], user_uuid: params[:id] }
+      else
+        { organization_id: params[:organization_id], user_id: params[:id] }
+      end
     )
     render "show.json.jb"
   end

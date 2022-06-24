@@ -1,9 +1,12 @@
 {
   id: grant.id,
+  uuid: grant.uuid,
   organization_id: grant.organization_id,
+  organization_uuid: grant.organization_uuid,
   organization_name: grant.organization.name,
   title: grant.title,
   funding_org_id: grant.funding_org_id,
+  funding_org_uuid: grant.funding_org_uuid,
   funding_org_url: grant.funding_org.website,
   funding_org_name: grant.funding_org.name,
   rfp_url: grant.rfp_url,
