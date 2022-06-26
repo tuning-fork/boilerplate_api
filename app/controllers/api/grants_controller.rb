@@ -47,10 +47,22 @@ class Api::GrantsController < ApplicationController
     grant_to_copy = Grant.find(params[:grant_id])
     sections_to_copy = Section.where(grant_id: params[:grant_id])
 
+    organization = Organization.find(params[:organization_id])
+
+    funding_org = FundingOrg.find_by(
+      if Uuid.validate?(params[:funding_org_id])
+        { uuid: params[:funding_org_id] }
+      else
+        { id: params[:funding_org_id] }
+      end
+    )
+
     @grant = Grant.create!(
-      organization_id: grant_to_copy.organization_id,
+      organization_id: organization.id,
+      organization_uuid: organization.uuid,
       title: params[:title],
-      funding_org_id: params[:funding_org_id] || grant_to_copy.funding_org_id,
+      funding_org_id: funding_org&.id,
+      funding_org_uuid: funding_org&.uuid,
       rfp_url: params[:rfp_url],
       deadline: params[:deadline],
       purpose: params[:purpose],
