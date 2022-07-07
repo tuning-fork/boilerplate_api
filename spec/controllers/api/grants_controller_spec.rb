@@ -386,6 +386,7 @@ describe Api::GrantsController do
       {
         organization_id: good_place.id,
         grant_id: good_place.grants.first.id,
+        funding_org_id: good_place.grants.first.funding_org.id,
         title: "Good Place Neighborhood Grant (copy)",
         rfp_url: "https://newgrant",
         deadline: DateTime.now.next_week.utc.iso8601(3),
@@ -843,6 +844,7 @@ describe Api::GrantsController do
       {
         organization_id: good_place.uuid,
         grant_id: good_place.grants.first.uuid,
+        funding_org_id: good_place.grants.first.funding_org.uuid,
         title: "Good Place Neighborhood Grant (copy)",
         rfp_url: "https://newgrant",
         deadline: DateTime.now.next_week.utc.iso8601(3),

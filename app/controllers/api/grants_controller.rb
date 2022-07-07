@@ -45,8 +45,6 @@ class Api::GrantsController < ApplicationController
 
   def copy
     grant_to_copy = Grant.find(params[:grant_id])
-    sections_to_copy = Section.where(grant_id: params[:grant_id])
-
     organization = Organization.find(params[:organization_id])
 
     funding_org = FundingOrg.find_by(
@@ -69,7 +67,7 @@ class Api::GrantsController < ApplicationController
       submitted: false,
       successful: false,
       archived: false,
-      sections: sections_to_copy.map do |section|
+      sections: grant_to_copy.sections.map do |section|
         Section.new(
           title: section.title,
           text: section.text,
