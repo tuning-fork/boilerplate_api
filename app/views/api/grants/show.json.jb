@@ -17,7 +17,6 @@ grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 
 grant_hash[:sections] = @grant.sections.sort_by(&:sort_order).map do |section|
   { id: section.id,
-  uuid: section.uuid,
    title: section.title,
    text: section.text,
    wordcount: section.wordcount,
@@ -29,7 +28,6 @@ end
 
 grant_hash[:reports] = @grant.reports.map do |report|
   { id: report.id,
-  uuid: report.uuid,
     title: report.title,
     deadline: report.deadline,
     submitted: report.submitted,
@@ -38,7 +36,6 @@ end
 
 grant_hash[:funding_org] = {
   id: @grant.funding_org.id,
-  uuid: @grant.funding_org.uuid,
   name: @grant.funding_org.name,
   website: @grant.funding_org.website,
 }

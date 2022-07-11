@@ -10,51 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_17_230512) do
+ActiveRecord::Schema.define(version: 2022_07_10_223347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "boilerplates", force: :cascade do |t|
-    t.integer "organization_id"
-    t.integer "category_id"
+  create_table "boilerplates", id: false, force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.integer "wordcount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "organization_uuid"
-    t.uuid "category_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_id"
+    t.uuid "category_id"
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.integer "organization_id"
+  create_table "categories", id: false, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "organization_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_id"
   end
 
-  create_table "funding_orgs", force: :cascade do |t|
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.string "email"
+    t.string "organization_name"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "funding_orgs", id: false, force: :cascade do |t|
     t.string "website"
     t.string "name"
-    t.integer "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "organization_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_id"
   end
 
-  create_table "grants", force: :cascade do |t|
-    t.integer "organization_id"
+  create_table "grants", id: false, force: :cascade do |t|
     t.string "title"
-    t.integer "funding_org_id"
     t.string "rfp_url"
     t.datetime "deadline"
     t.boolean "submitted"
@@ -63,31 +67,27 @@ ActiveRecord::Schema.define(version: 2022_04_17_230512) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "purpose"
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "organization_uuid"
-    t.uuid "funding_org_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_id"
+    t.uuid "funding_org_id"
   end
 
-  create_table "organization_users", force: :cascade do |t|
-    t.integer "organization_id"
-    t.integer "user_id"
+  create_table "organization_users", id: false, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "organization_uuid"
-    t.uuid "user_uuid"
-    t.index ["organization_id", "user_id"], name: "index_organization_users_on_organization_id_and_user_id", unique: true
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "organization_id"
+    t.uuid "user_id"
   end
 
-  create_table "organizations", force: :cascade do |t|
+  create_table "organizations", id: false, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
   end
 
-  create_table "report_sections", force: :cascade do |t|
-    t.integer "report_id"
+  create_table "report_sections", id: false, force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.integer "sort_order"
@@ -95,24 +95,29 @@ ActiveRecord::Schema.define(version: 2022_04_17_230512) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "report_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "report_id"
   end
 
-  create_table "reports", force: :cascade do |t|
-    t.integer "grant_id"
+  create_table "reports", id: false, force: :cascade do |t|
     t.string "title"
     t.datetime "deadline"
     t.boolean "submitted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "grant_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "grant_id"
   end
 
-  create_table "sections", force: :cascade do |t|
+  create_table "reviewers", force: :cascade do |t|
+    t.integer "user_id"
     t.integer "grant_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "sections", id: false, force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.integer "sort_order"
@@ -120,11 +125,11 @@ ActiveRecord::Schema.define(version: 2022_04_17_230512) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "wordcount"
     t.boolean "archived", default: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "grant_uuid"
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "grant_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: false, force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "email"
@@ -134,7 +139,7 @@ ActiveRecord::Schema.define(version: 2022_04_17_230512) do
     t.boolean "active"
     t.string "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "id", default: -> { "gen_random_uuid()" }, null: false
   end
 
 end

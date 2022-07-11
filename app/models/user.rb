@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  include TempUuidFallback
-
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 5, wrong_length: "Password must be at least 5 characters." }, if: :password
@@ -32,9 +30,7 @@ class User < ApplicationRecord
   end
 
   def is_in_organization?(organization_id)
-    self.organizations.any? do |organization|
-      organization.id.to_s == organization_id.to_s || organization.uuid == organization_id
-    end
+    self.organizations.any? { |organization| organization.id == organization_id }
   end
 
   private

@@ -11,32 +11,22 @@ class Api::OrganizationUsersController < ApplicationController
     user = User.find(params[:id])
     organization = Organization.find(params[:organization_id])
 
-    @organization_user = OrganizationUser.find_by(
-      if Uuid.validate?(params[:organization_id])
-        { organization_uuid: params[:organization_id], user_uuid: params[:id] }
-      else
-        { organization_id: params[:organization_id], user_id: params[:id] }
-      end
-    )
-
+    p "Trying to add user to org #{user.first_name}"
     @organization_user = OrganizationUser.create!(
       organization: organization,
       user: user,
     )
-
+    p "Added user to org #{user.first_name}"
+    
     render "show.json.jb", status: 201
   rescue ActiveRecord::RecordNotUnique => e
+    p "Got record not uniqe err #{user.first_name}"
+    @organization_user = OrganizationUser.find_by(organization_id: params[:organization_id], user_id: params[:id])
     render "show.json.jb", status: 200
   end
 
   def show
-    @organization_user = OrganizationUser.find_by!(
-      if Uuid.validate?(params[:organization_id])
-        { organization_uuid: params[:organization_id], user_uuid: params[:id] }
-      else
-        { organization_id: params[:organization_id], user_id: params[:id] }
-      end
-    )
+    @organization_user = OrganizationUser.find_by!(organization_id: params[:organization_id], user_id: params[:id])
     render "show.json.jb"
   end
 end

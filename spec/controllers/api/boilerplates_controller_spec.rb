@@ -2,8 +2,8 @@ require "rails_helper"
 
 describe Api::BoilerplatesController do
   boilerplate_fields = %w(
-    id uuid created_at updated_at title text wordcount archived
-    organization_id organization_uuid organization_name category_id category_uuid category_name category organization
+    id created_at updated_at title text wordcount archived
+    organization_id organization_name category_id category_name category organization
   )
 
   before(:example) {
@@ -61,347 +61,11 @@ describe Api::BoilerplatesController do
     org
   }
 
-  # tests using id
+  let(:boilerplates) { good_place.boilerplates.order(:title) }
+
   describe "GET /organizations/:organization_id/boilerplates" do
     it "renders 401 if unauthenticated" do
       get :index, params: { organization_id: good_place.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if organization does not exist" do
-      get :index, params: { organization_id: "123" }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if not member of organization" do
-      shawn = User.find_by!(first_name: "Shawn")
-
-      set_auth_header(shawn)
-      get :index, params: { organization_id: good_place.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 200 with organization boilerplates" do
-      set_auth_header(chidi)
-      get :index, params: { organization_id: good_place.id }
-
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)).to match([
-        a_hash_including(
-          "id" => kind_of(Integer),
-          "created_at" => kind_of(String),
-          "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.first.title,
-          "text" => good_place.boilerplates.first.text,
-          "wordcount" => good_place.boilerplates.first.wordcount,
-          "organization_id" => good_place.id,
-          "organization_name" => good_place.name,
-          "category_id" => good_place.boilerplates.first.category.id,
-          "category_name" => good_place.boilerplates.first.category.name,
-          "archived" => good_place.boilerplates.first.archived,
-        ),
-        a_hash_including(
-          "id" => kind_of(Integer),
-          "created_at" => kind_of(String),
-          "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.second.title,
-          "text" => good_place.boilerplates.second.text,
-          "wordcount" => good_place.boilerplates.second.wordcount,
-          "organization_id" => good_place.id,
-          "organization_name" => good_place.name,
-          "category_id" => good_place.boilerplates.second.category.id,
-          "category_name" => good_place.boilerplates.second.category.name,
-          "archived" => good_place.boilerplates.second.archived,
-        ),
-      ])
-    end
-  end
-
-  describe "POST /organizations/:organization_id/boilerplates" do
-    let(:new_boilerplate_fields) {
-      {
-        organization_id: good_place.id,
-        category_id: good_place.categories.first.id,
-        text: "This is the boilerplate",
-        title: "New boilerplate",
-        wordcount: 4,
-      }
-    }
-
-    it "renders 401 if unauthenticated" do
-      post :create, params: new_boilerplate_fields
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if organization does not exist" do
-      get :index, params: { **new_boilerplate_fields, organization_id: "123" }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if not member of organization" do
-      shawn = User.find_by!(first_name: "Shawn")
-
-      set_auth_header(shawn)
-      post :create, params: new_boilerplate_fields
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 422 if given invalid or missing params" do
-      set_auth_header(chidi)
-      post :create, params: {
-        **new_boilerplate_fields,
-        title: "",
-      }
-
-      expect(response).to have_http_status(422)
-      expect(JSON.parse(response.body).keys).to contain_exactly("errors")
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "errors" => [match(/Title is too short/)],
-        ),
-      )
-    end
-
-    it "renders 201 with created boilerplate" do
-      set_auth_header(chidi)
-      post :create, params: new_boilerplate_fields
-
-      expect(response).to have_http_status(201)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "id" => kind_of(Integer),
-          "created_at" => kind_of(String),
-          "updated_at" => kind_of(String),
-          "organization_id" => good_place.id,
-          "organization_name" => good_place.name,
-          "category_id" => good_place.boilerplates.first.category.id,
-          "category_name" => good_place.boilerplates.first.category.name,
-          "text" => new_boilerplate_fields[:text],
-          "title" => new_boilerplate_fields[:title],
-          "wordcount" => new_boilerplate_fields[:wordcount],
-          "archived" => false,
-        ),
-      )
-    end
-  end
-
-  describe "GET /organizations/:organization_id/boilerplates/:boilerplate_id" do
-    it "renders 401 if unauthenticated" do
-      get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.boilerplates.first.id,
-      }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if organization does not exist" do
-      get :show, params: {
-        organization_id: "123",
-        id: good_place.boilerplates.first.id,
-      }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if boilerplate does not exist" do
-      set_auth_header(chidi)
-      get :show, params: {
-        organization_id: good_place.id,
-        id: "123",
-      }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if not member of organization" do
-      shawn = User.find_by!(first_name: "Shawn")
-      set_auth_header(shawn)
-
-      get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.boilerplates.first.id,
-      }
-      expect(response).to have_http_status(401)
-
-      get :show, params: {
-        organization_id: shawn.organizations.first.id,
-        id: good_place.boilerplates.first.id,
-      }
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 200 with boilerplate" do
-      set_auth_header(chidi)
-      get :show, params: {
-        organization_id: good_place.id,
-        id: good_place.boilerplates.first.id,
-      }
-
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "id" => kind_of(Integer),
-          "created_at" => kind_of(String),
-          "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.first.title,
-          "text" => good_place.boilerplates.first.text,
-          "wordcount" => good_place.boilerplates.first.wordcount,
-          "archived" => good_place.boilerplates.first.archived,
-        ),
-      )
-    end
-  end
-
-  describe "PATCH /organizations/:organization_id/boilerplates/:boilerplate_id" do
-    let(:updated_boilerplate_fields) {
-      {
-        organization_id: good_place.id,
-        id: good_place.boilerplates.first.id,
-        title: "Updated Bio",
-        text: "This is the updated boilerplate",
-        wordcount: 5,
-      }
-    }
-
-    it "renders 401 if unauthenticated" do
-      patch :update, params: updated_boilerplate_fields
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if organization does not exist" do
-      set_auth_header(chidi)
-      patch :update, params: {
-        **updated_boilerplate_fields,
-        organization_id: "123",
-      }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if boilerplate does not exist" do
-      set_auth_header(chidi)
-      patch :update, params: {
-        **updated_boilerplate_fields,
-        id: "123",
-      }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if not member of organization" do
-      shawn = User.find_by!(first_name: "Shawn")
-      set_auth_header(shawn)
-
-      patch :update, params: updated_boilerplate_fields
-      expect(response).to have_http_status(401)
-
-      patch :update, params: { **updated_boilerplate_fields, organization_id: shawn.organizations.first.id }
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 422 if given invalid or missing params" do
-      set_auth_header(chidi)
-      patch :update, params: {
-        **updated_boilerplate_fields,
-        title: "",
-      }
-
-      expect(response).to have_http_status(422)
-      expect(JSON.parse(response.body).keys).to contain_exactly("errors")
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "errors" => [match(/Title is too short/)],
-        ),
-      )
-    end
-
-    it "renders 200 with updated boilerplate" do
-      set_auth_header(chidi)
-      patch :update, params: updated_boilerplate_fields
-
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "id" => kind_of(Integer),
-          "created_at" => kind_of(String),
-          "updated_at" => kind_of(String),
-          "archived" => good_place.boilerplates.first.archived,
-          "title" => updated_boilerplate_fields[:title],
-          "text" => updated_boilerplate_fields[:text],
-          "wordcount" => updated_boilerplate_fields[:wordcount],
-        ),
-      )
-    end
-  end
-
-  describe "DELETE /organizations/:organization_id/boilerplates/:boilerplate_id" do
-    it "renders 401 if unauthenticated" do
-      delete :destroy, params: { organization_id: good_place.id, id: good_place.boilerplates.first.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if organization does not exist" do
-      set_auth_header(chidi)
-      delete :destroy, params: { organization_id: "123", id: good_place.boilerplates.first.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if boilerplate does not exist" do
-      set_auth_header(chidi)
-      delete :destroy, params: { organization_id: good_place.id, id: "123" }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 401 if not member of organization" do
-      shawn = User.find_by!(first_name: "Shawn")
-      set_auth_header(shawn)
-
-      delete :destroy, params: { organization_id: good_place.id, id: good_place.boilerplates.first.id }
-      expect(response).to have_http_status(401)
-
-      delete :destroy, params: { organization_id: shawn.organizations.first.id, id: good_place.boilerplates.first.id }
-      expect(response).to have_http_status(401)
-    end
-
-    it "renders 200 with deleted boilerplate" do
-      boilerplate = good_place.boilerplates.first
-
-      set_auth_header(chidi)
-      delete :destroy, params: { organization_id: good_place.id, id: boilerplate.id }
-
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          "id" => boilerplate.id,
-          "created_at" => boilerplate.created_at.iso8601(3),
-          "updated_at" => boilerplate.updated_at.iso8601(3),
-          "title" => boilerplate.title,
-          "text" => boilerplate.text,
-          "wordcount" => boilerplate.wordcount,
-          "archived" => boilerplate.archived,
-        ),
-      )
-    end
-  end
-
-  # tests using uuid
-  describe "GET /organizations/:organization_uuid/boilerplates" do
-    it "renders 401 if unauthenticated" do
-      get :index, params: { organization_id: good_place.uuid }
 
       expect(response).to have_http_status(401)
     end
@@ -416,52 +80,52 @@ describe Api::BoilerplatesController do
       shawn = User.find_by!(first_name: "Shawn")
 
       set_auth_header(shawn)
-      get :index, params: { organization_id: good_place.uuid }
+      get :index, params: { organization_id: good_place.id }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 200 with organization boilerplates" do
       set_auth_header(chidi)
-      get :index, params: { organization_id: good_place.uuid }
+      get :index, params: { organization_id: good_place.id }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
-          "uuid" => kind_of(String),
+          "id" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.first.title,
-          "text" => good_place.boilerplates.first.text,
-          "wordcount" => good_place.boilerplates.first.wordcount,
-          "organization_uuid" => good_place.uuid,
+          "title" => boilerplates.first.title,
+          "text" => boilerplates.first.text,
+          "wordcount" => boilerplates.first.wordcount,
+          "organization_id" => good_place.id,
           "organization_name" => good_place.name,
-          "category_uuid" => good_place.boilerplates.first.category.uuid,
-          "category_name" => good_place.boilerplates.first.category.name,
-          "archived" => good_place.boilerplates.first.archived,
+          "category_id" => boilerplates.first.category.id,
+          "category_name" => boilerplates.first.category.name,
+          "archived" => boilerplates.first.archived,
         ),
         a_hash_including(
-          "uuid" => kind_of(String),
+          "id" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.second.title,
-          "text" => good_place.boilerplates.second.text,
-          "wordcount" => good_place.boilerplates.second.wordcount,
-          "organization_uuid" => good_place.uuid,
+          "title" => boilerplates.second.title,
+          "text" => boilerplates.second.text,
+          "wordcount" => boilerplates.second.wordcount,
+          "organization_id" => good_place.id,
           "organization_name" => good_place.name,
-          "category_uuid" => good_place.boilerplates.second.category.uuid,
-          "category_name" => good_place.boilerplates.second.category.name,
-          "archived" => good_place.boilerplates.second.archived,
+          "category_id" => boilerplates.second.category.id,
+          "category_name" => boilerplates.second.category.name,
+          "archived" => boilerplates.second.archived,
         ),
       ])
     end
   end
 
-  describe "POST /organizations/:organization_uuid/boilerplates" do
+  describe "POST /organizations/:organization_id/boilerplates" do
     let(:new_boilerplate_fields) {
       {
-        organization_id: good_place.uuid,
-        category_id: good_place.categories.first.uuid,
+        organization_id: good_place.id,
+        category_id: good_place.categories.first.id,
         text: "This is the boilerplate",
         title: "New boilerplate",
         wordcount: 4,
@@ -513,13 +177,13 @@ describe Api::BoilerplatesController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "uuid" => kind_of(String),
+          "id" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "organization_uuid" => good_place.uuid,
+          "organization_id" => good_place.id,
           "organization_name" => good_place.name,
-          "category_uuid" => good_place.boilerplates.first.category.uuid,
-          "category_name" => good_place.boilerplates.first.category.name,
+          "category_id" => boilerplates.first.category.id,
+          "category_name" => boilerplates.first.category.name,
           "text" => new_boilerplate_fields[:text],
           "title" => new_boilerplate_fields[:title],
           "wordcount" => new_boilerplate_fields[:wordcount],
@@ -529,11 +193,11 @@ describe Api::BoilerplatesController do
     end
   end
 
-  describe "GET /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "GET /organizations/:organization_id/boilerplates/:boilerplate_id" do
     it "renders 401 if unauthenticated" do
       get :show, params: {
-        organization_id: good_place.uuid,
-        id: good_place.boilerplates.first.uuid,
+        organization_id: good_place.id,
+        id: boilerplates.first.id,
       }
 
       expect(response).to have_http_status(401)
@@ -542,7 +206,7 @@ describe Api::BoilerplatesController do
     it "renders 401 if organization does not exist" do
       get :show, params: {
         organization_id: "3fa7d05f-2fed-4f2a-a8b8-a8aa19bf093b",
-        id: good_place.boilerplates.first.uuid,
+        id: boilerplates.first.id,
       }
 
       expect(response).to have_http_status(401)
@@ -551,7 +215,7 @@ describe Api::BoilerplatesController do
     it "renders 401 if boilerplate does not exist" do
       set_auth_header(chidi)
       get :show, params: {
-        organization_id: good_place.uuid,
+        organization_id: good_place.id,
         id: "b8635710-6f19-4ed0-a7b7-443fba9647a7",
       }
 
@@ -563,14 +227,14 @@ describe Api::BoilerplatesController do
       set_auth_header(shawn)
 
       get :show, params: {
-        organization_id: good_place.uuid,
-        id: good_place.boilerplates.first.uuid,
+        organization_id: good_place.id,
+        id: boilerplates.first.id,
       }
       expect(response).to have_http_status(401)
 
       get :show, params: {
-        organization_id: shawn.organizations.first.uuid,
-        id: good_place.boilerplates.first.uuid,
+        organization_id: shawn.organizations.first.id,
+        id: boilerplates.first.id,
       }
       expect(response).to have_http_status(401)
     end
@@ -578,32 +242,32 @@ describe Api::BoilerplatesController do
     it "renders 200 with boilerplate" do
       set_auth_header(chidi)
       get :show, params: {
-        organization_id: good_place.uuid,
-        id: good_place.boilerplates.first.uuid,
+        organization_id: good_place.id,
+        id: boilerplates.first.id,
       }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "uuid" => kind_of(String),
+          "id" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "title" => good_place.boilerplates.first.title,
-          "text" => good_place.boilerplates.first.text,
-          "wordcount" => good_place.boilerplates.first.wordcount,
-          "archived" => good_place.boilerplates.first.archived,
+          "title" => boilerplates.first.title,
+          "text" => boilerplates.first.text,
+          "wordcount" => boilerplates.first.wordcount,
+          "archived" => boilerplates.first.archived,
         ),
       )
     end
   end
 
-  describe "PATCH /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "PATCH /organizations/:organization_id/boilerplates/:boilerplate_id" do
     let(:updated_boilerplate_fields) {
       {
-        organization_id: good_place.uuid,
-        category_id: good_place.categories.second.uuid,
-        id: good_place.boilerplates.first.uuid,
+        organization_id: good_place.id,
+        category_id: good_place.categories.second.id,
+        id: boilerplates.first.id,
         title: "Updated Bio",
         text: "This is the updated boilerplate",
         wordcount: 5,
@@ -643,7 +307,7 @@ describe Api::BoilerplatesController do
       patch :update, params: updated_boilerplate_fields
       expect(response).to have_http_status(401)
 
-      patch :update, params: { **updated_boilerplate_fields, organization_id: shawn.organizations.first.uuid }
+      patch :update, params: { **updated_boilerplate_fields, organization_id: shawn.organizations.first.id }
       expect(response).to have_http_status(401)
     end
 
@@ -671,36 +335,36 @@ describe Api::BoilerplatesController do
       expect(JSON.parse(response.body).keys).to contain_exactly(*boilerplate_fields)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "uuid" => kind_of(String),
+          "id" => kind_of(String),
           "created_at" => kind_of(String),
           "updated_at" => kind_of(String),
-          "archived" => good_place.boilerplates.first.archived,
+          "archived" => boilerplates.first.archived,
           "title" => updated_boilerplate_fields[:title],
           "text" => updated_boilerplate_fields[:text],
           "wordcount" => updated_boilerplate_fields[:wordcount],
-          "category_uuid" => updated_boilerplate_fields[:category_id],
+          "category_id" => updated_boilerplate_fields[:category_id],
         ),
       )
     end
   end
 
-  describe "DELETE /organizations/:organization_uuid/boilerplates/:boilerplate_uuid" do
+  describe "DELETE /organizations/:organization_id/boilerplates/:boilerplate_id" do
     it "renders 401 if unauthenticated" do
-      delete :destroy, params: { organization_id: good_place.uuid, id: good_place.boilerplates.first.uuid }
+      delete :destroy, params: { organization_id: good_place.id, id: boilerplates.first.id }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if organization does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { organization_id: "ff623076-9b3a-474e-9ebc-5757cd3b4719", id: good_place.boilerplates.first.uuid }
+      delete :destroy, params: { organization_id: "ff623076-9b3a-474e-9ebc-5757cd3b4719", id: boilerplates.first.id }
 
       expect(response).to have_http_status(401)
     end
 
     it "renders 401 if boilerplate does not exist" do
       set_auth_header(chidi)
-      delete :destroy, params: { organization_id: good_place.uuid, id: "e80f6820-05c1-43d0-8bbe-28dbe9f978b6" }
+      delete :destroy, params: { organization_id: good_place.id, id: "e80f6820-05c1-43d0-8bbe-28dbe9f978b6" }
 
       expect(response).to have_http_status(401)
     end
@@ -709,23 +373,23 @@ describe Api::BoilerplatesController do
       shawn = User.find_by!(first_name: "Shawn")
       set_auth_header(shawn)
 
-      delete :destroy, params: { organization_id: good_place.uuid, id: good_place.boilerplates.first.uuid }
+      delete :destroy, params: { organization_id: good_place.id, id: boilerplates.first.id }
       expect(response).to have_http_status(401)
 
-      delete :destroy, params: { organization_id: shawn.organizations.first.uuid, id: good_place.boilerplates.first.uuid }
+      delete :destroy, params: { organization_id: shawn.organizations.first.id, id: boilerplates.first.id }
       expect(response).to have_http_status(401)
     end
 
     it "renders 200 with deleted boilerplate" do
-      boilerplate = good_place.boilerplates.first
+      boilerplate = boilerplates.first
 
       set_auth_header(chidi)
-      delete :destroy, params: { organization_id: good_place.uuid, id: boilerplate.uuid }
+      delete :destroy, params: { organization_id: good_place.id, id: boilerplate.id }
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
-          "uuid" => boilerplate.uuid,
+          "id" => boilerplate.id,
           "created_at" => boilerplate.created_at.iso8601(3),
           "updated_at" => boilerplate.updated_at.iso8601(3),
           "title" => boilerplate.title,

@@ -1,8 +1,6 @@
 {
   id: category.id,
   organization_id: category.organization_id,
-  uuid: category.uuid,
-  organization_uuid: category.organization_uuid,
   name: category.name,
   created_at: category.created_at,
   updated_at: category.updated_at,

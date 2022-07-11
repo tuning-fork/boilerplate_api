@@ -1,39 +1,21 @@
 class Api::BoilerplatesController < ApplicationController
   before_action :authenticate_user, :ensure_user_is_in_organization
   before_action :ensure_boilerplate_exists, only: [:show, :update, :destroy]
-
+ 
   def index
-    @boilerplates = Boilerplate.where(organization_id: params[:organization_id])
-    
-    @boilerplates = if @boilerplates.empty?
-      Boilerplate.where(organization_uuid: params[:organization_id])
-    else 
-      @boilerplates
-    end
+    @boilerplates = Boilerplate
+      .where(organization_id: params[:organization_id])
+      .order(:title)
 
     render "index.json.jb"
   end
 
   def create
-    organization = Organization.find_by(
-      if Uuid.validate?(params[:organization_id])
-        { uuid: params[:organization_id] }
-      else
-        { id: params[:organization_id] }
-      end
-    )
-    category = Category.find_by(
-      if Uuid.validate?(params[:category_id])
-        { uuid: params[:category_id] }
-      else
-        { id: params[:category_id] }
-      end
-    )
+    organization = Organization.find(params[:organization_id])
+    category = Category.find(params[:category_id])
     @boilerplate = Boilerplate.create!(
-      organization_id: organization&.id,
-      organization_uuid: organization&.uuid,
-      category_id: category&.id,
-      category_uuid: category&.uuid,
+      organization: organization,
+      category: category,
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
@@ -46,16 +28,9 @@ class Api::BoilerplatesController < ApplicationController
   end
 
   def update
-    category = Category.find_by(
-      if Uuid.validate?(params[:category_id])
-        { uuid: params[:category_id] }
-      else
-        { id: params[:category_id] }
-      end
-    )
+    category = Category.find(params[:category_id])
 
-    @boilerplate.category_id = category&.id || @boilerplate.category_id
-    @boilerplate.category_uuid = category&.uuid || @boilerplate.category_uuid
+    @boilerplate.category_id = category.id
     @boilerplate.title = params[:title] || @boilerplate.title
     @boilerplate.text = params[:text] || @boilerplate.text
     @boilerplate.wordcount = params[:wordcount] || @boilerplate.wordcount
@@ -73,12 +48,6 @@ class Api::BoilerplatesController < ApplicationController
   private
 
   def ensure_boilerplate_exists
-    @boilerplate = Boilerplate.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], organization_uuid: params[:organization_id] }
-      else
-        { id: params[:id], organization_id: params[:organization_id] }
-      end
-    )
+    @boilerplate = Boilerplate.find_by!(id: params[:id], organization_id: params[:organization_id])
   end
 end
