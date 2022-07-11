@@ -6,7 +6,7 @@ class Api::ReportSectionsController < ApplicationController
     :ensure_user_is_in_organization
 
   def index
-    @report_sections = @report.report_sections.order(id: :asc)
+    @report_sections = @report.report_sections
     render "index.json.jb"
   end
 

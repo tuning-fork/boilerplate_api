@@ -3,7 +3,7 @@ class Api::OrganizationUsersController < ApplicationController
 
   def index
     organization = Organization.find(params[:organization_id])
-    @users = organization.users.order(:id)
+    @users = organization.users
     render "api/users/index.json.jb"
   end
 
@@ -11,16 +11,13 @@ class Api::OrganizationUsersController < ApplicationController
     user = User.find(params[:id])
     organization = Organization.find(params[:organization_id])
 
-    p "Trying to add user to org #{user.first_name}"
     @organization_user = OrganizationUser.create!(
       organization: organization,
       user: user,
     )
-    p "Added user to org #{user.first_name}"
     
     render "show.json.jb", status: 201
   rescue ActiveRecord::RecordNotUnique => e
-    p "Got record not uniqe err #{user.first_name}"
     @organization_user = OrganizationUser.find_by(organization_id: params[:organization_id], user_id: params[:id])
     render "show.json.jb", status: 200
   end

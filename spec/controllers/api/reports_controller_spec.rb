@@ -1,6 +1,6 @@
 require "rails_helper"
 
-xdescribe Api::ReportsController do
+describe Api::ReportsController do
   report_fields = %w(
     id created_at updated_at title deadline submitted
     grant_id grant report_sections
@@ -112,8 +112,7 @@ xdescribe Api::ReportsController do
     end
 
     it "renders 200 with grant's reports" do
-      report1 = good_place.grants.first.reports.first
-      report2 = good_place.grants.first.reports.second
+      good_place_grant = good_place.grants.find { |grant| grant.title == "Good Place Neighborhood Grant" }
 
       set_auth_header(chidi)
       get :index, params: {
@@ -124,20 +123,20 @@ xdescribe Api::ReportsController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
-          "id" => report1.id,
-          "created_at" => report1.created_at.iso8601(3),
-          "updated_at" => report1.updated_at.iso8601(3),
-          "deadline" => report1.deadline.iso8601(3),
-          "title" => report1.title,
-          "submitted" => report1.submitted,
+          "id" => good_place_grant.reports.first.id,
+          "created_at" => good_place_grant.reports.first.created_at.iso8601(3),
+          "updated_at" => good_place_grant.reports.first.updated_at.iso8601(3),
+          "deadline" => good_place_grant.reports.first.deadline.iso8601(3),
+          "title" => good_place_grant.reports.first.title,
+          "submitted" => good_place_grant.reports.first.submitted,
         ),
         a_hash_including(
-          "id" => report2.id,
-          "created_at" => report2.created_at.iso8601(3),
-          "updated_at" => report2.updated_at.iso8601(3),
-          "deadline" => report2.deadline.iso8601(3),
-          "title" => report2.title,
-          "submitted" => report2.submitted,
+          "id" => good_place_grant.reports.second.id,
+          "created_at" => good_place_grant.reports.second.created_at.iso8601(3),
+          "updated_at" => good_place_grant.reports.second.updated_at.iso8601(3),
+          "deadline" => good_place_grant.reports.second.deadline.iso8601(3),
+          "title" => good_place_grant.reports.second.title,
+          "submitted" => good_place_grant.reports.second.submitted,
         ),
       ])
     end

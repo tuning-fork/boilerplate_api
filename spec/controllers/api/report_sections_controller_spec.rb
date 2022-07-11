@@ -1,6 +1,6 @@
 require "rails_helper"
 
-xdescribe Api::ReportSectionsController do
+describe Api::ReportSectionsController do
   report_section_fields = %w(
     id created_at updated_at title text wordcount sort_order
     report_id
@@ -90,7 +90,8 @@ xdescribe Api::ReportSectionsController do
 
   describe "GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections" do
     let(:report) {
-      good_place.grants.first.reports.first
+      good_place_grant = good_place.grants.find { |grant| grant.title == "Good Place Neighborhood Grant" }
+      good_place_grant.reports.first
     }
     let(:params) {
       {

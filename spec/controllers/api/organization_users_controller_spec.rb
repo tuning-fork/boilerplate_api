@@ -137,7 +137,7 @@ describe Api::OrganizationUsersController do
       )
     end
 
-    it "renders 200 when user is already in organization", only: true do
+    it "renders 200 when user is already in organization" do
       set_auth_header(chidi)
 
       post :create, params: new_organization_user_params

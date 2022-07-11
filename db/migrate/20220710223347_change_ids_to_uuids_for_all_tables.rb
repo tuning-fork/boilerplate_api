@@ -1,26 +1,26 @@
 class ChangeIdsToUuidsForAllTables < ActiveRecord::Migration[6.0]
   def change
-    remove_column :organizations, :id
-    remove_column :organization_users, :id
-    remove_column :grants, :id
-    remove_column :sections, :id
-    remove_column :reports, :id
-    remove_column :report_sections, :id
-    remove_column :boilerplates, :id
-    remove_column :funding_orgs, :id
-    remove_column :categories, :id
-    remove_column :users, :id
-    remove_column :organization_users, :organization_id
-    remove_column :organization_users, :user_id
-    remove_column :boilerplates, :organization_id
-    remove_column :boilerplates, :category_id
-    remove_column :categories, :organization_id
-    remove_column :funding_orgs, :organization_id
-    remove_column :grants, :organization_id
-    remove_column :grants, :funding_org_id
-    remove_column :sections, :grant_id
-    remove_column :reports, :grant_id
-    remove_column :report_sections, :report_id
+    remove_column :organizations, :id, :bigint
+    remove_column :organization_users, :id, :bigint
+    remove_column :grants, :id, :bigint
+    remove_column :sections, :id, :bigint
+    remove_column :reports, :id, :bigint
+    remove_column :report_sections, :id, :bigint
+    remove_column :boilerplates, :id, :bigint
+    remove_column :funding_orgs, :id, :bigint
+    remove_column :categories, :id, :bigint
+    remove_column :users, :id, :bigint
+    remove_column :organization_users, :organization_id, :bigint
+    remove_column :organization_users, :user_id, :bigint
+    remove_column :boilerplates, :organization_id, :bigint
+    remove_column :boilerplates, :category_id, :bigint
+    remove_column :categories, :organization_id, :bigint
+    remove_column :funding_orgs, :organization_id, :bigint
+    remove_column :grants, :organization_id, :bigint
+    remove_column :grants, :funding_org_id, :bigint
+    remove_column :sections, :grant_id, :bigint
+    remove_column :reports, :grant_id, :bigint
+    remove_column :report_sections, :report_id, :bigint
     
     rename_column :organizations, :uuid, :id
     rename_column :organization_users, :uuid, :id
@@ -44,6 +44,6 @@ class ChangeIdsToUuidsForAllTables < ActiveRecord::Migration[6.0]
     rename_column :reports, :grant_uuid, :grant_id
     rename_column :report_sections, :report_uuid, :report_id
 
-    # add_index :organization_users, [:organization_id, :user_id], unique: true
+    add_index :organization_users, [:organization_id, :user_id], unique: true
   end
 end

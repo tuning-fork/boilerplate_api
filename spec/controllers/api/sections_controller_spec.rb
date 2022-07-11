@@ -1,6 +1,6 @@
 require "rails_helper"
 
-xdescribe Api::SectionsController do
+describe Api::SectionsController do
   section_fields = %w(
     id created_at updated_at title text wordcount sort_order
     grant_id
@@ -67,6 +67,8 @@ xdescribe Api::SectionsController do
     good_place
   }
 
+  let(:grants) { good_place.grants.order(:title) }
+
   describe "GET /organizations/:organization_id/grants/:grant_id/sections" do
     it "renders 401 if unauthenticated" do
       get :index, params: {
@@ -110,8 +112,7 @@ xdescribe Api::SectionsController do
     end
 
     it "renders 200 with grant's sections" do
-      section1 = good_place.grants.first.sections.first
-      section2 = good_place.grants.first.sections.second
+      good_place_grant = good_place.grants.find { |grant| grant.title == "Good Place Neighborhood Grant" }
 
       set_auth_header(chidi)
       get :index, params: {
@@ -123,21 +124,21 @@ xdescribe Api::SectionsController do
       expect(JSON.parse(response.body)).to match([
         a_hash_including(
           "sort_order" => kind_of(Integer),
-          "id" => section1.id,
-          "created_at" => section1.created_at.iso8601(3),
-          "updated_at" => section1.updated_at.iso8601(3),
-          "title" => section1.title,
-          "text" => section1.text,
-          "wordcount" => section1.wordcount,
+          "id" => good_place_grant.sections.first.id,
+          "created_at" => good_place_grant.sections.first.created_at.iso8601(3),
+          "updated_at" => good_place_grant.sections.first.updated_at.iso8601(3),
+          "title" => good_place_grant.sections.first.title,
+          "text" => good_place_grant.sections.first.text,
+          "wordcount" => good_place_grant.sections.first.wordcount,
         ),
         a_hash_including(
           "sort_order" => kind_of(Integer),
-          "id" => section2.id,
-          "created_at" => section2.created_at.iso8601(3),
-          "updated_at" => section2.updated_at.iso8601(3),
-          "title" => section2.title,
-          "text" => section2.text,
-          "wordcount" => section2.wordcount,
+          "id" => good_place_grant.sections.second.id,
+          "created_at" => good_place_grant.sections.second.created_at.iso8601(3),
+          "updated_at" => good_place_grant.sections.second.updated_at.iso8601(3),
+          "title" => good_place_grant.sections.second.title,
+          "text" => good_place_grant.sections.second.text,
+          "wordcount" => good_place_grant.sections.second.wordcount,
         ),
       ])
     end
