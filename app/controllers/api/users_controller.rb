@@ -20,7 +20,7 @@ class Api::UsersController < ApplicationController
     @user = User.find(params[:id])
 
     # Users may only update their own attributes
-    if current_user.uuid != @user.uuid
+    if current_user.id != @user.id
       raise ActiveRecord::RecordNotFound
     end
 

@@ -1,6 +1,5 @@
 {
   id: organization.id,
-  uuid: organization.uuid,
   name: organization.name,
   created_at: organization.created_at,
   updated_at: organization.updated_at

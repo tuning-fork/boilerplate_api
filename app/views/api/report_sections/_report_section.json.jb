@@ -1,8 +1,6 @@
 {
   id: report_section.id,
   report_id: report_section.report_id,
-  uuid: report_section.uuid,
-  report_uuid: report_section.report_uuid,
   title: report_section.title,
   text: report_section.text,
   sort_order: report_section.sort_order,

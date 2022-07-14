@@ -8,8 +8,7 @@ class Api::SectionsController < ApplicationController
 
   def create
     @section = Section.create!(
-      grant_id: @grant.id,
-      grant_uuid: @grant.uuid,
+      grant: @grant,
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
@@ -19,27 +18,14 @@ class Api::SectionsController < ApplicationController
   end
 
   def show
-    @section = Section.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], grant_uuid: params[:grant_id] }
-      else
-        { id: params[:id], grant_id: params[:grant_id] }
-      end
-    )
+    @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
     render "show.json.jb"
   end
 
   def update
-    @section = Section.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], grant_uuid: params[:grant_id] }
-      else
-        { id: params[:id], grant_id: params[:grant_id] }
-      end
-    )
+    @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
 
-    @section.grant_id = @grant&.id || @section.grant_id
-    @section.grant_uuid = @grant&.uuid || @section.grant_uuid
+    @section.grant_id = @grant.id
     @section.title = params[:title] || @section.title
     @section.text = params[:text] || @section.text
     @section.wordcount = params[:wordcount] || @section.wordcount
@@ -51,13 +37,7 @@ class Api::SectionsController < ApplicationController
   end
 
   def destroy
-    @section = Section.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], grant_uuid: params[:grant_id] }
-      else
-        { id: params[:id], grant_id: params[:grant_id] }
-      end
-    )
+    @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
     @section.destroy!
 
     render "show.json.jb"

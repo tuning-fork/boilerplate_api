@@ -6,14 +6,13 @@ class Api::ReportSectionsController < ApplicationController
     :ensure_user_is_in_organization
 
   def index
-    @report_sections = @report.report_sections.order(id: :asc)
+    @report_sections = @report.report_sections
     render "index.json.jb"
   end
 
   def create
     @report_section = ReportSection.create!(
       report_id: @report.id,
-      report_uuid: @report.uuid,
       title: params[:title],
       text: params[:text],
       wordcount: params[:wordcount],
@@ -28,7 +27,7 @@ class Api::ReportSectionsController < ApplicationController
       report_id: params[:report_id],
     )
     @report_section ||= ReportSection.find_by!(
-      { uuid: params[:id], report_uuid: params[:report_id] }
+      { id: params[:id], report_id: params[:report_id] }
     )
     render "show.json.jb"
   end
@@ -39,10 +38,9 @@ class Api::ReportSectionsController < ApplicationController
       report_id: params[:report_id],
     )
     @report_section ||= ReportSection.find_by!(
-      { uuid: params[:id], report_uuid: params[:report_id] }
+      { id: params[:id], report_id: params[:report_id] }
     )
-    @report_section.report_id = @report.id || @report_section.report_id
-    @report_section.report_uuid = @report.uuid || @report_section.report_uuid
+    @report_section.report_id = @report.id
     @report_section.title = params[:title] || @report_section.title
     @report_section.text = params[:text] || @report_section.text
     @report_section.wordcount = params[:wordcount] || @report_section.wordcount
@@ -59,7 +57,7 @@ class Api::ReportSectionsController < ApplicationController
       report_id: params[:report_id],
     )
     @report_section ||= ReportSection.find_by!(
-      { uuid: params[:id], report_uuid: params[:report_id] }
+      { id: params[:id], report_id: params[:report_id] }
     )
     @report_section.destroy!
 
@@ -74,7 +72,7 @@ class Api::ReportSectionsController < ApplicationController
       id: params[:report_id],
     )
     @report ||= Report.find_by!(
-      { uuid: params[:report_id], grant_uuid: params[:grant_id] }
+      { id: params[:report_id], grant_id: params[:grant_id] }
     )
   end
 end

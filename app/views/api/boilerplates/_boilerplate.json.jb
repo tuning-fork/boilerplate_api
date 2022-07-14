@@ -1,11 +1,8 @@
 {
   id: boilerplate.id,
-  uuid: boilerplate.uuid,
   organization_id: boilerplate.organization_id,
-  organization_uuid: boilerplate.organization_uuid,
   organization_name: boilerplate.organization.name,
   category_id: boilerplate.category_id,
-  category_uuid: boilerplate.category_uuid,
   category_name: boilerplate.category.name,
   title: boilerplate.title,
   text: boilerplate.text,

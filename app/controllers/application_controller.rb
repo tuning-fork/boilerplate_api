@@ -53,13 +53,9 @@ class ApplicationController < ActionController::Base
   def ensure_grant_exists
     # We're searching by both the ID and organization ID to prevent someone on
     # Organization A performing operations on Organization B
-    @grant = Grant.find_by(
+    @grant = Grant.find_by!(
       organization_id: params[:organization_id],
       id: params[:grant_id],
-    )
-    @grant ||= Grant.find_by!(
-      organization_uuid: params[:organization_id],
-      uuid: params[:grant_id],
     )
   end
 end

@@ -1,9 +1,7 @@
 {
   id: funding_org.id,
-  uuid: funding_org.uuid,
   website: funding_org.website,
   organization_id: funding_org.organization_id,
-  organization_uuid: funding_org.organization_uuid,
   name: funding_org.name,
   created_at: funding_org.created_at,
   updated_at: funding_org.updated_at,

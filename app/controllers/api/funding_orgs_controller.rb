@@ -6,60 +6,31 @@ class Api::FundingOrgsController < ApplicationController
       .where(organization_id: params[:organization_id])
       .order(:name)
 
-    @funding_orgs = if @funding_orgs.empty?
-      FundingOrg
-        .where(organization_uuid: params[:organization_id])
-        .order(:name)
-    else 
-      @funding_orgs
-    end
-
     render "index.json.jb"
   end
 
   def create
-    organization = Organization.find_by(
-      if Uuid.validate?(params[:organization_id])
-        { uuid: params[:organization_id] }
-      else
-        { id: params[:organization_id] }
-      end
-    )
+    organization = Organization.find(params[:organization_id])
     @funding_org = FundingOrg.create!(
       website: params[:website],
       name: params[:name],
-      organization_id: organization&.id,
-      organization_uuid: organization&.uuid,
+      organization_id: organization.id,
     )
     render "show.json.jb", status: 201
   end
 
   def show
-    @funding_org = FundingOrg.find_by(
+    @funding_org = FundingOrg.find_by!(
       id: params[:id],
       organization_id: params[:organization_id],
-    )
-    @funding_org ||= FundingOrg.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], organization_uuid: params[:organization_id] }
-      else
-        { id: params[:id], organization_id: params[:organization_id] }
-      end
     )
     render "show.json.jb"
   end
 
   def update
-    @funding_org = FundingOrg.find_by(
+    @funding_org = FundingOrg.find_by!(
       id: params[:id],
       organization_id: params[:organization_id],
-    )
-    @funding_org ||= FundingOrg.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], organization_uuid: params[:organization_id] }
-      else
-        { id: params[:id], organization_id: params[:organization_id] }
-      end
     )
 
     @funding_org.website = params[:website] || @funding_org.website
@@ -71,16 +42,9 @@ class Api::FundingOrgsController < ApplicationController
   end
 
   def destroy
-    @funding_org = FundingOrg.find_by(
+    @funding_org = FundingOrg.find_by!(
       id: params[:id],
       organization_id: params[:organization_id],
-    )
-    @funding_org ||= FundingOrg.find_by!(
-      if Uuid.validate?(params[:id])
-        { uuid: params[:id], organization_uuid: params[:organization_id] }
-      else
-        { id: params[:id], organization_id: params[:organization_id] }
-      end
     )
     @funding_org.destroy!
 

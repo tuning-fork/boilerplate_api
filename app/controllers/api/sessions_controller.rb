@@ -17,7 +17,6 @@ class Api::SessionsController < ApplicationController
       jwt: jwt,
       email: user.email,
       user_id: user.id,
-      user_uuid: user.uuid,
     }
 
     logger.info("Session created for #{user}")
@@ -29,7 +28,7 @@ class Api::SessionsController < ApplicationController
     token = authorization_header[/(?<=\A(Bearer ))\S+\z/] if authorization_header
 
     decoded_claims = decode_jwt(token)
-    user_id = decoded_claims.first["user_uuid"] || decoded_claims.first["user_id"]
+    user_id = decoded_claims.first["user_id"] || decoded_claims.first["user_id"]
     @user = User.find(user_id)
 
     render "show.json.jb"
@@ -47,7 +46,7 @@ class Api::SessionsController < ApplicationController
 
   def encode_jwt(user)
     JWT.encode(
-      { user_id: user.id, user_uuid: user.uuid, exp: 4.hours.from_now.to_i },
+      { user_id: user.id, exp: 4.hours.from_now.to_i },
       jwt_secret,
       jwt_algorithm,
     )

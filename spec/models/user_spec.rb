@@ -61,16 +61,16 @@ describe User, type: :model do
       expect(subject.is_in_organization?(organization_id)).to be(false)
     end
 
-    it "returns true when user is in the provided organization using uuid" do
-      organization_uuid = subject.organizations.first.uuid
+    it "returns true when user is in the provided organization using id" do
+      organization_id = subject.organizations.first.id
 
-      expect(subject.is_in_organization?(organization_uuid)).to be(true)
+      expect(subject.is_in_organization?(organization_id)).to be(true)
     end
 
-    it "returns false when user is not in the provided organization using uuid" do
-      organization_uuid = Organization.create!({ name: "New Org" }).uuid
+    it "returns false when user is not in the provided organization using id" do
+      organization_id = Organization.create!({ name: "New Org" }).id
 
-      expect(subject.is_in_organization?(organization_uuid)).to be(false)
+      expect(subject.is_in_organization?(organization_id)).to be(false)
     end
   end
 end
