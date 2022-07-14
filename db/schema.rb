@@ -103,13 +103,6 @@ ActiveRecord::Schema.define(version: 2022_07_10_225350) do
     t.uuid "grant_id"
   end
 
-  create_table "reviewers", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "grant_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "text"
