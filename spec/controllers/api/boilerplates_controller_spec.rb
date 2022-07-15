@@ -196,7 +196,7 @@ describe Api::BoilerplatesController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/boilerplates/:boilerplate_id' do
+  describe 'GET /organizations/:organization_id/boilerplates/:id' do
     it 'renders 401 if unauthenticated' do
       get :show, params: {
         organization_id: good_place.id,
@@ -265,7 +265,7 @@ describe Api::BoilerplatesController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/boilerplates/:boilerplate_id' do
+  describe 'PATCH /organizations/:organization_id/boilerplates/:id' do
     let(:updated_boilerplate_fields) do
       {
         organization_id: good_place.id,
@@ -351,7 +351,7 @@ describe Api::BoilerplatesController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/boilerplates/:boilerplate_id' do
+  describe 'DELETE /organizations/:organization_id/boilerplates/:id' do
     it 'renders 401 if unauthenticated' do
       delete :destroy, params: { organization_id: good_place.id, id: boilerplates.first.id }
 

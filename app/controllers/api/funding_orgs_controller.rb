@@ -2,56 +2,46 @@
 
 module Api
   class FundingOrgsController < ApplicationController
-    before_action :authenticate_user, :ensure_user_is_in_organization
+    before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists
 
     def index
-      @funding_orgs = FundingOrg
-                      .where(organization_id: params[:organization_id])
-                      .order(:name)
-
+      @funding_orgs = @organization.funding_orgs.order(:name)
       render 'index.json.jb'
     end
 
     def create
-      organization = Organization.find(params[:organization_id])
-      @funding_org = FundingOrg.create!(
-        website: params[:website],
-        name: params[:name],
-        organization_id: organization.id
-      )
+      @funding_org = FundingOrg.create!(**create_funding_org_params, organization: @organization)
       render 'show.json.jb', status: 201
     end
 
     def show
-      @funding_org = FundingOrg.find_by!(
-        id: params[:id],
-        organization_id: params[:organization_id]
-      )
+      @funding_org = funding_org
       render 'show.json.jb'
     end
 
     def update
-      @funding_org = FundingOrg.find_by!(
-        id: params[:id],
-        organization_id: params[:organization_id]
-      )
-
-      @funding_org.website = params[:website] || @funding_org.website
-      @funding_org.name = params[:name] || @funding_org.name
-      @funding_org.archived = params[:archived].nil? ? @funding_org.archived : params[:archived]
-      @funding_org.save!
-
+      @funding_org = funding_org
+      @funding_org.update!(update_funding_org_params)
       render 'show.json.jb'
     end
 
     def destroy
-      @funding_org = FundingOrg.find_by!(
-        id: params[:id],
-        organization_id: params[:organization_id]
-      )
-      @funding_org.destroy!
-
+      @funding_org = funding_org.destroy!
       render 'show.json.jb'
+    end
+
+    private
+
+    def funding_org
+      FundingOrg.find_by!(id: params[:id], organization_id: params[:organization_id])
+    end
+
+    def create_funding_org_params
+      params.permit(%i[website name])
+    end
+
+    def update_funding_org_params
+      params.permit(%i[website name archived])
     end
   end
 end

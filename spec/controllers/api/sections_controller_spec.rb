@@ -55,18 +55,30 @@ describe Api::SectionsController do
                                   title: 'Good Place Neighborhood Grant',
                                   funding_org: good_place.funding_orgs.first,
                                   sections: [
-                                    Section.new({ title: 'Overview of the Organization', text: 'Lorem ipsum overview', sort_order: 0,
-                                                  wordcount: 3 }),
-                                    Section.new({ title: 'Program Goals', text: 'Lorem ipsum goals', sort_order: 1,
-                                                  wordcount: 3 })
+                                    Section.new({
+                                                  title: 'Overview of the Organization',
+                                                  text: 'Lorem ipsum overview',
+                                                  sort_order: 0,
+                                                  wordcount: 3
+                                                }),
+                                    Section.new({
+                                                  title: 'Program Goals',
+                                                  text: 'Lorem ipsum goals',
+                                                  sort_order: 1,
+                                                  wordcount: 3
+                                                })
                                   ]
                                 },
                                 {
                                   title: 'Bad Janet Restorative Justice Initiative Grant',
                                   funding_org: good_place.funding_orgs.first,
                                   sections: [
-                                    Section.new({ title: 'Leaders of the Program/Project', text: 'Janet',
-                                                  sort_order: 0, wordcount: 1 })
+                                    Section.new({
+                                                  title: 'Leaders of the Program/Project',
+                                                  text: 'Janet',
+                                                  sort_order: 0,
+                                                  wordcount: 1
+                                                })
                                   ]
                                 }
                               ])
@@ -132,8 +144,12 @@ describe Api::SectionsController do
                                                    a_hash_including(
                                                      'sort_order' => kind_of(Integer),
                                                      'id' => good_place_grant.sections.first.id,
-                                                     'created_at' => good_place_grant.sections.first.created_at.iso8601(3),
-                                                     'updated_at' => good_place_grant.sections.first.updated_at.iso8601(3),
+                                                     'created_at' => (
+                                                        good_place_grant.sections.first.created_at.iso8601(3)
+                                                      ),
+                                                     'updated_at' => (
+                                                        good_place_grant.sections.first.updated_at.iso8601(3)
+                                                      ),
                                                      'title' => good_place_grant.sections.first.title,
                                                      'text' => good_place_grant.sections.first.text,
                                                      'wordcount' => good_place_grant.sections.first.wordcount
@@ -141,8 +157,12 @@ describe Api::SectionsController do
                                                    a_hash_including(
                                                      'sort_order' => kind_of(Integer),
                                                      'id' => good_place_grant.sections.second.id,
-                                                     'created_at' => good_place_grant.sections.second.created_at.iso8601(3),
-                                                     'updated_at' => good_place_grant.sections.second.updated_at.iso8601(3),
+                                                     'created_at' => (
+                                                        good_place_grant.sections.second.created_at.iso8601(3)
+                                                      ),
+                                                     'updated_at' => (
+                                                        good_place_grant.sections.second.updated_at.iso8601(3)
+                                                      ),
                                                      'title' => good_place_grant.sections.second.title,
                                                      'text' => good_place_grant.sections.second.text,
                                                      'wordcount' => good_place_grant.sections.second.wordcount
@@ -228,7 +248,7 @@ describe Api::SectionsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/grants/:grant_id/sections/:section_id' do
+  describe 'GET /organizations/:organization_id/grants/:grant_id/sections/:id' do
     let(:section) do
       Section.create!({
                         grant: good_place.grants.first,
@@ -312,7 +332,7 @@ describe Api::SectionsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/grants/:grant_id/sections/:section_id' do
+  describe 'PATCH /organizations/:organization_id/grants/:grant_id/sections/:id' do
     let(:section) do
       Section.create!({
                         grant: good_place.grants.first,
@@ -415,7 +435,7 @@ describe Api::SectionsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/grants/:grant_id/sections/:section_id' do
+  describe 'DELETE /organizations/:organization_id/grants/:grant_id/sections/:id' do
     let(:section) do
       Section.create!({
                         grant: good_place.grants.first,

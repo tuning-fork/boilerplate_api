@@ -9,15 +9,15 @@ describe Api::CategoriesController do
   ]
 
   before(:example) do
-    org = Organization.create!({
-                                 name: 'The Bad Place',
-                                 users: [
-                                   User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
-                                 ],
-                                 categories: [
-                                   Category.new({ name: 'General Purpose' })
-                                 ]
-                               })
+    Organization.create!({
+                           name: 'The Bad Place',
+                           users: [
+                             User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
+                           ],
+                           categories: [
+                             Category.new({ name: 'General Purpose' })
+                           ]
+                         })
   end
 
   let(:chidi) do
@@ -148,7 +148,7 @@ describe Api::CategoriesController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/categories/:category_id' do
+  describe 'GET /organizations/:organization_id/categories/:id' do
     it 'renders 401 if unauthenticated' do
       get :show, params: {
         organization_id: good_place.id,
@@ -215,7 +215,7 @@ describe Api::CategoriesController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/categories/:category_id' do
+  describe 'PATCH /organizations/:organization_id/categories/:id' do
     let(:updated_category_fields) do
       {
         organization_id: good_place.id,
@@ -295,7 +295,7 @@ describe Api::CategoriesController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/categories/:category_id' do
+  describe 'DELETE /organizations/:organization_id/categories/:id' do
     it 'renders 401 if unauthenticated' do
       delete :destroy, params: { organization_id: good_place.id, id: good_place.categories.first.id }
 

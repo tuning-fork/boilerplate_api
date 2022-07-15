@@ -153,7 +153,7 @@ describe Api::OrganizationUsersController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/users/:user_id' do
+  describe 'GET /organizations/:organization_id/users/:id' do
     it 'renders 401 if unauthenticated' do
       get :show, params: { organization_id: good_place.id, id: chidi.id }
       expect(response).to have_http_status(401)

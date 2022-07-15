@@ -16,7 +16,8 @@ module Api
 
     def create
       @organization = Organization.create!(
-        name: params[:name],
+        **create_organization_params,
+        # Automatically add creator to org
         users: [current_user]
       )
       logger.info("New organization #{@organization} created by #{current_user}")
@@ -24,23 +25,33 @@ module Api
     end
 
     def show
-      @organization = Organization.find(params[:id])
+      @organization = organization
       render 'show.json.jb'
     end
 
     def update
-      @organization = Organization.find(params[:id])
-      @organization.name = params[:name]
-      @organization.save!
-
+      @organization = organization
+      @organization.update!(update_organization_params)
       render 'show.json.jb'
     end
 
     def destroy
-      @organization = Organization.find(params[:id])
-      @organization.destroy!
-
+      @organization = organization.destroy!
       render 'show.json.jb'
+    end
+
+    private
+
+    def organization
+      Organization.find(params[:id])
+    end
+
+    def create_organization_params
+      params.permit(%i[name])
+    end
+
+    def update_organization_params
+      params.permit(%i[name])
     end
   end
 end

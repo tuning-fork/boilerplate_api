@@ -20,20 +20,13 @@ class ApplicationController < ActionController::Base
 
   def current_user
     auth_headers = request.headers['Authorization']
-    if auth_headers.present? && auth_headers[/(?<=\A(Bearer ))\S+\z/]
-      token = auth_headers[/(?<=\A(Bearer ))\S+\z/]
-      begin
-        decoded_token = JWT.decode(
-          token,
-          ENV['SECRET_KEY_BASE'],
-          true,
-          { algorithm: 'HS256' }
-        )
-        User.find_by(id: decoded_token[0]['user_id'])
-      rescue JWT::ExpiredSignature
-        nil
-      end
-    end
+    return nil unless auth_headers.present? && auth_headers[/(?<=\A(Bearer ))\S+\z/]
+
+    token = auth_headers[/(?<=\A(Bearer ))\S+\z/]
+    decoded_token = JWT.decode(token, ENV.fetch('SECRET_KEY_BASE'), true, { algorithm: 'HS256' })
+    User.find(decoded_token[0]['user_id'])
+  rescue JWT::ExpiredSignature
+    nil
   end
 
   def authenticate_user
@@ -45,7 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_user_is_in_organization(organization_id = params[:organization_id] || params[:id])
-    raise ActiveRecord::RecordNotFound unless current_user.is_in_organization?(organization_id)
+    raise ActiveRecord::RecordNotFound unless current_user.in_organization?(organization_id)
   end
 
   def ensure_grant_exists

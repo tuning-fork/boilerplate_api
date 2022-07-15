@@ -2,7 +2,16 @@
 
 print 'Seeding The Medium Place data...'
 
-lorem_ipsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet felis sit tortor morbi tempus, pretium. Consequat, in cursus eget nunc nam. Massa sodales eget ultricies vulputate consequat egestas quis. Amet, id arcu sollicitudin tincidunt curabitur tincidunt. Amet, amet, viverra luctus praesent fames ante mauris commodo. Et ut non tincidunt quis vulputate orci amet scelerisque. Quis nulla pharetra bibendum faucibus id quam sociis at. Enim, eget arcu sit tortor arcu, aliquam. Ante turpis rutrum magnis mauris feugiat sed interdum pharetra tellus. Mauris risus nibh condimentum etiam.'
+lorem_ipsum = <<-TEXT
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet felis sit
+  tortor morbi tempus, pretium. Consequat, in cursus eget nunc nam. Massa
+  sodales eget ultricies vulputate consequat egestas quis. Amet, id arcu
+  sollicitudin tincidunt curabitur tincidunt. Amet, amet, viverra luctus
+  praesent fames ante mauris commodo. Et ut non tincidunt quis vulputate orci
+  amet scelerisque. Quis nulla pharetra bibendum faucibus id quam sociis at.
+  Enim, eget arcu sit tortor arcu, aliquam. Ante turpis rutrum magnis mauris
+  feugiat sed interdum pharetra tellus. Mauris risus nibh condimentum etiam.
+TEXT
 
 mindy = User.create!({ first_name: 'Mindy', email: 'mindy@themediumplace.com', password: SecureRandom.hex,
                        active: true })
@@ -31,15 +40,23 @@ the_medium_place.grants.create!([
                                     successful: true,
                                     purpose: 'general funding',
                                     sections: [
-                                      Section.new({ title: 'Overview of the Organization', text: "<p>#{lorem_ipsum}</p>", sort_order: 1,
-                                                    wordcount: 219 })
+                                      Section.new({
+                                                    title: 'Overview of the Organization',
+                                                    text: "<p>#{lorem_ipsum}</p>",
+                                                    sort_order: 1,
+                                                    wordcount: 219
+                                                  })
                                     ]
                                   }
                                 ])
 
 the_medium_place.boilerplates.create!([
-                                        { category: category_grey_area, title: 'Mission',
-                                          text: "<p>#{lorem_ipsum}</p>", wordcount: 219 }
+                                        {
+                                          category: category_grey_area,
+                                          title: 'Mission',
+                                          text: "<p>#{lorem_ipsum}</p>",
+                                          wordcount: 219
+                                        }
                                       ])
 
 puts 'The Medium Place data seeded!'

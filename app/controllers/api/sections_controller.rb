@@ -2,7 +2,7 @@
 
 module Api
   class SectionsController < ApplicationController
-    before_action :authenticate_user, :ensure_organization_exists, :ensure_grant_exists, :ensure_user_is_in_organization
+    before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists, :ensure_grant_exists
 
     def index
       @sections = @grant.sections.rank(:sort_order)
@@ -10,40 +10,38 @@ module Api
     end
 
     def create
-      @section = Section.create!(
-        grant: @grant,
-        title: params[:title],
-        text: params[:text],
-        wordcount: params[:wordcount],
-        sort_order: params[:sort_order]
-      )
+      @section = Section.create!(**create_section_params, grant: @grant)
       render 'show.json.jb', status: 201
     end
 
     def show
-      @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
+      @section = section
       render 'show.json.jb'
     end
 
     def update
-      @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
-
-      @section.grant_id = @grant.id
-      @section.title = params[:title] || @section.title
-      @section.text = params[:text] || @section.text
-      @section.wordcount = params[:wordcount] || @section.wordcount
-      @section.sort_order = params[:sort_order] || @section.sort_order
-      @section.archived = params[:archived].nil? || @section.archived
-      @section.save!
-
+      @section = section
+      @section.update!(update_section_params)
       render 'show.json.jb'
     end
 
     def destroy
-      @section = Section.find_by!(id: params[:id], grant_id: params[:grant_id])
-      @section.destroy!
-
+      @section = section.destroy!
       render 'show.json.jb'
+    end
+
+    private
+
+    def section
+      Section.find_by!(id: params[:id], grant_id: params[:grant_id])
+    end
+
+    def create_section_params
+      params.permit(%i[title text wordcount sort_order])
+    end
+
+    def update_section_params
+      params.permit(%i[title text wordcount sort_order archived])
     end
   end
 end

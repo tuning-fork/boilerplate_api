@@ -14,6 +14,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   def count_words(*block)
     text_block_array = select_stuff(block).keys[0]
-    text_block_array[0].split(' ').length
+    text_block_array[0].split.length
   end
 end

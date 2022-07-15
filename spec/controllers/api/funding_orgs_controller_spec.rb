@@ -9,15 +9,15 @@ describe Api::FundingOrgsController do
   ]
 
   before(:example) do
-    org = Organization.create!({
-                                 name: 'The Bad Place',
-                                 users: [
-                                   User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
-                                 ],
-                                 funding_orgs: [
-                                   FundingOrg.new({ name: 'The Bad Place', website: 'https://thebadplace.com' })
-                                 ]
-                               })
+    Organization.create!({
+                           name: 'The Bad Place',
+                           users: [
+                             User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
+                           ],
+                           funding_orgs: [
+                             FundingOrg.new({ name: 'The Bad Place', website: 'https://thebadplace.com' })
+                           ]
+                         })
   end
 
   let(:chidi) do
@@ -152,7 +152,7 @@ describe Api::FundingOrgsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/funding_orgs/:funding_org_id' do
+  describe 'GET /organizations/:organization_id/funding_orgs/:id' do
     it 'renders 401 if unauthenticated' do
       get :show, params: {
         organization_id: good_place.id,
@@ -220,7 +220,7 @@ describe Api::FundingOrgsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/funding_orgs/:funding_org_id' do
+  describe 'PATCH /organizations/:organization_id/funding_orgs/:id' do
     let(:updated_funding_org_fields) do
       {
         organization_id: good_place.id,
@@ -302,7 +302,7 @@ describe Api::FundingOrgsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/funding_orgs/:funding_org_id' do
+  describe 'DELETE /organizations/:organization_id/funding_orgs/:id' do
     it 'renders 401 if unauthenticated' do
       delete :destroy, params: { organization_id: good_place.id, id: good_place.funding_orgs.first.id }
 

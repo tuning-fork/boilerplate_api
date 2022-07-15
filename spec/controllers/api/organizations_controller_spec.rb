@@ -141,7 +141,7 @@ describe Api::OrganizationsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id' do
+  describe 'GET /organizations/:id' do
     let(:chidi) { create_chidi_user }
     let(:good_place) { create_good_place_org(chidi) }
 
@@ -182,7 +182,7 @@ describe Api::OrganizationsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id' do
+  describe 'PATCH /organizations/:id' do
     let(:chidi) { create_chidi_user }
     let(:good_place) { create_good_place_org(chidi) }
     let(:update_organization_params) do
@@ -243,7 +243,7 @@ describe Api::OrganizationsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id' do
+  describe 'DELETE /organizations/:id' do
     let(:chidi) { create_chidi_user }
     let(:good_place) { create_good_place_org(chidi) }
 

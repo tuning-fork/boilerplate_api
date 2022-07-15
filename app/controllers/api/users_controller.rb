@@ -20,18 +20,29 @@ module Api
     end
 
     def update
-      @user = User.find(params[:id])
-
       # Users may only update their own attributes
-      raise ActiveRecord::RecordNotFound if current_user.id != @user.id
+      raise ActiveRecord::RecordNotFound if current_user.id != params[:id]
 
-      @user.first_name = params[:first_name] || @user.first_name
-      @user.last_name = params[:last_name] || @user.last_name
-      @user.email = params[:email] || @user.email
-      @user.active = params[:active].nil? || @user.active
-      @user.save!
+      @user = User.find(params[:id])
+      @user.update!(update_user_params)
 
       render 'show.json.jb'
+    end
+
+    private
+
+    def create_user_params
+      params.permit(%i[first_name last_name email password password_confirmation])
+    end
+
+    def update_user_params
+      base_params = %i[first_name last_name email]
+      # Active can only change from false to true
+      if params[:active]
+        params.permit(base_params | [:active])
+      else
+        params.permit(base_params)
+      end
     end
   end
 end

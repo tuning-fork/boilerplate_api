@@ -39,7 +39,7 @@ describe User, type: :model do
     end
   end
 
-  describe '#is_in_organization?' do
+  describe '#in_organization?' do
     subject do
       User.create!(
         first_name: 'user',
@@ -54,25 +54,25 @@ describe User, type: :model do
     it 'returns true when user is in the provided organization' do
       organization_id = subject.organizations.first.id
 
-      expect(subject.is_in_organization?(organization_id)).to be(true)
+      expect(subject.in_organization?(organization_id)).to be(true)
     end
 
     it 'returns false when user is not in the provided organization' do
       organization_id = Organization.create!({ name: 'New Org' }).id
 
-      expect(subject.is_in_organization?(organization_id)).to be(false)
+      expect(subject.in_organization?(organization_id)).to be(false)
     end
 
     it 'returns true when user is in the provided organization using id' do
       organization_id = subject.organizations.first.id
 
-      expect(subject.is_in_organization?(organization_id)).to be(true)
+      expect(subject.in_organization?(organization_id)).to be(true)
     end
 
     it 'returns false when user is not in the provided organization using id' do
       organization_id = Organization.create!({ name: 'New Org' }).id
 
-      expect(subject.is_in_organization?(organization_id)).to be(false)
+      expect(subject.in_organization?(organization_id)).to be(false)
     end
   end
 end

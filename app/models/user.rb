@@ -31,13 +31,13 @@ class User < ApplicationRecord
     save!
   end
 
-  def is_in_organization?(organization_id)
+  def in_organization?(organization_id)
     organizations.any? { |organization| organization.id == organization_id }
   end
 
   private
 
   def generate_base64_token
-    test = SecureRandom.urlsafe_base64
+    SecureRandom.urlsafe_base64
   end
 end

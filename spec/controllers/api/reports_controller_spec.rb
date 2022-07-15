@@ -130,16 +130,24 @@ describe Api::ReportsController do
       expect(JSON.parse(response.body)).to match([
                                                    a_hash_including(
                                                      'id' => good_place_grant.reports.first.id,
-                                                     'created_at' => good_place_grant.reports.first.created_at.iso8601(3),
-                                                     'updated_at' => good_place_grant.reports.first.updated_at.iso8601(3),
+                                                     'created_at' => (
+                                                      good_place_grant.reports.first.created_at.iso8601(3)
+                                                    ),
+                                                     'updated_at' => (
+                                                      good_place_grant.reports.first.updated_at.iso8601(3)
+                                                    ),
                                                      'deadline' => good_place_grant.reports.first.deadline.iso8601(3),
                                                      'title' => good_place_grant.reports.first.title,
                                                      'submitted' => good_place_grant.reports.first.submitted
                                                    ),
                                                    a_hash_including(
                                                      'id' => good_place_grant.reports.second.id,
-                                                     'created_at' => good_place_grant.reports.second.created_at.iso8601(3),
-                                                     'updated_at' => good_place_grant.reports.second.updated_at.iso8601(3),
+                                                     'created_at' => (
+                                                      good_place_grant.reports.second.created_at.iso8601(3)
+                                                    ),
+                                                     'updated_at' => (
+                                                      good_place_grant.reports.second.updated_at.iso8601(3)
+                                                    ),
                                                      'deadline' => good_place_grant.reports.second.deadline.iso8601(3),
                                                      'title' => good_place_grant.reports.second.title,
                                                      'submitted' => good_place_grant.reports.second.submitted
@@ -223,7 +231,7 @@ describe Api::ReportsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/grants/:grant_id/reports/:report_id' do
+  describe 'GET /organizations/:organization_id/grants/:grant_id/reports/:id' do
     let(:report) do
       Report.create!({
                        grant: good_place.grants.first,
@@ -305,7 +313,7 @@ describe Api::ReportsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id' do
+  describe 'PATCH /organizations/:organization_id/grants/:grant_id/reports/:id' do
     let(:report) do
       Report.create!({
                        grant: good_place.grants.first,
@@ -406,7 +414,7 @@ describe Api::ReportsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id' do
+  describe 'DELETE /organizations/:organization_id/grants/:grant_id/reports/:id' do
     let(:report) do
       Report.create!({
                        grant: good_place.grants.first,

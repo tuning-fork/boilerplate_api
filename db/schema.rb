@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,109 +10,110 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_710_225_350) do
+ActiveRecord::Schema.define(version: 2022_07_10_225350) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'pgcrypto'
-  enable_extension 'plpgsql'
+  enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
-  create_table 'boilerplates', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'title'
-    t.text 'text'
-    t.integer 'wordcount'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.boolean 'archived', default: false
-    t.uuid 'organization_id'
-    t.uuid 'category_id'
+  create_table "boilerplates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.integer "wordcount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
+    t.uuid "organization_id"
+    t.uuid "category_id"
   end
 
-  create_table 'categories', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.boolean 'archived', default: false
-    t.uuid 'organization_id'
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
+    t.uuid "organization_id"
   end
 
-  create_table 'funding_orgs', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'website'
-    t.string 'name'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.boolean 'archived', default: false
-    t.uuid 'organization_id'
+  create_table "funding_orgs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "website"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
+    t.uuid "organization_id"
   end
 
-  create_table 'grants', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'title'
-    t.string 'rfp_url'
-    t.datetime 'deadline'
-    t.boolean 'submitted'
-    t.boolean 'successful'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'purpose'
-    t.boolean 'archived', default: false
-    t.uuid 'organization_id'
-    t.uuid 'funding_org_id'
+  create_table "grants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.string "rfp_url"
+    t.datetime "deadline"
+    t.boolean "submitted"
+    t.boolean "successful"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "purpose"
+    t.boolean "archived", default: false
+    t.uuid "organization_id"
+    t.uuid "funding_org_id"
   end
 
-  create_table 'organization_users', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.uuid 'organization_id'
-    t.uuid 'user_id'
-    t.index %w[organization_id user_id], name: 'index_organization_users_on_organization_id_and_user_id',
-                                         unique: true
+  create_table "organization_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "organization_id"
+    t.uuid "user_id"
+    t.index ["organization_id", "user_id"], name: "index_organization_users_on_organization_id_and_user_id", unique: true
   end
 
-  create_table 'organizations', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table 'report_sections', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'title'
-    t.text 'text'
-    t.integer 'sort_order'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.integer 'wordcount'
-    t.boolean 'archived', default: false
-    t.uuid 'report_id'
+  create_table "report_sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.integer "sort_order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "wordcount"
+    t.boolean "archived", default: false
+    t.uuid "report_id"
   end
 
-  create_table 'reports', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'title'
-    t.datetime 'deadline'
-    t.boolean 'submitted'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.boolean 'archived', default: false
-    t.uuid 'grant_id'
+  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.datetime "deadline"
+    t.boolean "submitted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "archived", default: false
+    t.uuid "grant_id"
   end
 
-  create_table 'sections', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'title'
-    t.text 'text'
-    t.integer 'sort_order'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.integer 'wordcount'
-    t.boolean 'archived', default: false
-    t.uuid 'grant_id'
+  create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.integer "sort_order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "wordcount"
+    t.boolean "archived", default: false
+    t.uuid "grant_id"
   end
 
-  create_table 'users', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'first_name'
-    t.string 'last_name'
-    t.string 'email'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'password_digest'
-    t.boolean 'active'
-    t.string 'password_reset_token'
-    t.datetime 'password_reset_sent_at'
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
+    t.boolean "active"
+    t.string "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
+
 end

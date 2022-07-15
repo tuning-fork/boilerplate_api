@@ -259,7 +259,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id' do
+  describe 'GET /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:id' do
     let(:section) do
       ReportSection.create!({
                               report: good_place.grants.first.reports.first,
@@ -351,7 +351,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id' do
+  describe 'PATCH /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:id' do
     let(:section) do
       ReportSection.create!({
                               report: good_place.grants.first.reports.first,
@@ -463,7 +463,7 @@ describe Api::ReportSectionsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:section_id' do
+  describe 'DELETE /organizations/:organization_id/grants/:grant_id/reports/:report_id/report_sections/:id' do
     let(:section) do
       ReportSection.create!({
                               report: good_place.grants.first.reports.first,

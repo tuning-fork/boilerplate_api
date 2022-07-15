@@ -193,7 +193,7 @@ describe Api::GrantsController do
     end
   end
 
-  describe 'GET /organizations/:organization_id/grants/:grant_id' do
+  describe 'GET /organizations/:organization_id/grants/:id' do
     it 'renders 401 if unauthenticated' do
       get :show, params: {
         organization_id: good_place.id,
@@ -250,7 +250,7 @@ describe Api::GrantsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/grants/:grant_id' do
+  describe 'PATCH /organizations/:organization_id/grants/:id' do
     let(:updated_grant_fields) do
       {
         organization_id: good_place.id,
@@ -327,7 +327,7 @@ describe Api::GrantsController do
     end
   end
 
-  describe 'DELETE /organizations/:organization_id/grants/:grant_id' do
+  describe 'DELETE /organizations/:organization_id/grants/:id' do
     it 'renders 401 if unauthenticated' do
       delete :destroy, params: {
         organization_id: good_place.id,
@@ -446,7 +446,7 @@ describe Api::GrantsController do
     end
   end
 
-  describe 'PATCH /organizations/:organization_id/grants/:grant_id/reorder_section/:section_id' do
+  describe 'PATCH /organizations/:organization_id/grants/:id/reorder_section/:section_id' do
     section_fields = %w[id created_at updated_at grant_id title text wordcount sort_order]
 
     let(:sections) do

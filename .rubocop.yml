@@ -1,0 +1,31 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "db/schema.rb"
+
+Style/Documentation:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Exclude:
+    - "spec/support/helpers/authentication.rb"
+
+Metrics/AbcSize:
+  Exclude:
+    - "db/migrate/*"
+
+Metrics/ClassLength:
+  Exclude:
+    - "db/factories/grant_factory.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "db/migrate/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "db/schema.rb"
+    - "config/**/*"
+    - "Guardfile"

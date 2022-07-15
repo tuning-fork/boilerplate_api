@@ -2,6 +2,7 @@
 
 module Api
   class SessionsController < ApplicationController
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def create
       user = User.find_by(email: params[:email])
 
@@ -25,13 +26,14 @@ module Api
       logger.info("Session created for #{user}")
       render json: payload, status: 201
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-    def get_session
+    def show
       authorization_header = request.headers['Authorization']
       token = authorization_header[/(?<=\A(Bearer ))\S+\z/] if authorization_header
 
       decoded_claims = decode_jwt(token)
-      user_id = decoded_claims.first['user_id'] || decoded_claims.first['user_id']
+      user_id = decoded_claims.first['user_id']
       @user = User.find(user_id)
 
       render 'show.json.jb'
@@ -44,7 +46,7 @@ module Api
     end
 
     def jwt_secret
-      ENV['SECRET_KEY_BASE']
+      ENV.fetch('SECRET_KEY_BASE')
     end
 
     def encode_jwt(user)

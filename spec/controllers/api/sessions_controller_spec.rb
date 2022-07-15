@@ -52,17 +52,17 @@ describe Api::SessionsController do
 
   describe 'GET /session' do
     it 'renders 401 if missing authorization header' do
-      get :get_session
+      get :show
       expect(response).to have_http_status(401)
     end
 
     it 'renders 401 if jwt is invalid' do
       request.headers['Authorization'] = 'invalid'
-      get :get_session
+      get :show
       expect(response).to have_http_status(401)
 
       set_auth_header(User.new({ email: 'nonexistentuser@test.com' }))
-      get :get_session
+      get :show
       expect(response).to have_http_status(401)
     end
 
@@ -75,7 +75,7 @@ describe Api::SessionsController do
                           })
 
       set_auth_header(user)
-      get :get_session
+      get :show
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to eq(
