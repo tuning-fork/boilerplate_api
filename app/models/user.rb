@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true, uniqueness: true
-  validates :password, length: { minimum: 5, wrong_length: "Password must be at least 5 characters." }, if: :password
+  validates :password, length: { minimum: 5, wrong_length: 'Password must be at least 5 characters.' }, if: :password
 
   has_many :organization_users
   has_many :organizations, through: :organization_users
@@ -9,7 +11,7 @@ class User < ApplicationRecord
   has_secure_password
 
   def to_s
-    "#<User:#{self.id}>"
+    "#<User:#{id}>"
   end
 
   def send_password_reset
@@ -20,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def password_token_valid?
-    (self.password_reset_sent_at + 1.hour) > Time.zone.now
+    (password_reset_sent_at + 1.hour) > Time.zone.now
   end
 
   def reset_password(password)
@@ -30,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def is_in_organization?(organization_id)
-    self.organizations.any? { |organization| organization.id == organization_id }
+    organizations.any? { |organization| organization.id == organization_id }
   end
 
   private

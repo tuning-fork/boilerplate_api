@@ -1,4 +1,6 @@
-grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
+# frozen_string_literal: true
+
+grant_hash = render partial: 'grant.json.jb', locals: { grant: @grant }
 
 # grant_hash[:section] = @grant.sections.map do |section|
 #   json = render partial: "/api/sections/section.json.jb", locals: { section: section }
@@ -17,13 +19,12 @@ grant_hash = render partial: "grant.json.jb", locals: { grant: @grant }
 
 grant_hash[:sections] = @grant.sections.sort_by(&:sort_order).map do |section|
   { id: section.id,
-   title: section.title,
-   text: section.text,
-   wordcount: section.wordcount,
-   sort_order: section.sort_order,
-   grant_id: section.grant_id
- # report_section_match: find_section(@grant, section.sort_order)
-     }
+    title: section.title,
+    text: section.text,
+    wordcount: section.wordcount,
+    sort_order: section.sort_order,
+    grant_id: section.grant_id }
+  # report_section_match: find_section(@grant, section.sort_order)
 end
 
 grant_hash[:reports] = @grant.reports.map do |report|
@@ -37,7 +38,7 @@ end
 grant_hash[:funding_org] = {
   id: @grant.funding_org.id,
   name: @grant.funding_org.name,
-  website: @grant.funding_org.website,
+  website: @grant.funding_org.website
 }
 
 grant_hash

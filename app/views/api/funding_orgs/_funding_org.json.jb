@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: funding_org.id,
   website: funding_org.website,
@@ -5,5 +7,5 @@
   name: funding_org.name,
   created_at: funding_org.created_at,
   updated_at: funding_org.updated_at,
-  archived: funding_org.archived,
+  archived: funding_org.archived
 }

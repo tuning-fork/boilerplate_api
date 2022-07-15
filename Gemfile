@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -23,25 +25,27 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails'
-  gem 'shoulda-matchers', '~> 4.0'
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
-  gem "rubocop", "~> 1.31", require: false
-  gem "rubocop-rails", "~> 2.15", require: false
-  gem "rubocop-rspec", "~> 2.12", require: false
-  gem "rubocop-performance", "~> 1.14", require: false
+  gem 'rspec-rails'
+  gem 'rubocop', '~> 1.31', require: false
+  gem 'rubocop-performance', '~> 1.14', require: false
+  gem 'rubocop-rails', '~> 2.15', require: false
+  gem 'rubocop-rspec', '~> 2.12', require: false
+  gem 'seed_dump'
+  gem 'shoulda-matchers', '~> 4.0'
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'guard-rspec', require: false
-  gem 'seed_dump'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
 gem 'http'
-gem 'rack-cors'
 gem 'jb'
+gem 'rack-cors'
+
 gem 'ranked-model'

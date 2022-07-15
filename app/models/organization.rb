@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Organization < ApplicationRecord
   validates :name, length: { in: 2..60 }
 
@@ -9,6 +11,6 @@ class Organization < ApplicationRecord
   has_many :users, through: :organization_users
 
   def to_s
-    "#<Organization:#{self.id}>"
+    "#<Organization:#{id}>"
   end
 end

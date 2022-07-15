@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddArchivedToSections < ActiveRecord::Migration[6.0]
   def change
     add_column :sections, :archived, :boolean, default: false
