@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-print 'Seeding MIRA data...'
+puts 'Seeding MIRA data...'
 
 mira = Organization.create!({
                               name: 'Middle Eastern Immigrant and Refugee Alliance (MIRA)',

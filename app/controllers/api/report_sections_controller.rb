@@ -15,7 +15,7 @@ module Api
 
     def create
       @report_section = ReportSection.create!(**create_section_params, report: @report)
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

@@ -15,7 +15,7 @@ module Api
         organization: @organization,
         category: category
       )
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

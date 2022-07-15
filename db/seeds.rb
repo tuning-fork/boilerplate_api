@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require 'securerandom'
+require_relative './factories/grant_factory'
 
 unless ENV['RAILS_ENV'] == 'production'
-  print 'Clearing out data...'
+  puts 'Clearing out data...'
 
   Category.delete_all
   Section.delete_all

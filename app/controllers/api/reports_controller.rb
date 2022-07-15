@@ -11,7 +11,7 @@ module Api
 
     def create
       @report = Report.create!(**create_report_params, grant: @grant)
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

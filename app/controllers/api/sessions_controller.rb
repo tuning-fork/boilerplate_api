@@ -24,7 +24,7 @@ module Api
       }
 
       logger.info("Session created for #{user}")
-      render json: payload, status: 201
+      render json: payload, status: :created
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 

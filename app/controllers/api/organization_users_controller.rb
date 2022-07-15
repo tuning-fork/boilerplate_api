@@ -16,10 +16,10 @@ module Api
         user: user
       )
 
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     rescue ActiveRecord::RecordNotUnique
       @organization_user = organization_user
-      render 'show.json.jb', status: 200
+      render 'show.json.jb', status: :ok
     end
 
     def show

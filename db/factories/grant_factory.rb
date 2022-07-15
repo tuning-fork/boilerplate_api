@@ -5,7 +5,7 @@ class GrantFactory
     <<-TEXT,
       MIRA offers a variety of support for families with children, including
       pre-school and school enrollment, working with teachers and administration,
-      support for struggling students, parental support, and monthly Parents’
+      support for struggling students, parental support, and monthly Parents'
       Groups.&nbsp;In FY18-19 MIRA provided 120 Child and Family Services Clients with
       480 Child and Family Services Case Activities.
     TEXT
@@ -88,7 +88,7 @@ class GrantFactory
     <<-TEXT,
       MIRA has provided the following services to over 600 clients and their families,
       with a total impact of about 1000 immigrants and refugees, in the last fiscal
-      year (July 18 – June 19):</p><p><br></p><p>Community Engagement and Empowerment
+      year (July 18 - June 19):</p><p><br></p><p>Community Engagement and Empowerment
       Programs:&nbsp;MIRA provides the resources and structure for Middle Eastern
       refugees to support one another and welcome new arrivals with what they need to
       succeed through support groups, community events, and bridge-building activities
@@ -101,7 +101,7 @@ class GrantFactory
       Case Activities.</p><p><br></p><p>Assistance for Families with Children: MIRA
       offers a variety of support for families with children, including pre-school and
       school enrollment, working with teachers and administration, support for
-      struggling students, parental support, and monthly Parents’ Groups.&nbsp;In
+      struggling students, parental support, and monthly Parents' Groups.&nbsp;In
       FY18-19 MIRA provided 120 Child and Family Services Clients with 480 Child and
       Family Services Case Activities.</p><p><br></p><p>Adult Education Guidance
       Program:&nbsp;MIRA works with clients to address their educational needs,
@@ -135,7 +135,7 @@ class GrantFactory
       refugees and immigrants from across the Middle East and beyond, and to use our
       multilingual and multicultural expertise to tailor our services to the unique
       needs of our clients— whom we serve regardless of gender, religion, ethnicity,
-      nationality, or family size.​Our staff and volunteers speak Arabic, Assyrian,
+      nationality, or family size. Our staff and volunteers speak Arabic, Assyrian,
       Kurdish, and Farsi. Almost all arrived to the United States as refugees
       themselves. These linguistic, cultural, and experiential connections with our
       Middle Eastern clients distinguish MIRA; there is no comparable organization
@@ -148,7 +148,7 @@ class GrantFactory
     TEXT
   ].freeze
 
-  def section_text
+  def self.section_text
     GrantFactory::SECTIONS_TEXT.sample
   end
 end

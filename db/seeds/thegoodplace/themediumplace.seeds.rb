@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-print 'Seeding The Medium Place data...'
+puts 'Seeding The Medium Place data...'
 
 lorem_ipsum = <<-TEXT
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet felis sit

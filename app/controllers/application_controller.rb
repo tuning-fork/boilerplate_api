@@ -11,11 +11,11 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def handle_unauthorized(_exception)
-    render status: 401, json: { errors: ['Unauthorized'] }
+    render status: :unauthorized, json: { errors: ['Unauthorized'] }
   end
 
   def handle_record_invalid(exception)
-    render status: 422, json: { errors: exception.record.errors.full_messages }
+    render status: :unprocessable_entity, json: { errors: exception.record.errors.full_messages }
   end
 
   def current_user

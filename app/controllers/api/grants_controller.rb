@@ -15,7 +15,7 @@ module Api
         organization: @organization,
         funding_org: funding_org
       )
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def copy

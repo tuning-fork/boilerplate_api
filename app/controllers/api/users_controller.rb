@@ -16,7 +16,7 @@ module Api
 
       logger.info("New user created #{@user}")
 
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def update

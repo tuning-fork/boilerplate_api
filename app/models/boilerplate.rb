@@ -5,5 +5,5 @@ class Boilerplate < ApplicationRecord
 
   belongs_to :organization
   belongs_to :category
-  has_many :sections
+  has_many :sections, dependent: :destroy
 end

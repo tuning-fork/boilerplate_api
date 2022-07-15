@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-print 'Seeding The Good Place data...'
+puts 'Seeding The Good Place data...'
 
 chidi = User.create!({
                        first_name: 'Chidi',

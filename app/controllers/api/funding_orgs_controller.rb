@@ -11,7 +11,7 @@ module Api
 
     def create
       @funding_org = FundingOrg.create!(**create_funding_org_params, organization: @organization)
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

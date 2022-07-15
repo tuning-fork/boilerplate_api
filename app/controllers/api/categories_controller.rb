@@ -11,7 +11,7 @@ module Api
 
     def create
       @category = Category.create!(**create_category_params, organization: @organization)
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

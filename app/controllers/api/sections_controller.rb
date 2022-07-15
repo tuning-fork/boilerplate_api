@@ -11,7 +11,7 @@ module Api
 
     def create
       @section = Section.create!(**create_section_params, grant: @grant)
-      render 'show.json.jb', status: 201
+      render 'show.json.jb', status: :created
     end
 
     def show

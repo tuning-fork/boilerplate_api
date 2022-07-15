@@ -228,8 +228,6 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
-    rubocop-rspec (2.12.1)
-      rubocop (~> 1.31)
     ruby-progressbar (1.11.0)
     ruby_dep (1.5.0)
     seed_dump (3.3.1)
@@ -279,7 +277,6 @@ DEPENDENCIES
   rubocop (~> 1.31)
   rubocop-performance (~> 1.14)
   rubocop-rails (~> 2.15)
-  rubocop-rspec (~> 2.12)
   seed_dump
   shoulda-matchers (~> 4.0)
   tzinfo-data
