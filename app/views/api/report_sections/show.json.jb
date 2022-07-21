@@ -1,1 +1,3 @@
-render partial: "report_section.json.jb", locals: {report_section: @report_section}
+# frozen_string_literal: true
+
+render partial: 'report_section.json.jb', locals: { report_section: @report_section }

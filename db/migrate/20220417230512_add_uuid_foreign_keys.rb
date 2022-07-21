@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddUuidForeignKeys < ActiveRecord::Migration[6.0]
   def up
     execute <<-SQL
@@ -77,7 +79,7 @@ class AddUuidForeignKeys < ActiveRecord::Migration[6.0]
       WHERE reports.id = report_sections.report_id;
     SQL
   end
-  
+
   def down
     execute <<-SQL
       UPDATE organization_users SET organization_uuid = null, user_uuid = null

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: category.id,
   organization_id: category.organization_id,

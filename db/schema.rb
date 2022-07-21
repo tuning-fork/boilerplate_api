@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_10_225350) do
+ActiveRecord::Schema.define(version: 2022_07_18_051310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,12 +48,12 @@ ActiveRecord::Schema.define(version: 2022_07_10_225350) do
     t.string "title"
     t.string "rfp_url"
     t.datetime "deadline"
-    t.boolean "submitted"
-    t.boolean "successful"
+    t.boolean "submitted", default: false, null: false
+    t.boolean "successful", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "purpose"
-    t.boolean "archived", default: false
+    t.boolean "archived", default: false, null: false
     t.uuid "organization_id"
     t.uuid "funding_org_id"
   end

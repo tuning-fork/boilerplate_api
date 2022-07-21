@@ -1,47 +1,47 @@
-class Api::CategoriesController < ApplicationController
-  before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists
+# frozen_string_literal: true
 
-  def index
-    @categories = Category.where(organization_id: params[:organization_id])
-    render "index.json.jb"
-  end
+module Api
+  class CategoriesController < ApplicationController
+    before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists
 
-  def create
-    @category = Category.create!(
-      organization_id: @organization.id,
-      name: params[:name],
-    )
-    render "show.json.jb", status: 201
-  end
+    def index
+      @categories = @organization.categories
+      render 'index.json.jb'
+    end
 
-  def show
-    @category = Category.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
-    render "show.json.jb"
-  end
+    def create
+      @category = Category.create!(**create_category_params, organization: @organization)
+      render 'show.json.jb', status: :created
+    end
 
-  def update
-    @category = Category.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
+    def show
+      @category = category
+      render 'show.json.jb'
+    end
 
-    @category.name = params[:name] || @category.name
-    @category.archived = params[:archived].nil? ? @category.archived : params[:archived]
-    @category.save!
+    def update
+      @category = category
+      @category.update!(update_category_params)
+      render 'show.json.jb'
+    end
 
-    render "show.json.jb"
-  end
+    def destroy
+      @category = category.destroy!
+      render 'show.json.jb'
+    end
 
-  def destroy
-    @category = Category.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
-    @category.destroy!
+    private
 
-    render "show.json.jb"
+    def category
+      Category.find_by!(id: params[:id], organization_id: params[:organization_id])
+    end
+
+    def create_category_params
+      params.permit(%i[name])
+    end
+
+    def update_category_params
+      params.permit(%i[name archived])
+    end
   end
 end

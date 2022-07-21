@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Grant < ApplicationRecord
   validates :title, length: { in: 2..100 }
 

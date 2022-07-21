@@ -1,4 +1,6 @@
-category_hash = render partial: "category.json.jb", locals: {category: @category}
+# frozen_string_literal: true
+
+category_hash = render partial: 'category.json.jb', locals: { category: @category }
 
 category_hash[:organization] = {
   id: @category.organization.id,

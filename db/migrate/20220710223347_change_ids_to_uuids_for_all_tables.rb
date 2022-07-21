@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeIdsToUuidsForAllTables < ActiveRecord::Migration[6.0]
   def change
     remove_column :organizations, :id, :bigint
@@ -21,7 +23,7 @@ class ChangeIdsToUuidsForAllTables < ActiveRecord::Migration[6.0]
     remove_column :sections, :grant_id, :bigint
     remove_column :reports, :grant_id, :bigint
     remove_column :report_sections, :report_id, :bigint
-    
+
     rename_column :organizations, :uuid, :id
     rename_column :organization_users, :uuid, :id
     rename_column :grants, :uuid, :id
@@ -44,6 +46,6 @@ class ChangeIdsToUuidsForAllTables < ActiveRecord::Migration[6.0]
     rename_column :reports, :grant_uuid, :grant_id
     rename_column :report_sections, :report_uuid, :report_id
 
-    add_index :organization_users, [:organization_id, :user_id], unique: true
+    add_index :organization_users, %i[organization_id user_id], unique: true
   end
 end

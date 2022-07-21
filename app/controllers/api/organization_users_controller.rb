@@ -1,29 +1,36 @@
-class Api::OrganizationUsersController < ApplicationController
-  before_action :authenticate_user, :ensure_user_is_in_organization
+# frozen_string_literal: true
 
-  def index
-    organization = Organization.find(params[:organization_id])
-    @users = organization.users
-    render "api/users/index.json.jb"
-  end
+module Api
+  class OrganizationUsersController < ApplicationController
+    before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists
 
-  def create
-    user = User.find(params[:id])
-    organization = Organization.find(params[:organization_id])
+    def index
+      @users = @organization.users
+      render 'api/users/index.json.jb'
+    end
 
-    @organization_user = OrganizationUser.create!(
-      organization: organization,
-      user: user,
-    )
-    
-    render "show.json.jb", status: 201
-  rescue ActiveRecord::RecordNotUnique => e
-    @organization_user = OrganizationUser.find_by(organization_id: params[:organization_id], user_id: params[:id])
-    render "show.json.jb", status: 200
-  end
+    def create
+      user = User.find(params[:id])
+      @organization_user = OrganizationUser.create!(
+        organization: @organization,
+        user: user
+      )
 
-  def show
-    @organization_user = OrganizationUser.find_by!(organization_id: params[:organization_id], user_id: params[:id])
-    render "show.json.jb"
+      render 'show.json.jb', status: :created
+    rescue ActiveRecord::RecordNotUnique
+      @organization_user = organization_user
+      render 'show.json.jb', status: :ok
+    end
+
+    def show
+      @organization_user = organization_user
+      render 'show.json.jb'
+    end
+
+    private
+
+    def organization_user
+      OrganizationUser.find_by!(user_id: params[:id], organization_id: params[:organization_id])
+    end
   end
 end

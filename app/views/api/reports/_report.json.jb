@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: report.id,
   grant_id: report.grant_id,
@@ -5,5 +7,5 @@
   deadline: report.deadline,
   submitted: report.submitted,
   created_at: report.created_at,
-  updated_at: report.updated_at,
+  updated_at: report.updated_at
 }

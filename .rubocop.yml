@@ -1,0 +1,79 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  NewCops: disable
+  SuggestExtensions: false
+
+Style/Documentation:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Exclude:
+    - "spec/support/helpers/authentication.rb"
+
+Metrics/AbcSize:
+  Exclude:
+    - "db/migrate/*"
+
+Metrics/ClassLength:
+  Exclude:
+    - "db/factories/grant_factory.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "db/migrate/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "db/schema.rb"
+    - "config/**/*"
+    - "Guardfile"
+
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - "db/schema.rb"
+Style/StringLiterals:
+  Exclude:
+    - "db/schema.rb"
+Layout/LineLength:
+  Exclude:
+    - "db/schema.rb"
+Style/NumericLiterals:
+  Exclude:
+    - "db/schema.rb"
+Style/WordArray:
+  Exclude:
+    - "db/schema.rb"
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - "db/schema.rb"
+
+# TODO:
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - "app/models/user.rb"
+Rails/ReversibleMigration:
+  Exclude:
+    - "db/migrate/20220212205316_drop_bios.rb"
+    - "db/migrate/20220212205820_drop_bio_grant.rb"
+Rails/BulkChangeTable:
+  Exclude:
+    - "db/migrate/20210115001603_add_password_forgot_reset_to_users.rb"
+    - "db/migrate/20220417222445_add_uuid_column_to_all_tables.rb"
+    - "db/migrate/20220417222445_add_uuid_column_to_all_tables.rb"
+    - "db/migrate/20220417222445_add_uuid_column_to_all_tables.rb"
+    - "db/migrate/20220710223347_change_ids_to_uuids_for_all_tables.rb"
+    - "db/migrate/20220710223347_change_ids_to_uuids_for_all_tables.rb"
+    - "db/migrate/20220710223347_change_ids_to_uuids_for_all_tables.rb"
+Rails/FilePath:
+  Exclude:
+    - "config/environments/development.rb"
+    - "db/seeds.rb"
+Rails/Output:
+  Exclude:
+    - "db/seeds.rb"
+    - "db/seeds/**/*"

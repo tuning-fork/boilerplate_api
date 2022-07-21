@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: boilerplate.id,
   organization_id: boilerplate.organization_id,

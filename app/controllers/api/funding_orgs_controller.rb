@@ -1,53 +1,47 @@
-class Api::FundingOrgsController < ApplicationController
-  before_action :authenticate_user, :ensure_user_is_in_organization
+# frozen_string_literal: true
 
-  def index
-    @funding_orgs = FundingOrg
-      .where(organization_id: params[:organization_id])
-      .order(:name)
+module Api
+  class FundingOrgsController < ApplicationController
+    before_action :authenticate_user, :ensure_user_is_in_organization, :ensure_organization_exists
 
-    render "index.json.jb"
-  end
+    def index
+      @funding_orgs = @organization.funding_orgs.order(:name)
+      render 'index.json.jb'
+    end
 
-  def create
-    organization = Organization.find(params[:organization_id])
-    @funding_org = FundingOrg.create!(
-      website: params[:website],
-      name: params[:name],
-      organization_id: organization.id,
-    )
-    render "show.json.jb", status: 201
-  end
+    def create
+      @funding_org = FundingOrg.create!(**create_funding_org_params, organization: @organization)
+      render 'show.json.jb', status: :created
+    end
 
-  def show
-    @funding_org = FundingOrg.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
-    render "show.json.jb"
-  end
+    def show
+      @funding_org = funding_org
+      render 'show.json.jb'
+    end
 
-  def update
-    @funding_org = FundingOrg.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
+    def update
+      @funding_org = funding_org
+      @funding_org.update!(update_funding_org_params)
+      render 'show.json.jb'
+    end
 
-    @funding_org.website = params[:website] || @funding_org.website
-    @funding_org.name = params[:name] || @funding_org.name
-    @funding_org.archived = params[:archived].nil? ? @funding_org.archived : params[:archived]
-    @funding_org.save!
+    def destroy
+      @funding_org = funding_org.destroy!
+      render 'show.json.jb'
+    end
 
-    render "show.json.jb"
-  end
+    private
 
-  def destroy
-    @funding_org = FundingOrg.find_by!(
-      id: params[:id],
-      organization_id: params[:organization_id],
-    )
-    @funding_org.destroy!
+    def funding_org
+      FundingOrg.find_by!(id: params[:id], organization_id: params[:organization_id])
+    end
 
-    render "show.json.jb"
+    def create_funding_org_params
+      params.permit(%i[website name])
+    end
+
+    def update_funding_org_params
+      params.permit(%i[website name archived])
+    end
   end
 end

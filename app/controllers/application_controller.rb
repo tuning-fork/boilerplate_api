@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   rescue_from JWT::DecodeError, with: :handle_unauthorized
   rescue_from JWT::VerificationError, with: :handle_unauthorized
@@ -8,36 +10,27 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   helper_method :current_user
 
-  def handle_unauthorized(exception)
-    render status: 401, json: { errors: ["Unauthorized"] }
+  def handle_unauthorized(_exception)
+    render status: :unauthorized, json: { errors: ['Unauthorized'] }
   end
 
   def handle_record_invalid(exception)
-    render status: 422, json: { errors: exception.record.errors.full_messages }
+    render status: :unprocessable_entity, json: { errors: exception.record.errors.full_messages }
   end
 
   def current_user
-    auth_headers = request.headers["Authorization"]
-    if auth_headers.present? && auth_headers[/(?<=\A(Bearer ))\S+\z/]
-      token = auth_headers[/(?<=\A(Bearer ))\S+\z/]
-      begin
-        decoded_token = JWT.decode(
-          token,
-          ENV['SECRET_KEY_BASE'],
-          true,
-          { algorithm: "HS256" }
-        )
-        User.find_by(id: decoded_token[0]["user_id"])
-      rescue JWT::ExpiredSignature
-        nil
-      end
-    end
+    auth_headers = request.headers['Authorization']
+    return nil unless auth_headers.present? && auth_headers[/(?<=\A(Bearer ))\S+\z/]
+
+    token = auth_headers[/(?<=\A(Bearer ))\S+\z/]
+    decoded_token = JWT.decode(token, ENV.fetch('SECRET_KEY_BASE'), true, { algorithm: 'HS256' })
+    User.find(decoded_token[0]['user_id'])
+  rescue JWT::ExpiredSignature
+    nil
   end
 
   def authenticate_user
-    unless current_user
-      render json: {}, status: :unauthorized
-    end
+    render json: {}, status: :unauthorized unless current_user
   end
 
   def ensure_organization_exists
@@ -45,9 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_user_is_in_organization(organization_id = params[:organization_id] || params[:id])
-    unless current_user.is_in_organization?(organization_id)
-      raise ActiveRecord::RecordNotFound
-    end
+    raise ActiveRecord::RecordNotFound unless current_user.in_organization?(organization_id)
   end
 
   def ensure_grant_exists
@@ -55,7 +46,7 @@ class ApplicationController < ActionController::Base
     # Organization A performing operations on Organization B
     @grant = Grant.find_by!(
       organization_id: params[:organization_id],
-      id: params[:grant_id],
+      id: params[:grant_id]
     )
   end
 end

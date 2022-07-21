@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
@@ -5,15 +7,13 @@ class ApplicationRecord < ActiveRecord::Base
     json = {}
     attributes.each do |attribute|
       json[attribute] = self[attribute]
-    end 
+    end
 
     json
-  end 
+  end
 
   def count_words(*block)
-    text_block_array = self.select_stuff(block).keys[0]
-    text_score = text_block_array[0].split(" ").length
-    text_score
-  end 
-
+    text_block_array = select_stuff(block).keys[0]
+    text_block_array[0].split.length
+  end
 end
