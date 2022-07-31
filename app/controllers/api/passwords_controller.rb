@@ -5,6 +5,7 @@ module Api
     def forgot
       user = User.find_by(email: params[:email])
       user&.send_password_reset
+      p "SENT PASSWORD RESET THING: #{user} #{params[:email]}"
 
       # Respond regardless to prevent unintentionally leaking user's emails
       render json: { message: 'If this user exists, we have sent you a password reset email.' }, status: :created
