@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_051310) do
     t.uuid "organization_id"
   end
 
-  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "contacts", force: :cascade do |t|
     t.string "name"
     t.string "title"
     t.string "email"
@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(version: 2022_07_18_051310) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
   create_table "report_sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -125,9 +124,6 @@ ActiveRecord::Schema.define(version: 2022_07_18_051310) do
     t.boolean "active"
     t.string "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
-  add_foreign_key "reviewers", "grants", column: "grants_id"
-  add_foreign_key "reviewers", "users", column: "users_id"
 end
