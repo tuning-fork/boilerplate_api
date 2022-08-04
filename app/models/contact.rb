@@ -9,4 +9,8 @@ class Contact < ApplicationRecord
         ContactMailer.contact_submission(contact_submission).deliver_now
         ContactMailer.contact_confirmation(contact_submission).deliver_now
     end
+
+    def to_s
+        "#<Contact:#{id}>"
+    end
 end
