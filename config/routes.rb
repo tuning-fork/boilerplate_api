@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
     post '/contact_us' => "contacts#create"
 
-    # resources :users, only: [:create, :update]
     resources :users, only: %i[create update]
 
     resources :organizations do
