@@ -1,7 +1,10 @@
-require "securerandom"
+# frozen_string_literal: true
 
-unless ENV["RAILS_ENV"] == "production"
-  print "Clearing out data..."
+require 'securerandom'
+require_relative './factories/grant_factory'
+
+unless ENV['RAILS_ENV'] == 'production'
+  puts 'Clearing out data...'
 
   Category.delete_all
   Section.delete_all
@@ -17,8 +20,8 @@ unless ENV["RAILS_ENV"] == "production"
   puts "Data cleared!\n"
 end
 
-Dir[File.join(Rails.root, "db/seeds/**/*.rb")].sort.each do |seed|
+Dir[File.join(Rails.root, 'db/seeds/**/*.rb')].sort.each do |seed|
   load seed
 end
 
-puts "All data seed!"
+puts 'All data seed!'

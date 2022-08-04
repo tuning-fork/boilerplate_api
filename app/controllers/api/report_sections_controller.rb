@@ -1,74 +1,55 @@
-class Api::ReportSectionsController < ApplicationController
-  before_action :authenticate_user,
-    :ensure_organization_exists,
-    :ensure_grant_exists,
-    :ensure_report_exists,
-    :ensure_user_is_in_organization
+# frozen_string_literal: true
 
-  def index
-    @report_sections = @report.report_sections.order(id: :asc)
-    render "index.json.jb"
-  end
+module Api
+  class ReportSectionsController < ApplicationController
+    before_action :authenticate_user,
+                  :ensure_user_is_in_organization,
+                  :ensure_organization_exists,
+                  :ensure_grant_exists,
+                  :ensure_report_exists
 
-  def create
-    @report_section = ReportSection.create!(
-      report_id: params[:report_id],
-      title: params[:title],
-      text: params[:text],
-      wordcount: params[:wordcount],
-      sort_order: params[:sort_order],
-    )
-    render "show.json.jb", status: 201
-  end
+    def index
+      @report_sections = @report.report_sections
+      render 'index.json.jb'
+    end
 
-  def show
-    @report_section = ReportSection.find_by!(
-      id: params[:id],
-      report_id: params[:report_id],
-    )
-    render "show.json.jb"
-  end
+    def create
+      @report_section = ReportSection.create!(**create_section_params, report: @report)
+      render 'show.json.jb', status: :created
+    end
 
-  def update
-    @report_section = ReportSection.find_by!(
-      id: params[:id],
-      report_id: params[:report_id],
-    )
+    def show
+      @report_section = section
+      render 'show.json.jb'
+    end
 
-    @report_section.report_id = params[:report_id] || @report_section.report_id
-    @report_section.title = params[:title] || @report_section.title
-    @report_section.text = params[:text] || @report_section.text
-    @report_section.wordcount = params[:wordcount] || @report_section.wordcount
-    @report_section.sort_order = params[:sort_order] || @report_section.sort_order
-    @report_section.archived = params[:archived].nil? || @report_section.archived
-    @report_section.save!
+    def update
+      @report_section = section
+      @report_section.update!(update_section_params)
+      render 'show.json.jb'
+    end
 
-    render "show.json.jb"
-  end
+    def destroy
+      @report_section = section.destroy!
+      render 'show.json.jb'
+    end
 
-  def destroy
-    @report_section = ReportSection.find_by!(
-      id: params[:id],
-      report_id: params[:report_id],
-    )
-    @report_section.destroy!
+    private
 
-    render "show.json.jb"
-  end
+    def ensure_report_exists
+      @report = Report.find_by!(grant_id: params[:grant_id], id: params[:report_id])
+    end
 
-  private
+    def section
+      ReportSection.find_by!(id: params[:id], report_id: params[:report_id])
+    end
 
-  def ensure_grant_exists
-    @grant = Grant.find_by!(
-      organization_id: params[:organization_id],
-      id: params[:grant_id],
-    )
-  end
+    def create_section_params
+      params.permit(%i[title text wordcount sort_order])
+    end
 
-  def ensure_report_exists
-    @report = Report.find_by!(
-      grant_id: params[:grant_id],
-      id: params[:report_id],
-    )
+    def update_section_params
+      params.permit(%i[title text wordcount sort_order archived])
+    end
   end
 end

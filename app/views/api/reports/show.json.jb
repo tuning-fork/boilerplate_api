@@ -1,17 +1,18 @@
-report_hash = render partial: "report.json.jb", locals: { report: @report }
+# frozen_string_literal: true
+
+report_hash = render partial: 'report.json.jb', locals: { report: @report }
 
 report_hash[:report_sections] = @report.report_sections.map do |report_section|
-  json = { id: report_section.id,
-          title: report_section.title,
-          text: report_section.text,
-          wordcount: report_section.wordcount,
-          sort_order: report_section.sort_order
- #  grant_section_match: @report.grant.sections.find { |section| section.sort_order == report_section.sort_order }
-     }
+  { id: report_section.id,
+    title: report_section.title,
+    text: report_section.text,
+    wordcount: report_section.wordcount,
+    sort_order: report_section.sort_order }
+  #  grant_section_match: @report.grant.sections.find { |section| section.sort_order == report_section.sort_order }
 end
 
 report_hash[:grant] = {
-  grant_sections: @report.grant.sections,
+  grant_sections: @report.grant.sections
 }
 
 report_hash

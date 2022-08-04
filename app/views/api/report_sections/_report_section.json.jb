@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: report_section.id,
   report_id: report_section.report_id,
@@ -6,5 +8,5 @@
   sort_order: report_section.sort_order,
   wordcount: report_section.wordcount,
   created_at: report_section.created_at,
-  updated_at: report_section.updated_at,
+  updated_at: report_section.updated_at
 }

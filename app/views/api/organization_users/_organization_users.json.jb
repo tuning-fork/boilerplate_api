@@ -1,1 +1,3 @@
-render partial: "api/users/user.json.jb", locals: {user: @organization_user.user}
+# frozen_string_literal: true
+
+render partial: 'api/users/user.json.jb', locals: { user: @organization_user.user }

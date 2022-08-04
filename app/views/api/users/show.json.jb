@@ -1,9 +1,11 @@
-user_hash = render partial: "user.json.jb", locals: { user: @user }
+# frozen_string_literal: true
+
+user_hash = render partial: 'user.json.jb', locals: { user: @user }
 
 user_hash[:organizations] = @user.organizations.map do |organization|
   {
     id: organization.id,
-    name: organization.name,
+    name: organization.name
   }
 end
 

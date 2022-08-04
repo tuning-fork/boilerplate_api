@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   namespace :api do
-    post "/sessions" => "sessions#create"
-    get "/session" => "sessions#get_session"
+    post '/sessions' => 'sessions#create'
+    get '/session' => 'sessions#show'
 
-    post '/forgot_password' => "passwords#forgot"
-    post '/reset_password' => "passwords#reset"
+    post '/forgot_password' => 'passwords#forgot'
+    post '/reset_password' => 'passwords#reset'
 
     post '/contact_us' => "contacts#create"
 
-    resources :users, only: [:create, :update]
+    # resources :users, only: [:create, :update]
+    resources :users, only: %i[create update]
 
     resources :organizations do
       resources :organization_users, path: :users
@@ -23,8 +26,10 @@ Rails.application.routes.draw do
       end
     end
 
-    post "/organizations/:organization_id/grants/:grant_id/copy" => "grants#copy"
-    patch "/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id" => "grants#reorder_section"
-    get "/organizations/:organization_id/reports-finalize/:id" => "reports#show"
+    post '/organizations/:organization_id/grants/:grant_id/copy' => 'grants#copy'
+
+    # rubocop:disable Layout/LineLength
+    patch '/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id' => 'grants#reorder_section'
+    # rubocop:enable Layout/LineLength
   end
 end

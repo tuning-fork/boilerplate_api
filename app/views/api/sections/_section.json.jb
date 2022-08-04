@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 {
   id: section.id,
   grant_id: section.grant_id,

@@ -1,4 +1,6 @@
-boilerplate_hash = render partial: "boilerplate.json.jb", locals: {boilerplate: @boilerplate}
+# frozen_string_literal: true
+
+boilerplate_hash = render partial: 'boilerplate.json.jb', locals: { boilerplate: @boilerplate }
 
 boilerplate_hash[:organization] = {
   id: @boilerplate.organization.id,
