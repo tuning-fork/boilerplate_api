@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Api::OrganizationsController do
   organization_fields = %w[
-    id created_at updated_at name
+    id created_at updated_at name users
   ]
 
   before(:example) do
