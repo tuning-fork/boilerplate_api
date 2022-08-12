@@ -11,13 +11,13 @@ describe Api::OrganizationUsersController do
     Organization.create!({
                            name: 'The Bad Place',
                            users: [
-                             User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
+                             build(:user, first_name: 'Shawn')
                            ]
                          })
   end
 
   let(:chidi) do
-    User.create!({ email: 'chidi@good.place', password: 'chidi', first_name: 'Chidi', last_name: 'Anagonye' })
+    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
   end
 
   let(:good_place) do
@@ -25,8 +25,7 @@ describe Api::OrganizationUsersController do
                            name: 'The Good Place',
                            users: [
                              chidi,
-                             User.new({ first_name: 'Tahani', last_name: 'Al-Jamil', email: 'taljamil@thegoodplace.com',
-                                        password: 'tahani' })
+                             build(:user, first_name: 'Tahani', last_name: 'Al-Jamil')
                            ]
                          })
   end
@@ -79,9 +78,8 @@ describe Api::OrganizationUsersController do
   end
 
   describe 'POST /organizations/:organization_id/users' do
-    let(:michael) do
-      User.create!({ first_name: 'Michael', email: 'michael@good.place', password: 'michael' })
-    end
+    let(:michael) { create(:user, first_name: 'Michael') }
+
     let(:new_organization_user_params) do
       {
         organization_id: good_place.id,

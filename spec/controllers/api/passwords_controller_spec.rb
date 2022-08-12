@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Api::PasswordsController do
   let(:user) do
-    User.create!({ email: 'user@test.com', password: 'password', first_name: 'user' })
+    create(:user, email: 'user@test.com', password: 'password', first_name: 'user')
   end
 
   describe 'POST /forgot_password' do
@@ -55,13 +55,13 @@ describe Api::PasswordsController do
     end
 
     it 'renders 400 if reset token expired' do
-      user_with_expired_token = User.create!({
-                                               email: 'expired@test.com',
-                                               password: 'password',
-                                               first_name: 'user',
-                                               password_reset_token: 'expired-token',
-                                               password_reset_sent_at: Time.zone.now - 2.hours
-                                             })
+      user_with_expired_token = create(:user, {
+                                         email: 'expired@test.com',
+                                         password: 'current password',
+                                         first_name: 'user',
+                                         password_reset_token: 'expired-token',
+                                         password_reset_sent_at: Time.zone.now - 2.hours
+                                       })
 
       post :reset, params: {
         email: user_with_expired_token.email,
@@ -72,7 +72,7 @@ describe Api::PasswordsController do
       expect(response).to have_http_status(400)
     end
 
-    xit 'renders 422 if given insecure password' do
+    it 'renders 422 if given insecure password' do
       post :reset, params: {
         **params,
         password: 'abc123'

@@ -4,12 +4,12 @@ require 'rails_helper'
 
 describe Api::SessionsController do
   let(:user) do
-    User.create!({
-                   email: 'user@test.com',
-                   password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
-                   first_name: 'firstname',
-                   last_name: 'lastname'
-                 })
+    create(:user, {
+             email: 'user@test.com',
+             password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
+             first_name: 'firstname',
+             last_name: 'lastname'
+           })
   end
 
   describe 'POST /sessions' do
@@ -61,18 +61,18 @@ describe Api::SessionsController do
       get :show
       expect(response).to have_http_status(401)
 
-      set_auth_header(User.new({ email: 'nonexistentuser@test.com' }))
+      set_auth_header(build(:user, email: 'nonexistentuser@test.com'))
       get :show
       expect(response).to have_http_status(401)
     end
 
     it 'renders 200 with jwt' do
-      user = User.create!({
-                            email: 'user@test.com',
-                            password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
-                            first_name: 'firstname',
-                            last_name: 'lastname'
-                          })
+      user = create(:user, {
+                      email: 'user@test.com',
+                      password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
+                      first_name: 'firstname',
+                      last_name: 'lastname'
+                    })
 
       set_auth_header(user)
       get :show

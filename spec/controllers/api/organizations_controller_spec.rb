@@ -12,26 +12,20 @@ describe Api::OrganizationsController do
                            {
                              name: 'The Bad Place',
                              users: [
-                               User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
+                               build(:user, first_name: 'Shawn')
                              ]
                            },
                            {
                              name: 'The Medium Place',
                              users: [
-                               User.new({ email: 'mindy@medium.place', password: 'mindy', first_name: 'Mindy',
-                                          last_name: 'St. Claire' })
+                               build(:user, first_name: 'Mindy', last_name: 'St. Claire')
                              ]
                            }
                          ])
   end
 
   def create_chidi_user
-    User.create!({
-                   email: 'chidi@good.place',
-                   password: 'chidi',
-                   first_name: 'Chidi',
-                   last_name: 'Anagonye'
-                 })
+    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
   end
 
   def create_good_place_org(creator)
@@ -39,12 +33,9 @@ describe Api::OrganizationsController do
                            name: 'The Good Place',
                            users: [
                              creator,
-                             User.new({ email: 'tahani@good.place', password: 'tahani', first_name: 'Tahani',
-                                        last_name: 'Al-Jamil' }),
-                             User.new({ email: 'jason@good.place', password: 'jason', first_name: 'Jason',
-                                        last_name: 'Mendoza' }),
-                             User.new({ email: 'elenor@good.place', password: 'elenor', first_name: 'Elenor',
-                                        last_name: 'Shellstrop' })
+                             build(:user, first_name: 'Tahani', last_name: 'Al-Jamil'),
+                             build(:user, first_name: 'Jason', last_name: 'Mendoza'),
+                             build(:user, first_name: 'Elenor', last_name: 'Shellstrop')
                            ]
                          })
   end
