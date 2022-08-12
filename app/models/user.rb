@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true, uniqueness: true
-  validates :password, length: { minimum: 5, wrong_length: 'Password must be at least 5 characters.' }, if: :password
+  validates :password, length: { minimum: 8, wrong_length: 'Password must be at least 8 characters.' }, if: :password
 
   has_many :organization_users, dependent: :destroy
   has_many :organizations, through: :organization_users

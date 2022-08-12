@@ -22,8 +22,6 @@ describe Api::UsersController do
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
           'errors' => [
-            # TODO: Add email/password validation
-            # match(/Password is too short/),
             match(/First name can't be blank/),
             match(/First name is too short/),
             match(/Password confirmation doesn't match Password/)
