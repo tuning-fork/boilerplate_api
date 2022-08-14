@@ -13,7 +13,7 @@ describe Api::GrantsController do
     org = Organization.create!({
                                  name: 'The Bad Place',
                                  users: [
-                                   User.new({ email: 'shawn@bad.place', password: 'shawn', first_name: 'Shawn' })
+                                   build(:user, first_name: 'Shawn')
                                  ],
                                  funding_orgs: [
                                    FundingOrg.new({ website: 'https://thebadplace.com', name: 'The Bad Place' })
@@ -36,7 +36,7 @@ describe Api::GrantsController do
   end
 
   let(:chidi) do
-    User.create!({ email: 'chidi@good.place', password: 'chidi', first_name: 'Chidi', last_name: 'Anagonye' })
+    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
   end
 
   let(:good_place) do
@@ -44,8 +44,7 @@ describe Api::GrantsController do
                                         name: 'The Good Place',
                                         users: [
                                           chidi,
-                                          User.new({ email: 'tahani@good.place', password: 'tahani',
-                                                     first_name: 'Tahani', last_name: 'Al-Jamil' })
+                                          build(:user, first_name: 'Tahani', last_name: 'Al-Jamil')
                                         ],
                                         funding_orgs: [
                                           FundingOrg.new({ website: 'https://thegoodplace.com',

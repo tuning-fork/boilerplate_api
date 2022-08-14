@@ -4,17 +4,17 @@ require 'rails_helper'
 
 describe User, type: :model do
   context 'test associations' do
-    subject { User.create(first_name: 'user', email: 'user_email') }
+    subject { create(:user, first_name: 'user', email: 'user_email') }
     it { should have_many :organizations }
     it { should have_many :organization_users }
     it { should have_secure_password }
     it { should validate_presence_of :email }
     it { should validate_uniqueness_of :email }
-    it { should validate_length_of(:password).is_at_least(5) }
+    it { should validate_length_of(:password).is_at_least(8) }
   end
 
   context 'test forgot and reset password functions' do
-    subject { User.create(first_name: 'user', email: 'user_email', password: 'password') }
+    subject { create(:user, first_name: 'user', email: 'user_email', password: 'old_password') }
 
     describe '#password_reset' do
       it 'updates the password value on the user object' do
@@ -41,14 +41,11 @@ describe User, type: :model do
 
   describe '#in_organization?' do
     subject do
-      User.create!(
-        first_name: 'user',
-        email: 'user@test.com',
-        password: 'password',
-        organizations: [
-          Organization.new({ name: 'Test Org' })
-        ]
-      )
+      create(:user,
+             first_name: 'user',
+             organizations: [
+               Organization.new({ name: 'Test Org' })
+             ])
     end
 
     it 'returns true when user is in the provided organization' do

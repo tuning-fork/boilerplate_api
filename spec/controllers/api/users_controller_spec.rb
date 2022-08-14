@@ -22,8 +22,6 @@ describe Api::UsersController do
       expect(JSON.parse(response.body)).to match(
         a_hash_including(
           'errors' => [
-            # TODO: Add email/password validation
-            # match(/Password is too short/),
             match(/First name can't be blank/),
             match(/First name is too short/),
             match(/Password confirmation doesn't match Password/)
@@ -56,13 +54,14 @@ describe Api::UsersController do
 
   describe 'PATCH /users/:id' do
     let(:user) do
-      User.create!({
-                     email: 'user@test.com',
-                     password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
-                     first_name: 'firstname',
-                     last_name: 'lastname'
-                   })
+      create(:user, {
+               email: 'user@test.com',
+               password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
+               first_name: 'firstname',
+               last_name: 'lastname'
+             })
     end
+
     let(:update_params) do
       {
         id: user.id,
@@ -80,12 +79,12 @@ describe Api::UsersController do
     end
 
     it 'renders 401 if trying to update user different from authenticated user' do
-      different_user = User.create!({
-                                      email: 'diffuser@test.com',
-                                      password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
-                                      first_name: 'different',
-                                      last_name: 'user'
-                                    })
+      different_user = create(:user, {
+                                email: 'diffuser@test.com',
+                                password: 'JKBHSDo87aigSd8agIS&*W#GUIL',
+                                first_name: 'different',
+                                last_name: 'user'
+                              })
 
       set_auth_header(user)
       patch :update, params: { **update_params, id: different_user.id }
