@@ -1,1 +1,3 @@
-render partial: "contact.json.jb", locals: {contact: @contact}
+# frozen_string_literal: true
+
+render partial: 'contact.json.jb', locals: { contact: @contact }
