@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+{
+  id: contact.id,
+  name: contact.name,
+  title: contact.title,
+  email: contact.email,
+  organization_name: contact.organization_name,
+  message: contact.message,
+  created_at: contact.created_at,
+  updated_at: contact.updated_at
+}

@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 2022_07_18_051310) do
     t.uuid "organization_id"
   end
 
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.string "email"
+    t.string "organization_name"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "funding_orgs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "website"
     t.string "name"
