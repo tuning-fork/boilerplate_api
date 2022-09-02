@@ -8,7 +8,7 @@ class Organization < ApplicationRecord
   has_many :categories, dependent: :destroy
   has_many :funding_orgs, dependent: :destroy
   has_many :organization_users, dependent: :destroy
-  has_many :users, through: :organization_users
+  has_many :users, -> { order(last_name: :asc, first_name: :asc) }, through: :organization_users
 
   def to_s
     "#<Organization:#{id}>"
