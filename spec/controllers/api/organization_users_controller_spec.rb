@@ -58,20 +58,20 @@ describe Api::OrganizationUsersController do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
                                                    a_hash_including(
-                                                     'id' => good_place.users.first.id,
-                                                     'created_at' => good_place.users.first.created_at.iso8601(3),
-                                                     'updated_at' => good_place.users.first.updated_at.iso8601(3),
-                                                     'email' => good_place.users.first.email,
-                                                     'first_name' => good_place.users.first.first_name,
-                                                     'last_name' => good_place.users.first.last_name
-                                                   ),
-                                                   a_hash_including(
                                                      'id' => good_place.users.second.id,
                                                      'created_at' => good_place.users.second.created_at.iso8601(3),
                                                      'updated_at' => good_place.users.second.updated_at.iso8601(3),
                                                      'email' => good_place.users.second.email,
                                                      'first_name' => good_place.users.second.first_name,
                                                      'last_name' => good_place.users.second.last_name
+                                                   ),
+                                                   a_hash_including(
+                                                     'id' => good_place.users.first.id,
+                                                     'created_at' => good_place.users.first.created_at.iso8601(3),
+                                                     'updated_at' => good_place.users.first.updated_at.iso8601(3),
+                                                     'email' => good_place.users.first.email,
+                                                     'first_name' => good_place.users.first.first_name,
+                                                     'last_name' => good_place.users.first.last_name
                                                    )
                                                  ])
     end
