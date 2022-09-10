@@ -72,4 +72,40 @@ describe User, type: :model do
       expect(subject.in_organization?(organization_id)).to be(false)
     end
   end
+
+  describe '#admin_of_organization?' do
+    subject { create(:user) }
+
+    context 'when user is admin in organization' do
+      let!(:organization) { create(:organization) }
+
+      before do
+        OrganizationUser.create!(organization_id: organization.id, user_id: subject.id, roles: ['admin'])
+      end
+
+      it 'returns true' do
+        expect(subject.admin_of_organization?(organization.id)).to be(true)
+      end
+    end
+
+    context 'when user is not an admin in organization' do
+      let!(:organization) { create(:organization) }
+
+      before do
+        OrganizationUser.create!(organization_id: organization.id, user_id: subject.id, roles: ['user'])
+      end
+
+      it 'returns false' do
+        expect(subject.admin_of_organization?(organization.id)).to be(false)
+      end
+    end
+
+    context 'when user is not in the organization' do
+      let!(:organization) { create(:organization) }
+
+      it 'returns false' do
+        expect(subject.admin_of_organization?(organization.id)).to be(false)
+      end
+    end
+  end
 end

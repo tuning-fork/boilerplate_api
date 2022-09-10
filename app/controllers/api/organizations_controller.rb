@@ -15,12 +15,7 @@ module Api
     end
 
     def create
-      @organization = Organization.create!(
-        **create_organization_params,
-        # Automatically add creator to org
-        users: [current_user]
-      )
-      logger.info("New organization #{@organization} created by #{current_user}")
+      @organization = OrganizationCreator.new.call!(create_organization_params, current_user)
       render 'show.json.jb', status: :created
     end
 

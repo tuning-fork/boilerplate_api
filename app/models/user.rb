@@ -36,6 +36,13 @@ class User < ApplicationRecord
     organizations.any? { |organization| organization.id == organization_id }
   end
 
+  def admin_of_organization?(organization_id)
+    organization_user = OrganizationUser.find_by(user_id: id, organization_id: organization_id)
+    return false if organization_user.blank?
+
+    organization_user.roles.include?('admin')
+  end
+
   private
 
   def generate_base64_token

@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
+  module Roles
+    USER = 'user'
+    ADMIN = 'admin'
+
+    def self.all
+      [USER, ADMIN]
+    end
+  end
+
   validates :name, length: { in: 2..60 }
 
   has_many :boilerplates, dependent: :destroy
@@ -12,5 +21,10 @@ class Organization < ApplicationRecord
 
   def to_s
     "#<Organization:#{id}>"
+  end
+
+  def add_user_role(user, role)
+    organization_user = OrganizationUser.find_by!(organization_id: id, user_id: user.id)
+    organization_user.update!(roles: [role])
   end
 end
