@@ -22,4 +22,9 @@ class Organization < ApplicationRecord
   def to_s
     "#<Organization:#{id}>"
   end
+
+  def add_user_role(user, role)
+    organization_user = OrganizationUser.find_by!(organization_id: id, user_id: user.id)
+    organization_user.update!(roles: [role])
+  end
 end
