@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
+  module Roles
+    USER = 'user'
+    ADMIN = 'admin'
+
+    def self.all
+      [USER, ADMIN]
+    end
+  end
+
   validates :name, length: { in: 2..60 }
 
   has_many :boilerplates, dependent: :destroy
