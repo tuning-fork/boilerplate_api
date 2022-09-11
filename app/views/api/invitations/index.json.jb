@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+@invitations.map do |invitation|
+  render partial: 'invitation.json.jb', locals: { invitation: invitation }
+end

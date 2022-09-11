@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+{
+  id: invitation.id,
+  created_at: invitation.created_at,
+  updated_at: invitation.updated_at,
+  first_name: invitation.first_name,
+  last_name: invitation.last_name,
+  email: invitation.email,
+  expires_at: invitation.expires_at
+}

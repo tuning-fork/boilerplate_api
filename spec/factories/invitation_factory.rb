@@ -8,5 +8,9 @@ FactoryBot.define do
     token { Faker::Alphanumeric.alphanumeric(number: 16) }
     expires_at { 1.week.from_now.to_date }
     association :organization, factory: :organization
+
+    trait :with_user do
+      association :user, factory: :user
+    end
   end
 end
