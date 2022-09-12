@@ -7,4 +7,10 @@ class Invitation < ApplicationRecord
 
   belongs_to :organization
   belongs_to :user, optional: true
+
+  def build_accept_link
+    protocol = Rails.env.production? ? 'https' : 'http'
+    host = ENV.fetch('FRONTEND_ORIGIN')
+    "#{protocol}://#{host}/accept_invite?token=#{token}"
+  end
 end
