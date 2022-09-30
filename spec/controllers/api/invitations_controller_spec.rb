@@ -84,8 +84,80 @@ describe Api::InvitationsController do
     end
   end
 
-  describe 'POST /organization/:organization_id/invitations/:id/accept' do
-    pending "add some examples (or delete) #{__FILE__}"
+  describe 'POST /invitations/:token/accept' do
+    let!(:invitation) { create(:invitation, organization: organization) }
+
+    context 'when token has expired' do
+      before do
+        invitation.update!(expires_at: Date.yesterday)
+      end
+
+      it 'render 422' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Token is invalid/)]
+          )
+        )
+      end
+    end
+
+    context 'when token is invalid (no invitation found)' do
+      it 'render 422' do
+        post :accept, params: {
+          token: 'abcdef12356',
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Token is invalid/)]
+          )
+        )
+      end
+    end
+
+    context 'when given insecure password' do
+      it 'render 422' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'abc123'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Password is too short/)]
+          )
+        )
+      end
+    end
+
+    context 'when given valid token and password' do
+      it 'render 201 with organization id and user email that was just added' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(201)
+        expect(JSON.parse(response.body).keys).to contain_exactly('organization_id')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'organization_id' => organization.id
+          )
+        )
+      end
+    end
   end
 
   describe 'PATCH /organization/:organization_id/invitations/:id/reinvite' do

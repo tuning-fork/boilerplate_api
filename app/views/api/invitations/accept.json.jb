@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+{
+  organization_id: @invitation.organization_id
+}
