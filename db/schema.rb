@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_05_171416) do
+ActiveRecord::Schema.define(version: 2022_09_10_172108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,6 +66,21 @@ ActiveRecord::Schema.define(version: 2022_09_05_171416) do
     t.boolean "archived", default: false, null: false
     t.uuid "organization_id"
     t.uuid "funding_org_id"
+  end
+
+  create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email", null: false
+    t.string "token"
+    t.date "expires_at"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.uuid "user_id"
+    t.uuid "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email", "organization_id"], name: "index_invitations_on_email_and_organization_id", unique: true
+    t.index ["organization_id"], name: "index_invitations_on_organization_id"
+    t.index ["user_id"], name: "index_invitations_on_user_id"
   end
 
   create_table "organization_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,4 +142,6 @@ ActiveRecord::Schema.define(version: 2022_09_05_171416) do
     t.datetime "password_reset_sent_at"
   end
 
+  add_foreign_key "invitations", "organizations"
+  add_foreign_key "invitations", "users"
 end
