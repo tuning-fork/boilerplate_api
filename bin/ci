@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "[ bin/ci ] Running linter"
+bin/rubocop
+
+echo "[ bin/ci ] Running unit tests"
+bin/rspec
+
+echo "[ bin/ci ] Done"
