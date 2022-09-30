@@ -27,6 +27,21 @@ describe Organization, type: :model do
     end
   end
 
+  describe '#pending_invitations' do
+    subject { create(:organization) }
+
+    before do
+      create(:invitation, organization: subject, email: 'jason@thegoodplace.com')
+      create(:invitation, :with_user, organization: subject, email: 'chidi@thegoodplace.com')
+      create(:invitation, organization: subject, email: 'elenor@thegoodplace.com')
+    end
+
+    it 'returns users ordered by last name & first name' do
+      expect(subject.pending_invitations.pluck(:email)).to match_array(%w[jason@thegoodplace.com
+                                                                          elenor@thegoodplace.com])
+    end
+  end
+
   describe '#add_user_role' do
     let!(:user) { create(:user, first_name: 'Jason') }
     subject { create(:organization, users: [user]) }
