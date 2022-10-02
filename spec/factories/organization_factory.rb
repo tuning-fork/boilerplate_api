@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'faker'
+
 FactoryBot.define do
   factory :organization do
     name { Faker::Company.name }

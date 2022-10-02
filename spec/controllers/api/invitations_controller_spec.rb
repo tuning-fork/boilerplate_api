@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 describe Api::InvitationsController do
+  invitation_fields = %w[
+    id created_at updated_at first_name last_name email expires_at
+  ]
+
   let(:organization) { create(:organization) }
 
   describe 'GET /organization/:organization_id/invitations' do
@@ -38,11 +42,122 @@ describe Api::InvitationsController do
   end
 
   describe 'POST /organization/:organization_id/invitations' do
-    pending "add some examples (or delete) #{__FILE__}"
+    let(:invitation_params) do
+      {
+        organization_id: organization.id,
+        **attributes_for(:invitation).slice(:first_name, :last_name, :email)
+      }
+    end
+
+    it 'render 422 with invalid or missing params' do
+      post :create, params: {
+        organization_id: organization.id,
+        first_name: 123,
+        email: true
+      }
+
+      expect(response).to have_http_status(422)
+      expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+      expect(JSON.parse(response.body)).to match(
+        a_hash_including(
+          'errors' => [match(/Last name can't be blank/), match(/Last name is too short/)]
+        )
+      )
+    end
+
+    it 'render 201 with created invitation' do
+      post :create, params: invitation_params
+
+      expect(response).to have_http_status(201)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*invitation_fields)
+      expect(JSON.parse(response.body)).to match(
+        a_hash_including(
+          'id' => kind_of(String),
+          'created_at' => kind_of(String),
+          'updated_at' => kind_of(String),
+          'first_name' => invitation_params[:first_name],
+          'last_name' => invitation_params[:last_name],
+          'email' => invitation_params[:email],
+          'expires_at' => kind_of(String)
+        )
+      )
+    end
   end
 
-  describe 'POST /organization/:organization_id/invitations/:id/accept' do
-    pending "add some examples (or delete) #{__FILE__}"
+  describe 'POST /invitations/:token/accept' do
+    let!(:invitation) { create(:invitation, organization: organization) }
+
+    context 'when token has expired' do
+      before do
+        invitation.update!(expires_at: Date.yesterday)
+      end
+
+      it 'render 422' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Token is invalid/)]
+          )
+        )
+      end
+    end
+
+    context 'when token is invalid (no invitation found)' do
+      it 'render 422' do
+        post :accept, params: {
+          token: 'abcdef12356',
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Token is invalid/)]
+          )
+        )
+      end
+    end
+
+    context 'when given insecure password' do
+      it 'render 422' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'abc123'
+        }
+
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body).keys).to contain_exactly('errors')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'errors' => [match(/Password is too short/)]
+          )
+        )
+      end
+    end
+
+    context 'when given valid token and password' do
+      it 'render 201 with organization id and user email that was just added' do
+        post :accept, params: {
+          token: invitation.token,
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(201)
+        expect(JSON.parse(response.body).keys).to contain_exactly('organization_id')
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'organization_id' => organization.id
+          )
+        )
+      end
+    end
   end
 
   describe 'PATCH /organization/:organization_id/invitations/:id/reinvite' do

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'faker'
+
 FactoryBot.define do
   factory :invitation do
     first_name { Faker::Name.first_name }

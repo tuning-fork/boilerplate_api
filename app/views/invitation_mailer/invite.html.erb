@@ -1,0 +1,7 @@
+<p>Hello <%= @invitation.first_name %>,</p>
+<p>You have received this email because you have been invited to join <%= @invitation.organization.name %> on Boilerplate.</p>
+<p>To accept this invitation and visit <%= @invitation.organization.name %> on
+Boilerplate, click <%= link_to "here", @invitation.build_accept_link %>.</p>
+<p>This invitation will expire one week from now.</p>
+<p>If you have received this invitation in error, or you do not wish to join the
+organization, please feel free to ignore this email.</p>

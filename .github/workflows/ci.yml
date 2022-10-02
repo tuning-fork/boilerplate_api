@@ -7,6 +7,7 @@ env:
   DATABASE_TEST_URL: postgres://postgres:postgres@localhost:5432/boilerplate_test
   FRONTEND_ORIGIN: localhost:4000
   SECRET_KEY_BASE: a93ec4496d45466cacf1a29c365d25a2f129d38f4fed48689e4f437175f41efb
+  ACTION_MAILER_GMAIL_ACCOUNT: boilerplate@example.com
 
 jobs:
   test:

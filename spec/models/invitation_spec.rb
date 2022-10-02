@@ -56,4 +56,16 @@ RSpec.describe Invitation, type: :model do
       end
     end
   end
+
+  describe '#build_accept_link' do
+    subject { build(:invitation, token: 'abc123') }
+
+    it 'uses token to build a url' do
+      protocol = Rails.env.production? ? 'https' : 'http'
+      host = ENV.fetch('FRONTEND_ORIGIN')
+      params = subject.slice(:token, :first_name, :last_name, :email)
+
+      expect(subject.build_accept_link).to eq("#{protocol}://#{host}/accept_invite?#{params.to_query}")
+    end
+  end
 end

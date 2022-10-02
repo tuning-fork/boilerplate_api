@@ -141,7 +141,7 @@ describe Api::BoilerplatesController do
     end
 
     it 'renders 401 if organization does not exist' do
-      get :index, params: { **new_boilerplate_fields, organization_id: '07226fdd-8fa3-45da-af65-25fb63e5aa73' }
+      post :create, params: { **new_boilerplate_fields, organization_id: '07226fdd-8fa3-45da-af65-25fb63e5aa73' }
 
       expect(response).to have_http_status(401)
     end

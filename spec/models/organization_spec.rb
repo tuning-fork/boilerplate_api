@@ -42,6 +42,28 @@ describe Organization, type: :model do
     end
   end
 
+  describe '#admins' do
+    let(:organization_users) do
+      [
+        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::ADMIN]),
+        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::USER]),
+        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::ADMIN]),
+        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::USER])
+      ]
+    end
+
+    before do
+      organization = create(:organization)
+      organization.organization_users = organization_users
+    end
+
+    subject { Organization.first }
+
+    it 'returns users with admin role' do
+      expect(subject.admins).to match_array([organization_users.first, organization_users.third])
+    end
+  end
+
   describe '#add_user_role' do
     let!(:user) { create(:user, first_name: 'Jason') }
     subject { create(:organization, users: [user]) }
