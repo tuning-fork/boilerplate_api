@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     resources :organizations do
       resources :organization_users, path: :users
       resources :boilerplates
-      resources :invitations
+      resources :invitations do
+        post :reinvite, on: :member
+      end
       resources :categories
       resources :funding_orgs
       resources :grants do

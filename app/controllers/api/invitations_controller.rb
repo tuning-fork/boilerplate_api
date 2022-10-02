@@ -10,8 +10,8 @@ module Api
     end
 
     def create
-      invitation_creator = InvitationCreator.new(create_invitation_params, @organization)
-      @invitation = invitation_creator.call!
+      invitation_issuer = InvitationIssuer.new(create_invitation_params, @organization)
+      @invitation = invitation_issuer.call!
       render 'show.json.jb', status: :created
     end
 
@@ -24,6 +24,14 @@ module Api
       render status: :unprocessable_entity, json: {
         'errors' => ['Token is invalid']
       }
+    end
+
+    def reinvite
+      invitation_email = Invitation.find(params[:id]).email
+      invitation_issuer = InvitationIssuer.new({ email: invitation_email }, @organization)
+      @invitation = invitation_issuer.call!
+
+      render 'show.json.jb'
     end
 
     private
