@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class InvitationCreator
+# Service for issuing a new invitiation or re-inviting an existing invitation if
+# it has expired.
+class InvitationIssuer
   def initialize(invitation_params, organization)
     @invitation_params = invitation_params
     @organization = organization
@@ -12,7 +14,7 @@ class InvitationCreator
 
     InvitationMailer.with(invitation: invitation).invite.deliver_later
 
-    Rails.logger.info("New invitation #{invitation} created")
+    Rails.logger.info("Invitation #{invitation} issued")
 
     invitation
   end
@@ -25,10 +27,12 @@ class InvitationCreator
     invitation = Invitation.find_by(email: invitation_params[:email], organization_id: organization.id)
     return invitation if invitation.present?
 
-    Invitation.create!(
+    invitation = Invitation.create!(
       **invitation_params,
       organization: organization
     )
+    Rails.logger.info("New invitation #{invitation} created")
+    invitation
   end
 
   def generate_invitation_token!(invitation)

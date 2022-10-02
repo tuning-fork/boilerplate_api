@@ -10,8 +10,8 @@ module Api
     end
 
     def create
-      invitation_creator = InvitationCreator.new(create_invitation_params, @organization)
-      @invitation = invitation_creator.call!
+      invitation_issuer = InvitationIssuer.new(create_invitation_params, @organization)
+      @invitation = invitation_issuer.call!
       render 'show.json.jb', status: :created
     end
 
