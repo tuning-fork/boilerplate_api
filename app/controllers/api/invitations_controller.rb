@@ -26,6 +26,14 @@ module Api
       }
     end
 
+    def reinvite
+      invitation_email = Invitation.find(params[:id]).email
+      invitation_issuer = InvitationIssuer.new({ email: invitation_email }, @organization)
+      @invitation = invitation_issuer.call!
+
+      render 'show.json.jb'
+    end
+
     private
 
     def create_invitation_params

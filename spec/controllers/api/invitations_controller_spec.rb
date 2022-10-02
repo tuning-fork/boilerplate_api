@@ -161,7 +161,49 @@ describe Api::InvitationsController do
   end
 
   describe 'PATCH /organization/:organization_id/invitations/:id/reinvite' do
-    pending "add some examples (or delete) #{__FILE__}"
+    let!(:invitation) { create(:invitation, organization: organization, expires_at: Date.current) }
+
+    context 'when organization does not exist' do
+      it 'renders 401' do
+        post :reinvite, params: {
+          organization_id: 123,
+          id: invitation.id
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'when invitation does not exist' do
+      it 'renders 401' do
+        post :reinvite, params: {
+          organization_id: invitation.organization.id,
+          id: 123
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'when given valid invitation' do
+      it 'renders 200' do
+        post :reinvite, params: {
+          organization_id: invitation.organization.id,
+          id: invitation.id
+        }
+
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).keys).to contain_exactly(*invitation_fields)
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'id' => invitation.id,
+            # Calling reload here since the invitation issuer will update these fields
+            'updated_at' => invitation.reload.updated_at.iso8601(3),
+            'expires_at' => invitation.reload.expires_at.iso8601
+          )
+        )
+      end
+    end
   end
 
   describe 'DELETE /organization/:organization_id/invitations/:id' do
