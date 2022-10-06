@@ -27,6 +27,12 @@ module Api
       render 'show.json.jb'
     end
 
+    def destroy
+      @organization_user = organization_user
+      @organization_user.destroy!
+      render 'show.json.jb'
+    end
+
     private
 
     def organization_user
