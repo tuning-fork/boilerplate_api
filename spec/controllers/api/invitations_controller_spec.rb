@@ -207,6 +207,53 @@ describe Api::InvitationsController do
   end
 
   describe 'DELETE /organization/:organization_id/invitations/:id' do
-    pending "add some examples (or delete) #{__FILE__}"
+    let(:invitation) { create(:invitation, organization: organization) }
+
+    context 'when organization does not exist' do
+      it 'renders 401' do
+        delete :destroy, params: {
+          organization_id: 123,
+          id: invitation.id
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'when invitation does not exist' do
+      it 'renders 401' do
+        delete :destroy, params: {
+          organization_id: organization.id,
+          id: 123
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'when invitation exists' do
+      before do
+        delete :destroy, params: {
+          organization_id: organization.id,
+          id: invitation.id
+        }
+      end
+
+      it 'renders 200 with deleted invitation' do
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).keys).to contain_exactly(*invitation_fields)
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            'id' => invitation.id
+          )
+        )
+      end
+
+      it 'deletes invitation' do
+        expect do
+          Invitation.find(invitation.id)
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end
