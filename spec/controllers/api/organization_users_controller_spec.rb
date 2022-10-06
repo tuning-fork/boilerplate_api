@@ -205,4 +205,57 @@ describe Api::OrganizationUsersController do
       )
     end
   end
+
+  describe 'DELETE /organizations/:organization_id/users/:id' do
+    it 'renders 401 if organization does not exist' do
+      set_auth_header(chidi)
+      delete :destroy, params: { organization_id: 123, id: chidi.id }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 401 if user does not exist' do
+      set_auth_header(chidi)
+      delete :destroy, params: { organization_id: good_place, id: 123 }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 401 if requested user is not member of organization' do
+      shawn = User.find_by!(first_name: 'Shawn')
+      set_auth_header(chidi)
+      delete :destroy, params: { organization_id: good_place, id: shawn.id }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 200 with removed organization user' do
+      set_auth_header(chidi)
+      delete :destroy, params: { organization_id: good_place.id, id: chidi.id }
+
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*user_fields)
+      expect(JSON.parse(response.body)).to match(
+        a_hash_including(
+          'id' => chidi.id,
+          'created_at' => chidi.created_at.iso8601(3),
+          'updated_at' => chidi.updated_at.iso8601(3),
+          'email' => chidi.email,
+          'first_name' => chidi.first_name,
+          'last_name' => chidi.last_name
+        )
+      )
+    end
+
+    it 'removes user from organization' do
+      organization_user = OrganizationUser.find_by!(user_id: chidi.id, organization_id: good_place.id)
+
+      set_auth_header(chidi)
+      delete :destroy, params: { organization_id: good_place.id, id: chidi.id }
+
+      expect do
+        OrganizationUser.find(organization_user.id)
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
