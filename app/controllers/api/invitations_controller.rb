@@ -34,6 +34,13 @@ module Api
       render 'show.json.jb'
     end
 
+    def destroy
+      @invitation = Invitation.find(params[:id])
+      @invitation.destroy!
+
+      render 'show.json.jb'
+    end
+
     private
 
     def create_invitation_params
