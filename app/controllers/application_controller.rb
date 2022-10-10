@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
   rescue_from JWT::DecodeError, with: :handle_unauthorized
   rescue_from JWT::VerificationError, with: :handle_unauthorized
   rescue_from JWT::ExpiredSignature, with: :handle_unauthorized

@@ -5,6 +5,8 @@ module Api
     before_action :ensure_organization_exists, except: [:accept]
 
     def index
+      # authorize Invitation
+      # authorize @orgzanization
       @invitations = @organization.pending_invitations
       render 'index.json.jb'
     end

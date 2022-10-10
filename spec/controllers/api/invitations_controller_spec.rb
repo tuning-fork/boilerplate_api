@@ -7,14 +7,34 @@ describe Api::InvitationsController do
     id created_at updated_at first_name last_name email expires_at
   ]
 
-  let(:organization) { create(:organization) }
+  let(:chidi) do
+    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
+  end
+  let(:shawn) do
+    create(:user, first_name: 'Shawn')
+  end
+  let(:organization) { create(:organization, users: [chidi]) }
 
   describe 'GET /organization/:organization_id/invitations' do
     let!(:invitations) do
       create_list(:invitation, 2, organization_id: organization.id)
     end
 
+    context 'when invitation policy fails' do
+      before do
+        allow(controller).to receive(:authorize).and_raise(Pundit::NotAuthorizedError)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        get :index, params: { organization_id: organization.id }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
     it 'renders 200 with organization invitations' do
+      set_auth_header(chidi)
       get :index, params: { organization_id: organization.id }
 
       expect(response).to have_http_status(200)
