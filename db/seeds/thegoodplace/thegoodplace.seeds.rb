@@ -47,6 +47,7 @@ michael = User.create!({
 
 the_good_place = Organization.create!({
                                         name: 'The Good Place',
+                                        subdomain: 'thegoodplace',
                                         users: [chidi, tahani, jason, elenor, janet, michael],
                                         funding_orgs: [
                                           FundingOrg.new({ website: 'https://thegoodplace.com',

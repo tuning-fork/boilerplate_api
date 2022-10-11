@@ -4,6 +4,7 @@ puts 'Seeding MIRA data...'
 
 mira = Organization.create!({
                               name: 'Middle Eastern Immigrant and Refugee Alliance (MIRA)',
+                              subdomain: 'mira',
                               users: [
                                 User.new({
                                            first_name: 'Jess',

@@ -5,6 +5,7 @@ require 'faker'
 FactoryBot.define do
   factory :organization do
     name { Faker::Company.name }
+    subdomain { Faker::Company.name.sub(' ', '-').downcase! }
 
     trait :with_users do
       after :create do |organization|

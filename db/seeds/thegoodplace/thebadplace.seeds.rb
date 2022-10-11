@@ -44,6 +44,7 @@ bad_janet = User.create!({
 
 the_bad_place = Organization.create!({
                                        name: 'The Bad Place',
+                                       subdomain: 'thebadplace',
                                        users: [shawn, vicky, trevor, bad_janet],
                                        funding_orgs: [
                                          FundingOrg.new({ website: 'https://thebadplace.com', name: 'The Bad Place' })

@@ -54,3 +54,4 @@ gem 'rack-cors'
 gem 'ranked-model'
 
 gem 'pundit', '~> 2.2'
+gem 'ros-apartment', '~> 2.11', require: 'apartment'

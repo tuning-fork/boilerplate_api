@@ -18,6 +18,7 @@ mindy = User.create!({ first_name: 'Mindy', email: 'mindy@themediumplace.com', p
 
 the_medium_place = Organization.create!({
                                           name: 'The Medium Place',
+                                          subdomain: 'themediumplace',
                                           users: [mindy],
                                           funding_orgs: [
                                             FundingOrg.new({ website: 'https://themediumplace.com',
