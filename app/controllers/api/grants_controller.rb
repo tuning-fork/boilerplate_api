@@ -70,7 +70,7 @@ module Api
     end
 
     def create_grant_params
-      params.permit(%i[title rfp_url deadline submitted successful purpose])
+      params.permit(%i[title rfp_url deadline submitted successful purpose sections archived])
     end
 
     def update_grant_params
