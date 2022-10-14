@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  # enum roles: [:user, :admin]
+
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 8, wrong_length: 'Password must be at least 8 characters.' }, if: :password
 
-  has_many :organization_users, dependent: :destroy
-  has_many :organizations, through: :organization_users
+  belongs_to :organization
 
   has_secure_password
 
   def to_s
     "#<User:#{id}>"
+  end
+
+  def admin?
+    roles.include?('admin')
   end
 
   def send_password_reset

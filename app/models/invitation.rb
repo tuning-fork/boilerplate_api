@@ -19,4 +19,8 @@ class Invitation < ApplicationRecord
 
     "#{protocol}://#{host}/accept_invite?#{params.to_query}"
   end
+
+  def self.policy_class
+    InvitationPolicy
+  end
 end

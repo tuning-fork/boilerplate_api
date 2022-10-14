@@ -2,12 +2,14 @@
 
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  after_action :verify_authorized
 
   rescue_from JWT::DecodeError, with: :handle_unauthorized
   rescue_from JWT::VerificationError, with: :handle_unauthorized
   rescue_from JWT::ExpiredSignature, with: :handle_unauthorized
   rescue_from ActiveRecord::RecordNotFound, with: :handle_unauthorized
   rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
+  rescue_from Pundit::NotAuthorizedError, with: :handle_unauthorized
 
   protect_from_forgery with: :null_session
   helper_method :current_user

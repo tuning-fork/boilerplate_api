@@ -3,9 +3,11 @@
 class RemoveOrganizationUsersJoinTable < ActiveRecord::Migration[6.0]
   def up
     drop_table :organization_users
-    add_reference :users, :organization, index: true
-    # maybe circle back to rollify
-    add_column :users, :roles, :string, array: true, default: []
+    change_table :users, bulk: true do |t|
+      t.uuid :organization_id, index: true
+      # maybe circle back to rollify
+      t.string :roles, array: true, default: []
+    end
 
     # end of pairing report:
     # lots of things are broken

@@ -5,13 +5,12 @@ require 'rails_helper'
 describe Organization, type: :model do
   describe '#users' do
     before do
-      create(:organization, users: [
-               create(:user, first_name: 'Jason', last_name: 'Mendoza'),
-               create(:user, first_name: 'Chidi', last_name: 'Anagonye'),
-               create(:user, first_name: 'Chad', last_name: 'Anagonye'),
-               create(:user, first_name: 'Elenor', last_name: 'Shellstrop'),
-               create(:user, first_name: 'Cheeky', last_name: 'Anagonye')
-             ])
+      organization = create(:organization)
+      create(:user, organization: organization, first_name: 'Jason', last_name: 'Mendoza')
+      create(:user, organization: organization, first_name: 'Chidi', last_name: 'Anagonye')
+      create(:user, organization: organization, first_name: 'Chad', last_name: 'Anagonye')
+      create(:user, organization: organization, first_name: 'Elenor', last_name: 'Shellstrop')
+      create(:user, organization: organization, first_name: 'Cheeky', last_name: 'Anagonye')
     end
 
     subject { Organization.first }
@@ -43,24 +42,18 @@ describe Organization, type: :model do
   end
 
   describe '#admins' do
-    let(:organization_users) do
+    subject { create(:organization) }
+    let(:users) do
       [
-        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::ADMIN]),
-        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::USER]),
-        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::ADMIN]),
-        OrganizationUser.new(user: create(:user), roles: [Organization::Roles::USER])
+        create(:user, organization: subject, roles: [Organization::Roles::ADMIN]),
+        create(:user, organization: subject, roles: [Organization::Roles::USER]),
+        create(:user, organization: subject, roles: [Organization::Roles::ADMIN]),
+        create(:user, organization: subject, roles: [Organization::Roles::USER])
       ]
     end
 
-    before do
-      organization = create(:organization)
-      organization.organization_users = organization_users
-    end
-
-    subject { Organization.first }
-
     it 'returns users with admin role' do
-      expect(subject.admins).to match_array([organization_users.first, organization_users.third])
+      expect(subject.admins).to match_array([users.first, users.third])
     end
   end
 

@@ -7,26 +7,20 @@ describe InvitationPolicy do
 
   permissions :index? do
     it 'denies access if user is not in organization' do
-      user = create(:user)
+      user = create(:user, :with_organization)
       organization = create(:organization)
       expect(subject).not_to permit(user, organization)
     end
 
     it 'denies access to invitations if user is not an admin in organization' do
-      user = create(:user)
       organization = create(:organization)
-      organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::USER])
-      ]
+      user = create(:user, organization: organization, roles: [Organization::Roles::USER])
       expect(subject).not_to permit(user, organization)
     end
 
     it 'grants access to invitations if user is an admin in organization' do
-      user = create(:user)
       organization = create(:organization)
-      organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::ADMIN])
-      ]
+      user = create(:user, organization: organization, roles: [Organization::Roles::ADMIN])
       expect(subject).to permit(user, organization)
     end
   end

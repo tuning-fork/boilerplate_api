@@ -16,15 +16,16 @@ class Organization < ApplicationRecord
   has_many :grants, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :funding_orgs, dependent: :destroy
-  has_many :organization_users, dependent: :destroy
   has_many :invitations, dependent: :destroy
   has_many :pending_invitations, lambda {
                                    where(user_id: nil)
                                  }, class_name: 'Invitation', dependent: :destroy, inverse_of: :organization
-  has_many :users, -> { order(last_name: :asc, first_name: :asc) }, through: :organization_users
+  has_many :users, lambda {
+                     order(last_name: :asc, first_name: :asc)
+                   }, dependent: :destroy, inverse_of: :organization
   has_many :admins, lambda {
-                      where('? = ANY(roles)', Roles::ADMIN).joins(:user)
-                    }, class_name: 'OrganizationUser', dependent: :destroy, inverse_of: :organization
+                      where('? = ANY(roles)', Roles::ADMIN).order(last_name: :asc, first_name: :asc)
+                    }, dependent: :destroy, class_name: 'User', inverse_of: :organization
 
   def to_s
     "#<Organization:#{id}>"

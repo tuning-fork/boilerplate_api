@@ -7,13 +7,13 @@ describe Api::InvitationsController do
     id created_at updated_at first_name last_name email expires_at
   ]
 
+  let(:organization) { create(:organization) }
   let(:chidi) do
-    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
+    create(:user, organization: organization, first_name: 'Chidi', last_name: 'Anagonye')
   end
   let(:shawn) do
-    create(:user, first_name: 'Shawn')
+    create(:user, organization: organization, first_name: 'Shawn')
   end
-  let(:organization) { create(:organization, users: [chidi]) }
 
   describe 'GET /organization/:organization_id/invitations' do
     let!(:invitations) do
@@ -33,31 +33,37 @@ describe Api::InvitationsController do
       end
     end
 
-    it 'renders 200 with organization invitations' do
-      set_auth_header(chidi)
-      get :index, params: { organization_id: organization.id }
+    context 'when invitation policy is granted' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:index?).and_return(true)
+      end
 
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)).to match([
-                                                   a_hash_including(
-                                                     'id' => kind_of(String),
-                                                     'created_at' => kind_of(String),
-                                                     'updated_at' => kind_of(String),
-                                                     'first_name' => invitations.first.first_name,
-                                                     'last_name' => invitations.first.last_name,
-                                                     'email' => invitations.first.email,
-                                                     'expires_at' => invitations.first.expires_at.iso8601
-                                                   ),
-                                                   a_hash_including(
-                                                     'id' => kind_of(String),
-                                                     'created_at' => kind_of(String),
-                                                     'updated_at' => kind_of(String),
-                                                     'first_name' => invitations.second.first_name,
-                                                     'last_name' => invitations.second.last_name,
-                                                     'email' => invitations.second.email,
-                                                     'expires_at' => invitations.second.expires_at.iso8601
-                                                   )
-                                                 ])
+      it 'renders 200 with organization invitations' do
+        set_auth_header(chidi)
+        get :index, params: { organization_id: organization.id }
+
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match([
+                                                     a_hash_including(
+                                                       'id' => kind_of(String),
+                                                       'created_at' => kind_of(String),
+                                                       'updated_at' => kind_of(String),
+                                                       'first_name' => invitations.first.first_name,
+                                                       'last_name' => invitations.first.last_name,
+                                                       'email' => invitations.first.email,
+                                                       'expires_at' => invitations.first.expires_at.iso8601
+                                                     ),
+                                                     a_hash_including(
+                                                       'id' => kind_of(String),
+                                                       'created_at' => kind_of(String),
+                                                       'updated_at' => kind_of(String),
+                                                       'first_name' => invitations.second.first_name,
+                                                       'last_name' => invitations.second.last_name,
+                                                       'email' => invitations.second.email,
+                                                       'expires_at' => invitations.second.expires_at.iso8601
+                                                     )
+                                                   ])
+      end
     end
   end
 

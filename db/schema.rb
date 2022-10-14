@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2022_10_10_190549) do
     t.boolean "active"
     t.string "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.bigint "organization_id"
+    t.uuid "organization_id"
     t.string "roles", default: [], array: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
