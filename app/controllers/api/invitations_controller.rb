@@ -5,19 +5,20 @@ module Api
     before_action :ensure_organization_exists, except: [:accept]
 
     def index
-      # authorize Invitation
-      # authorize @orgzanization
+      authorize @organization, policy_class: InvitationPolicy
       @invitations = @organization.pending_invitations
       render 'index.json.jb'
     end
 
     def create
+      authorize @organization, policy_class: InvitationPolicy
       invitation_issuer = InvitationIssuer.new(create_invitation_params, @organization)
       @invitation = invitation_issuer.call!
       render 'show.json.jb', status: :created
     end
 
     def accept
+      authorize Invitation, :accept?
       # TODO: Remove /organizations/:id/users#create
       invitation_accepter = InvitationAccepter.new(params[:token], accept_invitation_user_params)
       @invitation = invitation_accepter.call!
@@ -29,8 +30,9 @@ module Api
     end
 
     def reinvite
-      invitation_email = Invitation.find(params[:id]).email
-      invitation_issuer = InvitationIssuer.new({ email: invitation_email }, @organization)
+      invitation = Invitation.find(params[:id])
+      authorize invitation
+      invitation_issuer = InvitationIssuer.new({ email: invitation.email }, @organization)
       @invitation = invitation_issuer.call!
 
       render 'show.json.jb'
@@ -38,6 +40,7 @@ module Api
 
     def destroy
       @invitation = Invitation.find(params[:id])
+      authorize @invitation
       @invitation.destroy!
 
       render 'show.json.jb'
