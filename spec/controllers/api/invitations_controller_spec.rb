@@ -7,14 +7,38 @@ describe Api::InvitationsController do
     id created_at updated_at first_name last_name email expires_at
   ]
 
-  let(:organization) { create(:organization) }
+  let(:chidi) do
+    create(:user, first_name: 'Chidi', last_name: 'Anagonye')
+  end
+  let(:shawn) do
+    create(:user, first_name: 'Shawn')
+  end
+  let(:organization) { create(:organization, users: [chidi]) }
 
   describe 'GET /organization/:organization_id/invitations' do
     let!(:invitations) do
       create_list(:invitation, 2, organization_id: organization.id)
     end
 
+    before do
+      allow_any_instance_of(InvitationPolicy).to receive(:index?).and_return(true)
+    end
+
+    context 'when invitation policy fails' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:index?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        get :index, params: { organization_id: organization.id }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
     it 'renders 200 with organization invitations' do
+      set_auth_header(chidi)
       get :index, params: { organization_id: organization.id }
 
       expect(response).to have_http_status(200)
@@ -47,6 +71,23 @@ describe Api::InvitationsController do
         organization_id: organization.id,
         **attributes_for(:invitation).slice(:first_name, :last_name, :email)
       }
+    end
+
+    before do
+      allow_any_instance_of(InvitationPolicy).to receive(:create?).and_return(true)
+    end
+
+    context 'when invitation policy fails' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:create?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        post :create, params: invitation_params
+
+        expect(response).to have_http_status(401)
+      end
     end
 
     it 'render 422 with invalid or missing params' do
@@ -86,6 +127,26 @@ describe Api::InvitationsController do
 
   describe 'POST /invitations/:token/accept' do
     let!(:invitation) { create(:invitation, organization: organization) }
+
+    before do
+      allow_any_instance_of(InvitationPolicy).to receive(:accept?).and_return(true)
+    end
+
+    context 'when invitation policy fails' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:accept?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        post :accept, params: {
+          token: invitation.token,
+          password: 'password'
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
 
     context 'when token has expired' do
       before do
@@ -163,6 +224,26 @@ describe Api::InvitationsController do
   describe 'PATCH /organization/:organization_id/invitations/:id/reinvite' do
     let!(:invitation) { create(:invitation, organization: organization, expires_at: Date.current) }
 
+    before do
+      allow_any_instance_of(InvitationPolicy).to receive(:reinvite?).and_return(true)
+    end
+
+    context 'when invitation policy fails' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:reinvite?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        post :reinvite, params: {
+          organization_id: invitation.organization.id,
+          id: invitation.id
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
     context 'when organization does not exist' do
       it 'renders 401' do
         post :reinvite, params: {
@@ -207,7 +288,27 @@ describe Api::InvitationsController do
   end
 
   describe 'DELETE /organization/:organization_id/invitations/:id' do
+    before do
+      allow_any_instance_of(InvitationPolicy).to receive(:destroy?).and_return(true)
+    end
+
     let(:invitation) { create(:invitation, organization: organization) }
+
+    context 'when invitation policy fails' do
+      before do
+        allow_any_instance_of(InvitationPolicy).to receive(:destroy?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        delete :destroy, params: {
+          organization_id: organization.id,
+          id: invitation.id
+        }
+
+        expect(response).to have_http_status(401)
+      end
+    end
 
     context 'when organization does not exist' do
       it 'renders 401' do

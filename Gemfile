@@ -52,3 +52,5 @@ gem 'jb'
 gem 'rack-cors'
 
 gem 'ranked-model'
+
+gem 'pundit', '~> 2.2'
