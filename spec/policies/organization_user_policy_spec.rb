@@ -27,8 +27,3 @@ describe OrganizationUserPolicy do
     end
   end
 end
-
-# run these tests, they should pass
-# use this policy in the organization users controller
-# update organization user controller spec like we did for invitation controller spec (create mock)
-# done? (last check)

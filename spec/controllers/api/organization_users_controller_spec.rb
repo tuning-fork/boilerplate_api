@@ -207,6 +207,23 @@ describe Api::OrganizationUsersController do
   end
 
   describe 'DELETE /organizations/:organization_id/users/:id' do
+    before do
+      allow_any_instance_of(OrganizationUserPolicy).to receive(:destroy?).and_return(true)
+    end
+
+    context 'when organization user policy fails' do
+      before do
+        allow_any_instance_of(OrganizationUserPolicy).to receive(:destroy?).and_return(false)
+      end
+
+      it 'renders 401' do
+        set_auth_header(chidi)
+        delete :destroy, params: { organization_id: good_place.id, id: chidi.id }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
     it 'renders 401 if organization does not exist' do
       set_auth_header(chidi)
       delete :destroy, params: { organization_id: 123, id: chidi.id }

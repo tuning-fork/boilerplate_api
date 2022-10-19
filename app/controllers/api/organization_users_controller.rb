@@ -29,6 +29,7 @@ module Api
 
     def destroy
       @organization_user = organization_user
+      authorize @organization_user
       @organization_user.destroy!
       render 'show.json.jb'
     end
