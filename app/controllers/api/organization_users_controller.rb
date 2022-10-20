@@ -9,24 +9,6 @@ module Api
       render 'api/users/index.json.jb'
     end
 
-    def create
-      user = User.find(params[:id])
-      @organization_user = OrganizationUser.create!(
-        organization: @organization,
-        user: user
-      )
-
-      render 'show.json.jb', status: :created
-    rescue ActiveRecord::RecordNotUnique
-      @organization_user = organization_user
-      render 'show.json.jb', status: :ok
-    end
-
-    def show
-      @organization_user = organization_user
-      render 'show.json.jb'
-    end
-
     def destroy
       @organization_user = organization_user
       authorize @organization_user
