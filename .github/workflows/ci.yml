@@ -39,8 +39,5 @@ jobs:
       - name: Setup test database
         run: bin/rails db:migrate
 
-      - name: Run linter
-        run: bundle exec rubocop
-
-      - name: Run unit tests
-        run: bundle exec rspec
+      - name: Run CI script
+        run: bin/ci
