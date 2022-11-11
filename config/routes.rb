@@ -33,7 +33,8 @@ Rails.application.routes.draw do
     post '/organizations/:organization_id/grants/:grant_id/copy' => 'grants#copy'
 
     # rubocop:disable Layout/LineLength
-    patch '/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id' => 'grants#reorder_section'
+    # patch '/organizations/:organization_id/grants/:grant_id/actions/reorder_section/:section_id' => 'grants#reorder_section'
+    patch '/organizations/:organization_id/grants/:grant_id/actions/reorder_sections' => 'grants#reorder_sections'
     # rubocop:enable Layout/LineLength
   end
 end
