@@ -9,6 +9,11 @@ module Api
       render 'api/users/index.json.jb'
     end
 
+    def show
+      @organization_user = organization_user
+      render 'show.json.jb'
+    end
+
     def destroy
       @organization_user = organization_user
       authorize @organization_user

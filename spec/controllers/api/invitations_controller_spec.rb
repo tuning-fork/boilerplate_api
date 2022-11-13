@@ -221,7 +221,7 @@ describe Api::InvitationsController do
     end
   end
 
-  describe 'PATCH /organization/:organization_id/invitations/:id/reinvite' do
+  describe 'POST /organization/:organization_id/invitations/:id/reinvite' do
     let!(:invitation) { create(:invitation, organization: organization, expires_at: Date.current) }
 
     before do
