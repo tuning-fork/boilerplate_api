@@ -18,7 +18,7 @@ class InvitationAccepter
     invitation = find_invitation!
     user_attrs = { **invitation.slice(%w[first_name last_name email]), **user_params }
     user = User.create!(user_attrs)
-    invitation.update!(user: user)
+    invitation.update!(user: user, expires_at: nil)
     invitation.organization.users << user
 
     InvitationMailer.with(invitation: invitation).invitation_accepted.deliver_later

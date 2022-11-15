@@ -19,7 +19,6 @@ module Api
 
     def accept
       authorize Invitation, :accept?
-      # TODO: Remove /organizations/:id/users#create
       invitation_accepter = InvitationAccepter.new(params[:token], accept_invitation_user_params)
       @invitation = invitation_accepter.call!
       render 'accept.json.jb', status: :created
