@@ -22,6 +22,10 @@ describe InvitationAccepter do
         expect(result.user.first_name).to eq(invitation.first_name)
       end
 
+      it 'sets invitation expires_at to nil' do
+        expect(Invitation.last.expires_at).to eq(nil)
+      end
+
       it 'creates a user using invitation and user params' do
         params_to_share = %w[first_name last_name email]
         expect(User.last).not_to be(nil)
@@ -38,8 +42,9 @@ describe InvitationAccepter do
 
       it 'schedules email to admin' do
         expect do
-          # using different email to allow re-calling without "email already taken" error
-          invitation.update!(email: 'different@email.com')
+          # resetting invitation attrs so we can re-invite it (due to limitation
+          # with :result let!)
+          invitation.update!(email: 'different@email.com', expires_at: 1.day.from_now)
           subject.call!
         end.to have_enqueued_mail(InvitationMailer, :invitation_accepted)
       end
