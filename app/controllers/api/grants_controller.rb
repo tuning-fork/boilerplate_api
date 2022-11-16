@@ -46,32 +46,26 @@ module Api
       render 'show.json.jb'
     end
 
-    def reorder_section
+    def reorder_section(section)
       # Referencing grant to make sure it exists
-      grant
+      # grant
 
-      @section = Section.find(params[:section_id])
-      @section.update!(sort_order_position: params[:sort_order])
-
-      render 'section.json.jb'
+      @section = Section.find(section[:id])
+      @section.update!(sort_order_position: section[:sort_order])
     end
 
     def reorder_sections
       # Referencing grant to make sure it exists
-      grant
+      # grant
       @sections_to_reorder = params[:sections]
-      @sections_to_reorder.map do |section_to_reorder|
-        @section = Section.find(section_to_reorder[:id])
-        @section.update!(sort_order_position: section_to_reorder[:sort_order])
-        puts section_to_reorder[:sort_order]
+      @sections_to_reorder.map do |section|
+        puts section[:id]
+        reorder_section(section)
       end
-      # @sections = Section.where(grant_id: params[:grant_id])
-      # @sections.map do |section|
-      #   @section = Section.find(section.id)
-      #   @section.update!(sort_order_position: section.sort_order)
-      # end
-      @sections = grant.sections
-      render 'sections.json.jb'
+      # this gets an archived set of grant sections
+      # @sections = grant.sections
+      # render 'sections.json.jb'
+      render json: { msg: 'Got it' }
     end
 
     private
