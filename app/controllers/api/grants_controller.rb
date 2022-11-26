@@ -49,8 +49,11 @@ module Api
     def reorder_section
       # Referencing grant to make sure it exists
       grant
-      @section = Section.find(section[:id])
-      @section.update!(sort_order_position: section[:sort_order])
+
+      @section = Section.find(params[:section_id])
+      @section.update!(sort_order_position: params[:sort_order])
+
+      render 'section.json.jb'
     end
 
     def reorder_sections
