@@ -20,8 +20,10 @@ unless ENV['RAILS_ENV'] == 'production'
   puts "Data cleared!\n"
 end
 
-Dir[File.join(Rails.root, 'db/seeds/**/*.rb')].sort.each do |seed|
-  load seed
-end
+unless ENV['RAILS_ENV'] == 'test'
+  Dir[File.join(Rails.root, 'db/seeds/**/*.rb')].sort.each do |seed|
+    load seed
+  end
 
-puts 'All data seed!'
+  puts 'All data seed!'
+end

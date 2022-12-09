@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Api::OrganizationUsersController do
   user_fields = %w[
-    id created_at updated_at first_name last_name email
+    id created_at updated_at first_name last_name email roles
   ]
 
   before(:example) do
@@ -74,6 +74,75 @@ describe Api::OrganizationUsersController do
                                                      'last_name' => good_place.users.first.last_name
                                                    )
                                                  ])
+    end
+  end
+
+  describe 'GET /organizations/:organization_id/users/:id' do
+    it 'renders 401 if unauthenticated' do
+      get :show, params: {
+        organization_id: good_place.id,
+        id: chidi.id
+      }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 401 if organization does not exist' do
+      get :show, params: {
+        organization_id: '3fa7d05f-2fed-4f2a-a8b8-a8aa19bf093b',
+        id: chidi.id
+      }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 401 if boilerplate does not exist' do
+      set_auth_header(chidi)
+      get :show, params: {
+        organization_id: good_place.id,
+        id: 'b8635710-6f19-4ed0-a7b7-443fba9647a7'
+      }
+
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 401 if user is not member of organization' do
+      shawn = User.find_by!(first_name: 'Shawn')
+      set_auth_header(shawn)
+
+      get :show, params: {
+        organization_id: good_place.id,
+        id: chidi.id
+      }
+      expect(response).to have_http_status(401)
+
+      get :show, params: {
+        organization_id: shawn.organizations.first.id,
+        id: chidi.id
+      }
+      expect(response).to have_http_status(401)
+    end
+
+    it 'renders 200 with user' do
+      set_auth_header(chidi)
+      get :show, params: {
+        organization_id: good_place.id,
+        id: chidi.id
+      }
+
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body).keys).to contain_exactly(*user_fields)
+      expect(JSON.parse(response.body)).to match(
+        a_hash_including(
+          'id' => kind_of(String),
+          'created_at' => kind_of(String),
+          'updated_at' => kind_of(String),
+          'email' => chidi.email,
+          'first_name' => chidi.first_name,
+          'last_name' => chidi.last_name,
+          'roles' => [Organization::Roles::USER]
+        )
+      )
     end
   end
 
