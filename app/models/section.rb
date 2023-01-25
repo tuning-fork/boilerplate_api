@@ -7,5 +7,6 @@ class Section < ApplicationRecord
 
   belongs_to :grant
 
-  ranks :sort_order
+  ranks :sort_order,
+        with_same: :grant_id
 end
