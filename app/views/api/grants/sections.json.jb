@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# render partial: 'api/sections/index.json.jb', locals: { section: @section }
-
 @sections.map do |section|
   render partial: 'api/sections/section.json.jb', locals: { section: section }
 end

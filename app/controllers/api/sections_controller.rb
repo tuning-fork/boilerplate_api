@@ -6,7 +6,6 @@ module Api
 
     def index
       @sections = @grant.sections.rank(:sort_order)
-      # @sections = @grant.sections
       render 'index.json.jb'
     end
 
