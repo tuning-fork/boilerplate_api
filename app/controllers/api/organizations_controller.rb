@@ -30,11 +30,6 @@ module Api
       render 'show.json.jb'
     end
 
-    def destroy
-      @organization = organization.destroy!
-      render 'show.json.jb'
-    end
-
     private
 
     def organization

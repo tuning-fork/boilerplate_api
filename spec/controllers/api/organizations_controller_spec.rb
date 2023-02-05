@@ -233,46 +233,4 @@ describe Api::OrganizationsController do
       )
     end
   end
-
-  describe 'DELETE /organizations/:id' do
-    let(:chidi) { create_chidi_user }
-    let(:good_place) { create_good_place_org(chidi) }
-
-    it 'renders 401 if unauthenticated' do
-      delete :destroy, params: { id: good_place.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it 'renders 401 if organization does not exist' do
-      set_auth_header(chidi)
-      delete :destroy, params: { id: '9a4706fc-ea63-4cb3-a214-e7a065f97a44' }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it 'renders 401 if not member of organization' do
-      shawn = User.find_by!(first_name: 'Shawn')
-      set_auth_header(shawn)
-      get :show, params: { id: good_place.id }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it 'renders 200 with deleted organization' do
-      set_auth_header(chidi)
-      delete :destroy, params: { id: good_place.id }
-
-      expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body).keys).to contain_exactly(*organization_fields)
-      expect(JSON.parse(response.body)).to match(
-        a_hash_including(
-          'id' => good_place.id,
-          'created_at' => good_place.created_at.iso8601(3),
-          'updated_at' => good_place.updated_at.iso8601(3),
-          'name' => good_place.name
-        )
-      )
-    end
-  end
 end
