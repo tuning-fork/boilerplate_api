@@ -41,7 +41,11 @@ module Api
     end
 
     def category
-      Category.find_by!(id: params[:category_id], organization_id: params[:organization_id])
+      if params[:category_id]
+        Category.find_by!(id: params[:category_id], organization_id: params[:organization_id])
+      else
+        boilerplate.category
+      end
     end
 
     def create_boilerplate_params
