@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
     post '/invitations/:token/accept' => 'invitations#accept'
 
+    get '/healthcheck' => 'healthcheck#show'
+
     resources :organizations do
       resources :organization_users, path: :users
       resources :boilerplates
