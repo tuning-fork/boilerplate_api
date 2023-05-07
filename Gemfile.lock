@@ -105,6 +105,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    honeybadger (5.2.1)
     http (4.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -283,6 +284,7 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2)
   faker (~> 2.19)
   guard-rspec
+  honeybadger (~> 5.2)
   http
   jb
   jwt
@@ -304,4 +306,4 @@ RUBY VERSION
    ruby 2.7.5p203
 
 BUNDLED WITH
-   2.2.32
+   2.3.22
