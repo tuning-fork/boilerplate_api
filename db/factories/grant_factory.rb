@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def count_words(section_title, section_text)
-  str = section_title + ' ' + section_text
+  str = "#{section_title} #{section_text}"
   str.strip.split(/\s+/).length
 end
 
