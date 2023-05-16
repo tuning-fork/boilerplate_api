@@ -160,7 +160,7 @@ class GrantFactory
     'Case Management Program',
     'Assistance for Families With Children',
     'Adult Education Guidance Program',
-    'Legal Services',
+    'Legal Services'
   ].freeze
 
   def self.section_text
