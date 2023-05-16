@@ -103,24 +103,6 @@ the_cypress_tree.grants.create!([
                                                     **GrantFactory.section_info,
                                                     sort_order: 6
                                                   })
-                                      #   Section.new({
-                                      #                 title: <<-TEXT,
-                                      #                 How the Program/Project Directly Relates to Community Organizing, Civic
-                                      #                 Engagement, and/or Healing in AAPI communities
-                                      #                 TEXT
-                                      #                 text: GrantFactory.section_text,
-                                      #                 sort_order: 6,
-                                      #                 wordcount: 45
-                                      #               }),
-                                      #   Section.new({
-                                      #                 title: <<-TEXT,
-                                      #                 What would success look like to the organization for this Program/Project
-                                      #                 (please describe one or more indicators)?
-                                      #                 TEXT
-                                      #                 text: GrantFactory.section_text,
-                                      #                 sort_order: 7,
-                                      #                 wordcount: 45
-                                      #               }),
                                     ]
                                   },
                                   {
@@ -248,17 +230,17 @@ the_cypress_tree.boilerplates.create!([
                                         {
                                           title: 'Ask Us More',
                                           category: category_family_services,
-                                          text: 'Ekram Hanna, MIRA Community Engagement Manager, Certified Mental Health First
-                                          Aid Trainer',
+                                          text: <<-TEXT,
+                                          Ekram Hanna, MIRA Community Engagement Manager, Certified Mental Health First Aid Trainer
+                                          TEXT
                                           wordcount: 15
                                         },
                                         {
                                           title: 'New Age',
                                           category: category_family_services,
-                                          text: 'MIRA works with clients to address their educational needs, including assistance
-                                          applying for college credit and training programs, evaluating educational
-                                          credentials, and applying for financial aid. In FY18-19 MIRA provided 97 Adult
-                                          Education Clients with 152 Adult Education Case Activities.',
+                                          text: <<-TEXT,
+                                          MIRA works with clients to address their educational needs, including assistance applying for college credit and training programs, evaluating educational credentials, and applying for financial aid. In FY18-19 MIRA provided 97 Adult Education Clients with 152 Adult Education Case Activities.
+                                          TEXT
                                           wordcount: 41
                                         },
                                         {
