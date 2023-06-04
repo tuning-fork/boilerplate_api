@@ -1,0 +1,2 @@
+web: bin/run
+js: cd ../boilerplate_frontend && npm start
