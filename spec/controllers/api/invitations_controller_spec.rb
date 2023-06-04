@@ -126,7 +126,7 @@ describe Api::InvitationsController do
   end
 
   describe 'POST /invitations/:token/accept' do
-    let!(:invitation) { create(:invitation, organization: organization) }
+    let!(:invitation) { create(:invitation, organization:) }
 
     before do
       allow_any_instance_of(InvitationPolicy).to receive(:accept?).and_return(true)
@@ -222,7 +222,7 @@ describe Api::InvitationsController do
   end
 
   describe 'POST /organization/:organization_id/invitations/:id/reinvite' do
-    let!(:invitation) { create(:invitation, organization: organization, expires_at: Date.current) }
+    let!(:invitation) { create(:invitation, organization:, expires_at: Date.current) }
 
     before do
       allow_any_instance_of(InvitationPolicy).to receive(:reinvite?).and_return(true)
@@ -292,7 +292,7 @@ describe Api::InvitationsController do
       allow_any_instance_of(InvitationPolicy).to receive(:destroy?).and_return(true)
     end
 
-    let(:invitation) { create(:invitation, organization: organization) }
+    let(:invitation) { create(:invitation, organization:) }
 
     context 'when invitation policy fails' do
       before do

@@ -82,7 +82,7 @@ describe Api::PasswordsController do
     end
 
     it 'renders 200 with valid params' do
-      post :reset, params: params
+      post(:reset, params:)
 
       expect(response).to have_http_status(200)
     end

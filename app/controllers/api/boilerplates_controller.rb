@@ -13,7 +13,7 @@ module Api
       @boilerplate = Boilerplate.create!(
         **create_boilerplate_params,
         organization: @organization,
-        category: category
+        category:
       )
       render 'show.json.jb', status: :created
     end
@@ -25,7 +25,7 @@ module Api
 
     def update
       @boilerplate = boilerplate
-      @boilerplate.update!(**update_boilerplate_params, category: category)
+      @boilerplate.update!(**update_boilerplate_params, category:)
       render 'show.json.jb'
     end
 

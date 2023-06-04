@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @categories.map do |category|
-  render partial: 'category.json.jb', locals: { category: category }
+  render partial: 'category.json.jb', locals: { category: }
 end

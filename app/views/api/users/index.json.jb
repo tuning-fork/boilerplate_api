@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @users.map do |user|
-  render partial: 'api/users/user.json.jb', locals: { user: user }
+  render partial: 'api/users/user.json.jb', locals: { user: }
 end

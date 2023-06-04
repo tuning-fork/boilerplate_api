@@ -18,7 +18,7 @@ module Api
 
       jwt = encode_jwt(user)
       payload = {
-        jwt: jwt,
+        jwt:,
         email: user.email,
         user_id: user.id
       }

@@ -16,7 +16,7 @@ describe InvitationPolicy do
       user = create(:user)
       organization = create(:organization)
       organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::USER])
+        OrganizationUser.new(user:, roles: [Organization::Roles::USER])
       ]
       expect(subject).not_to permit(user, organization)
     end
@@ -25,7 +25,7 @@ describe InvitationPolicy do
       user = create(:user)
       organization = create(:organization)
       organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::ADMIN])
+        OrganizationUser.new(user:, roles: [Organization::Roles::ADMIN])
       ]
       expect(subject).to permit(user, organization)
     end
@@ -48,7 +48,7 @@ describe InvitationPolicy do
       user = create(:user)
       invitation = create(:invitation)
       invitation.organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::USER])
+        OrganizationUser.new(user:, roles: [Organization::Roles::USER])
       ]
       expect(subject).not_to permit(user, invitation)
     end
@@ -57,7 +57,7 @@ describe InvitationPolicy do
       user = create(:user)
       invitation = create(:invitation)
       invitation.organization.organization_users = [
-        OrganizationUser.new(user: user, roles: [Organization::Roles::ADMIN])
+        OrganizationUser.new(user:, roles: [Organization::Roles::ADMIN])
       ]
       expect(subject).to permit(user, invitation)
     end

@@ -109,7 +109,7 @@ describe Api::ReportSectionsController do
     end
 
     it 'renders 401 if unauthenticated' do
-      get :index, params: params
+      get(:index, params:)
 
       expect(response).to have_http_status(401)
     end
@@ -139,7 +139,7 @@ describe Api::ReportSectionsController do
       shawn = User.find_by!(first_name: 'Shawn')
 
       set_auth_header(shawn)
-      get :index, params: params
+      get(:index, params:)
       expect(response).to have_http_status(401)
     end
 
@@ -148,7 +148,7 @@ describe Api::ReportSectionsController do
       section2 = report.report_sections.second
 
       set_auth_header(chidi)
-      get :index, params: params
+      get(:index, params:)
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match([
@@ -278,7 +278,7 @@ describe Api::ReportSectionsController do
     end
 
     it 'renders 401 if unauthenticated' do
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(401)
     end
@@ -323,7 +323,7 @@ describe Api::ReportSectionsController do
       shawn = User.find_by!(first_name: 'Shawn')
       set_auth_header(shawn)
 
-      get :show, params: params
+      get(:show, params:)
       expect(response).to have_http_status(401)
 
       get :show, params: { **params, organization_id: shawn.organizations.first.id }
@@ -332,7 +332,7 @@ describe Api::ReportSectionsController do
 
     it 'renders 200 with report section' do
       set_auth_header(chidi)
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*report_section_fields)

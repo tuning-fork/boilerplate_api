@@ -9,8 +9,8 @@ describe OrganizationUser, type: :model do
         organization = create(:organization)
         user = create(:user)
         organization_user = OrganizationUser.new(
-          organization: organization,
-          user: user,
+          organization:,
+          user:,
           roles: ['whoopsie', 'oh no']
         )
         expect(organization_user).to_not be_valid
@@ -28,7 +28,7 @@ describe OrganizationUser, type: :model do
 
     context 'when role is not set' do
       subject do
-        OrganizationUser.new(organization: organization, user: user)
+        OrganizationUser.new(organization:, user:)
       end
 
       it 'defaults role to user' do
@@ -38,7 +38,7 @@ describe OrganizationUser, type: :model do
 
     context 'when role is set' do
       subject do
-        OrganizationUser.new(organization: organization, user: user, roles: [Organization::Roles::ADMIN])
+        OrganizationUser.new(organization:, user:, roles: [Organization::Roles::ADMIN])
       end
 
       it 'keeps role set' do

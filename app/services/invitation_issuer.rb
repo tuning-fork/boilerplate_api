@@ -12,7 +12,7 @@ class InvitationIssuer
     invitation = find_or_create_invitation!
     generate_invitation_token!(invitation)
 
-    InvitationMailer.with(invitation: invitation).invite.deliver_later
+    InvitationMailer.with(invitation:).invite.deliver_later
 
     Rails.logger.info("Invitation #{invitation} issued")
 
@@ -29,7 +29,7 @@ class InvitationIssuer
 
     invitation = Invitation.create!(
       **invitation_params,
-      organization: organization
+      organization:
     )
     Rails.logger.info("New invitation #{invitation} created")
     invitation
@@ -38,6 +38,6 @@ class InvitationIssuer
   def generate_invitation_token!(invitation)
     token = SecureRandom.urlsafe_base64
     expires_at = 1.week.from_now.to_date
-    invitation.update!(token: token, expires_at: expires_at)
+    invitation.update!(token:, expires_at:)
   end
 end

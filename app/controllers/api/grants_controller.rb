@@ -13,7 +13,7 @@ module Api
       @grant = Grant.create!(
         **create_grant_params,
         organization: @organization,
-        funding_org: funding_org
+        funding_org:
       )
       render 'show.json.jb', status: :created
     end
@@ -22,7 +22,7 @@ module Api
       @grant = Grant.create!(
         **create_grant_params,
         organization: @organization,
-        funding_org: funding_org,
+        funding_org:,
         sections: grant.sections.map do |section|
           Section.new(section.slice(%i[title text wordcount sort_order]))
         end
@@ -71,7 +71,7 @@ module Api
       # :grant_id is used for actions on the grant like copy. :id is used for
       # everything else
       id = params[:id] || params[:grant_id]
-      Grant.find_by!(id: id, organization_id: params[:organization_id])
+      Grant.find_by!(id:, organization_id: params[:organization_id])
     end
 
     def funding_org

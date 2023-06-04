@@ -43,7 +43,7 @@ describe InvitationIssuer do
 
     context 'when invitation already exists' do
       let!(:existing_invitation) do
-        create(:invitation, organization: organization, email: invitation_params[:email], expires_at: Date.current)
+        create(:invitation, organization:, email: invitation_params[:email], expires_at: Date.current)
       end
 
       subject { InvitationIssuer.new(invitation_params, organization) }

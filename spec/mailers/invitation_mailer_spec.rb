@@ -5,7 +5,7 @@ require 'rails_helper'
 describe InvitationMailer, type: :mailer do
   describe 'invite' do
     let(:invitation) { create(:invitation, token: 'abc123') }
-    let(:mail) { InvitationMailer.with(invitation: invitation).invite }
+    let(:mail) { InvitationMailer.with(invitation:).invite }
 
     it 'renders the headers' do
       expect(mail.subject).to eq("You've been invited to join #{invitation.organization.name} on Boilerplate")
@@ -29,7 +29,7 @@ describe InvitationMailer, type: :mailer do
       ]
       invitation.organization.admins
     end
-    let(:mail) { InvitationMailer.with(invitation: invitation).invitation_accepted }
+    let(:mail) { InvitationMailer.with(invitation:).invitation_accepted }
 
     it 'renders the headers' do
       expect(mail.subject).to eq("New user added to your organization #{invitation.organization.name} on Boilerplate")

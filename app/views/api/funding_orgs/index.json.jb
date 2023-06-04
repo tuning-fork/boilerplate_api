@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @funding_orgs.map do |funding_org|
-  render partial: 'funding_org.json.jb', locals: { funding_org: funding_org }
+  render partial: 'funding_org.json.jb', locals: { funding_org: }
 end

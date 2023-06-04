@@ -37,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def admin_of_organization?(organization_id)
-    organization_user = OrganizationUser.find_by(user_id: id, organization_id: organization_id)
+    organization_user = OrganizationUser.find_by(user_id: id, organization_id:)
     return false if organization_user.blank?
 
     organization_user.roles.include?('admin')

@@ -15,7 +15,7 @@ class Invitation < ApplicationRecord
   def build_accept_link
     protocol = Rails.env.production? ? 'https' : 'http'
     host = ENV.fetch('FRONTEND_ORIGIN')
-    params = { token: token, first_name: first_name, last_name: last_name, email: email }
+    params = { token:, first_name:, last_name:, email: }
 
     "#{protocol}://#{host}/accept_invite?#{params.to_query}"
   end

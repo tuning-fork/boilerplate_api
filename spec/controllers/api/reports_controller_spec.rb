@@ -129,24 +129,20 @@ describe Api::ReportsController do
       expect(JSON.parse(response.body)).to match([
                                                    a_hash_including(
                                                      'id' => good_place_grant.reports.first.id,
-                                                     'created_at' => (
-                                                      good_place_grant.reports.first.created_at.iso8601(3)
-                                                    ),
-                                                     'updated_at' => (
-                                                      good_place_grant.reports.first.updated_at.iso8601(3)
-                                                    ),
+                                                     'created_at' =>
+                                                      good_place_grant.reports.first.created_at.iso8601(3),
+                                                     'updated_at' =>
+                                                      good_place_grant.reports.first.updated_at.iso8601(3),
                                                      'deadline' => good_place_grant.reports.first.deadline.iso8601(3),
                                                      'title' => good_place_grant.reports.first.title,
                                                      'submitted' => good_place_grant.reports.first.submitted
                                                    ),
                                                    a_hash_including(
                                                      'id' => good_place_grant.reports.second.id,
-                                                     'created_at' => (
-                                                      good_place_grant.reports.second.created_at.iso8601(3)
-                                                    ),
-                                                     'updated_at' => (
-                                                      good_place_grant.reports.second.updated_at.iso8601(3)
-                                                    ),
+                                                     'created_at' =>
+                                                      good_place_grant.reports.second.created_at.iso8601(3),
+                                                     'updated_at' =>
+                                                      good_place_grant.reports.second.updated_at.iso8601(3),
                                                      'deadline' => good_place_grant.reports.second.deadline.iso8601(3),
                                                      'title' => good_place_grant.reports.second.title,
                                                      'submitted' => good_place_grant.reports.second.submitted
@@ -248,7 +244,7 @@ describe Api::ReportsController do
     end
 
     it 'renders 401 if unauthenticated' do
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(401)
     end
@@ -286,7 +282,7 @@ describe Api::ReportsController do
       shawn = User.find_by!(first_name: 'Shawn')
       set_auth_header(shawn)
 
-      get :show, params: params
+      get(:show, params:)
       expect(response).to have_http_status(401)
 
       get :show, params: { **params, organization_id: shawn.organizations.first.id }
@@ -295,7 +291,7 @@ describe Api::ReportsController do
 
     it 'renders 200 with reports' do
       set_auth_header(chidi)
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*report_fields)

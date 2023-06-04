@@ -143,12 +143,10 @@ describe Api::SectionsController do
                                                    a_hash_including(
                                                      'sort_order' => kind_of(Integer),
                                                      'id' => good_place_grant.sections.first.id,
-                                                     'created_at' => (
-                                                        good_place_grant.sections.first.created_at.iso8601(3)
-                                                      ),
-                                                     'updated_at' => (
-                                                        good_place_grant.sections.first.updated_at.iso8601(3)
-                                                      ),
+                                                     'created_at' =>
+                                                        good_place_grant.sections.first.created_at.iso8601(3),
+                                                     'updated_at' =>
+                                                        good_place_grant.sections.first.updated_at.iso8601(3),
                                                      'title' => good_place_grant.sections.first.title,
                                                      'text' => good_place_grant.sections.first.text,
                                                      'wordcount' => good_place_grant.sections.first.wordcount
@@ -156,12 +154,10 @@ describe Api::SectionsController do
                                                    a_hash_including(
                                                      'sort_order' => kind_of(Integer),
                                                      'id' => good_place_grant.sections.second.id,
-                                                     'created_at' => (
-                                                        good_place_grant.sections.second.created_at.iso8601(3)
-                                                      ),
-                                                     'updated_at' => (
-                                                        good_place_grant.sections.second.updated_at.iso8601(3)
-                                                      ),
+                                                     'created_at' =>
+                                                        good_place_grant.sections.second.created_at.iso8601(3),
+                                                     'updated_at' =>
+                                                        good_place_grant.sections.second.updated_at.iso8601(3),
                                                      'title' => good_place_grant.sections.second.title,
                                                      'text' => good_place_grant.sections.second.text,
                                                      'wordcount' => good_place_grant.sections.second.wordcount
@@ -266,7 +262,7 @@ describe Api::SectionsController do
     end
 
     it 'renders 401 if unauthenticated' do
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(401)
     end
@@ -304,7 +300,7 @@ describe Api::SectionsController do
       shawn = User.find_by!(first_name: 'Shawn')
       set_auth_header(shawn)
 
-      get :show, params: params
+      get(:show, params:)
       expect(response).to have_http_status(401)
 
       get :show, params: { **params, organization_id: shawn.organizations.first.id }
@@ -313,7 +309,7 @@ describe Api::SectionsController do
 
     it 'renders 200 with organization' do
       set_auth_header(chidi)
-      get :show, params: params
+      get(:show, params:)
 
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).keys).to contain_exactly(*section_fields)

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @contacts.map do |contact|
-  render partial: 'contact.json.jb', locals: { contact: contact }
+  render partial: 'contact.json.jb', locals: { contact: }
 end

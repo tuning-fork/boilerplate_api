@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @grants.map do |grant|
-  render partial: 'grant.json.jb', locals: { grant: grant }
+  render partial: 'grant.json.jb', locals: { grant: }
 end

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 @boilerplates.map do |boilerplate|
-  render partial: 'boilerplate.json.jb', locals: { boilerplate: boilerplate }
+  render partial: 'boilerplate.json.jb', locals: { boilerplate: }
 end
