@@ -31,7 +31,7 @@ group :development, :test do
   gem 'debug', '~> 1.6'
   gem 'dotenv-rails'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.31', require: false
+  gem 'rubocop', '~> 1.56', require: false
   gem 'rubocop-performance', '~> 1.14', require: false
   gem 'rubocop-rails', '~> 2.15', require: false
   gem 'seed_dump'
