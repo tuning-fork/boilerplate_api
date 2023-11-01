@@ -59,4 +59,4 @@ gem 'ranked-model'
 
 gem 'pundit', '~> 2.2'
 
-gem 'honeybadger', '~> 5.2'
+gem 'honeybadger', '~> 5.3'
