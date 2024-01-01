@@ -120,7 +120,7 @@ GEM
     http-cookie (1.0.5)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    i18n (1.14.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     irb (1.7.0)
@@ -148,7 +148,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.2)
-    minitest (5.18.0)
+    minitest (5.20.0)
     msgpack (1.7.1)
     nenv (0.3.0)
     net-imap (0.3.4)
@@ -271,8 +271,8 @@ GEM
       activerecord (>= 4)
       activesupport (>= 4)
     shellany (0.0.1)
-    shoulda-matchers (4.5.1)
-      activesupport (>= 4.2.0)
+    shoulda-matchers (6.0.0)
+      activesupport (>= 5.2.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -291,7 +291,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.8)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   ruby
@@ -322,7 +322,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.14)
   rubocop-rails (~> 2.15)
   seed_dump
-  shoulda-matchers (~> 4.0)
+  shoulda-matchers (~> 6.0)
   tzinfo-data
 
 RUBY VERSION
